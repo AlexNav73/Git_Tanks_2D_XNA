@@ -41,3 +41,21 @@ $RECYCLE.BIN/
 Network Trash Folder
 Temporary Items
 .apdisk
+Tank2D_XNA/Tank2D_XNA/Tank2D_XNA/Game.ico
+*.png
+*.cache
+*.pdb
+*.user
+*.jpg
+*.xnb
+*.txt
+*.exe
+*.cachefile
+*.contentproj
+Tank2D_XNA/Tank2D_XNA/Tank2D_XNAContent/GUI/PannelFont.spritefont
+*.spritefont
+Tank2D_XNA/Tank2D_XNA/Tank2D_XNA/Properties/AssemblyInfo.cs
+*.xml
+Tank2D_XNA/Tank2D_XNA.sln
+*.suo
+*.csproj
