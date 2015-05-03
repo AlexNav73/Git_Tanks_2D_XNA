@@ -159,7 +159,10 @@ namespace Tank2D_XNA.Tanks
         {
             base.Update(gameTime);
 
-            BattleField.GetInstance().PrintMessage(String.Format("Reload: {0} s", _currentReloadTime == 0.0 ? ReloadTime : Math.Round(_currentReloadTime, 2)));
+            BattleField.GetInstance()
+                .PrintMessage(
+                    String.Format("Reload: {0} s", _currentReloadTime == 0.0 ? ReloadTime : Math.Round(_currentReloadTime, 2))
+                );
 
             for (int i = 0; i < _shells.Count; i++)
             {

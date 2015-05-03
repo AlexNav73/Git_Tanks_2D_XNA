@@ -31,7 +31,7 @@ namespace Tank2D_XNA.Tanks
         public TankInfoPanel(Vector2 position)
         {
             _barOffs = new Vector2(-30, 40);
-            _fontOffs = new Vector2(5, 5);
+            _fontOffs = new Vector2(12, 5);
             Position = position + _barOffs;
             _fontPosition = Position + _fontOffs;
             SpriteName = @"GUI\hp";
@@ -55,7 +55,7 @@ namespace Tank2D_XNA.Tanks
         public override void Draw(SpriteBatch spriteBatch)
         {
             spriteBatch.Draw(Sprite, Position, _barRect, Color.White);
-            spriteBatch.DrawString(_font, String.Format("{0}xp", Hp), _fontPosition, Color.Red);
+            spriteBatch.DrawString(_font, String.Format("{0}", Hp), _fontPosition, Color.Red);
         }
     }
 }

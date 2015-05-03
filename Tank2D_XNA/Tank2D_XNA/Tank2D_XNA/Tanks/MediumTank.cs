@@ -13,7 +13,7 @@ namespace Tank2D_XNA.Tanks
             Direction = new Vector2(-Speed, 0);
             Hp = 1200;
             Pannel = new TankInfoPanel(spawnPosition) { Hp = Hp, MaxHp = Hp };
-            ReloadTime = 0.0; //4.32;
+            ReloadTime = 4.32;
         }
     }
 }

@@ -22,7 +22,7 @@ namespace Tank2D_XNA.GameField
         private Cursor _mouseCursor;
         private static BattleField _instance;
         private List<Block> _blocks;
-        private List<Tank> _tanks;
+        private List<AI> _tanks;
         private Player _player;
         private Gui _gui;
         private bool _isMenu;
@@ -43,7 +43,7 @@ namespace Tank2D_XNA.GameField
             _mouseCursor = Cursor.GetCursor();
             Cursor.GetCursor().Fire = playerTank.Fire;
             _blocks = new List<Block>();
-            _tanks = new List<Tank>();
+            _tanks = new List<AI>();
             _player = new Player(playerTank);
             _gui = new Gui(playerTank);
 
@@ -69,7 +69,7 @@ namespace Tank2D_XNA.GameField
 
         public void AddTank(Tank tank)
         {
-            _tanks.Add(tank);
+            _tanks.Add(new AI(tank, _player.TankPosition));
         }
 
         public void AddBlock(Vector2 pos)
@@ -84,9 +84,9 @@ namespace Tank2D_XNA.GameField
                     return block;
                     
 
-            foreach (Tank tank in _tanks)
-                if (rect.Intersects(tank.GetMeshRect))
-                    return tank;
+            foreach (AI ai in _tanks)
+                if (rect.Intersects(ai.Tank.GetMeshRect))
+                    return ai.Tank;
 
             return null;
         }
@@ -94,10 +94,13 @@ namespace Tank2D_XNA.GameField
         public void LoadContent(ContentManager content)
         {
             _mouseCursor.LoadContent(content);
+
             foreach (var tank in _tanks)
                 tank.LoadContent(content);
+
             foreach (var block in _blocks)
                 block.LoadContent(content);
+
             _player.LoadContent(content);
             _gui.LoadContent(content);
 
@@ -110,16 +113,13 @@ namespace Tank2D_XNA.GameField
             _mouseCursor.Update(gameTime);
             if (_isMenu) return;
             for (int i = 0; i < _tanks.Count; i++)
-                if (_tanks[i].IsAlive)
+                if (_tanks[i].Tank.IsAlive)
                 {
                     _tanks[i].Update(gameTime);
-                    _tanks[i].TankTurret.CursorPosition = _player.TankPosition;
+                    _tanks[i].SetTargetPosition(_player.TankPosition);
                 }
                 else
-                {
-                    _tanks.Remove(_tanks[i]);
-                    --i;
-                }
+                    _tanks.Remove(_tanks[i--]);
 
             _player.Update(gameTime);
             _gui.Update(gameTime);
@@ -134,10 +134,12 @@ namespace Tank2D_XNA.GameField
             if (!_isMenu)
             {
                 foreach (var tank in _tanks)
-                    if (tank.IsAlive)
+                    if (tank.Tank.IsAlive)
                         tank.Draw(spriteBatch);
+
                 foreach (var block in _blocks)
                     block.Draw(spriteBatch);
+
                 _player.Draw(spriteBatch);
                 _gui.Draw(spriteBatch);
             }
