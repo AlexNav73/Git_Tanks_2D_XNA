@@ -5,34 +5,29 @@ using System.Text;
 
 namespace Tank2D_XNA.GameField
 {
-    struct APoint
-    {
-        public int X;
-        public int Y;
-        public int F;
-        public int H;
-
-        public APoint(APoint point)
-        {
-            X = point.X;
-            Y = point.Y;
-            F = point.F;
-            H = point.H;
-        }
-    }
-
     class FieldGrid
     {
+        private struct APoint
+        {
+            public int X;
+            public int Y;
+            public int F;
+            public int H;
+
+            public APoint(APoint point)
+            {
+                X = point.X;
+                Y = point.Y;
+                F = point.F;
+                H = point.H;
+            }
+        }
+
         private readonly int _cellSize;
         private readonly int[,] _fieldGred;
-        private int fx = -1, fy = -1, lx = -1, ly = -1;
-
-        // for A* algorithm
-
+        private int _fx = -1, _fy = -1, _lx = -1, _ly = -1;
         private readonly List<APoint> _openList = new List<APoint>();
         private readonly List<APoint> _closeList = new List<APoint>();
-
-        //
 
         public FieldGrid(int width, int height, int cellSize)
         {
@@ -42,21 +37,21 @@ namespace Tank2D_XNA.GameField
 
         public void SetFirstPosition(int x, int y)
         {
-            fx = x / _cellSize;
-            fy = y / _cellSize;
+            _fx = x / _cellSize;
+            _fy = y / _cellSize;
         }
 
         public void SetLastPosition(int x, int y)
         {
-            lx = x / _cellSize;
-            ly = y / _cellSize;
+            _lx = x / _cellSize;
+            _ly = y / _cellSize;
 
-            if (_fieldGred[lx, ly] != 0) return;
+            if (_fieldGred[_lx, _ly] != 0) return;
 
             _openList.Clear();
             _closeList.Clear();
 
-            _closeList.Add(new APoint { H = HCost(fx, fy), F = HCost(fx, fy), X = fx, Y = fy });
+            _closeList.Add(new APoint { H = HCost(_fx, _fy), F = HCost(_fx, _fy), X = _fx, Y = _fy });
             MarkCell();
         }
 
@@ -65,14 +60,14 @@ namespace Tank2D_XNA.GameField
             _fieldGred[x / _cellSize, y / _cellSize] = 1;
         }
 
-        private int GCost(int parent_x, int parent_y, int kx, int ky)
+        private int GCost(int parentX, int parentY, int kx, int ky)
         {
-            if (parent_x + kx >= 0 && parent_x + kx < _fieldGred.GetLength(0) &&
-                parent_y + ky >= 0 && parent_y + ky < _fieldGred.GetLength(1) &&
-                _fieldGred[parent_x + kx, parent_y + ky] == 0)
+            if (parentX + kx >= 0 && parentX + kx < _fieldGred.GetLength(0) &&
+                parentY + ky >= 0 && parentY + ky < _fieldGred.GetLength(1) &&
+                _fieldGred[parentX + kx, parentY + ky] == 0)
             {
-                if ((parent_x == parent_x + kx && parent_y != parent_y + ky) ||
-                    (parent_x != parent_x + kx && parent_y == parent_y + ky))
+                if ((parentX == parentX + kx && parentY != parentY + ky) ||
+                    (parentX != parentX + kx && parentY == parentY + ky))
                     return _cellSize;
                 return (int)(_cellSize * 1.4142135623730950f);
             }
@@ -80,56 +75,56 @@ namespace Tank2D_XNA.GameField
             return -1;
         }
 
-        private int HCost(int parent_x, int parent_y)
+        private int HCost(int parentX, int parentY)
         {
-            int length = 0, offs_x = 0, offs_y = 0;
+            int length = 0, offsX = 0, offsY = 0;
 
-            if (Math.Abs(lx - parent_x) != 0)
-                offs_x = (lx - parent_x) / Math.Abs(lx - parent_x);
-            if (Math.Abs(ly - parent_y) != 0)
-                offs_y = (ly - parent_y) / Math.Abs(ly - parent_y);
+            if (Math.Abs(_lx - parentX) != 0)
+                offsX = (_lx - parentX) / Math.Abs(_lx - parentX);
+            if (Math.Abs(_ly - parentY) != 0)
+                offsY = (_ly - parentY) / Math.Abs(_ly - parentY);
 
-            while (parent_x != lx && parent_y != ly)
+            while (parentX != _lx && parentY != _ly)
             {
-                parent_x += offs_x;
-                parent_y += offs_y;
+                parentX += offsX;
+                parentY += offsY;
                 length += (int)(_cellSize * 1.4142135623730950f);
             }
 
-            while (parent_x != lx || parent_y != ly)
+            while (parentX != _lx || parentY != _ly)
             {
-                if (parent_x != lx) parent_x += offs_x;
+                if (parentX != _lx) parentX += offsX;
                 else
-                    if (parent_y != ly) parent_y += offs_y;
+                    if (parentY != _ly) parentY += offsY;
                 length += _cellSize;
             }
 
             return length;
         }
 
-        private void SetCell(int parent_x, int parent_y, int kx, int ky)
+        private void SetCell(int parentX, int parentY, int kx, int ky)
         {
-            int g = GCost(parent_x, parent_y, kx, ky);
+            int g = GCost(parentX, parentY, kx, ky);
 
             if (g != -1)
             {
-                int h = HCost(parent_x + kx, parent_y + ky);
+                int h = HCost(parentX + kx, parentY + ky);
 
-                if (_openList.Exists((point) => point.X == parent_x + kx && point.Y == parent_y + ky))
+                if (_openList.Exists((point) => point.X == parentX + kx && point.Y == parentY + ky))
                 {
-                    APoint tmp = _openList.Find((point) => point.X == parent_x + kx && point.Y == parent_y + ky);
+                    APoint tmp = _openList.Find((point) => point.X == parentX + kx && point.Y == parentY + ky);
                     if (tmp.F > g + h) tmp.F = g + h;
                 }
                 else
-                    if (!_closeList.Exists((point) => point.X == parent_x + kx && point.Y == parent_y + ky))
+                    if (!_closeList.Exists((point) => point.X == parentX + kx && point.Y == parentY + ky))
                     {
-                        int parent_g_cost = 0;
-                        if (_closeList.Exists((point) => point.X == parent_x && point.Y == parent_y))
+                        int parentGCost = 0;
+                        if (_closeList.Exists((point) => point.X == parentX && point.Y == parentY))
                         {
-                            APoint tmp_node = _closeList.First((point) => point.X == parent_x && point.Y == parent_y);
-                            parent_g_cost = tmp_node.F - tmp_node.H;
+                            APoint tmpNode = _closeList.First((point) => point.X == parentX && point.Y == parentY);
+                            parentGCost = tmpNode.F - tmpNode.H;
                         }
-                        var tmp = new APoint { F = parent_g_cost + g + h, H = h, X = parent_x + kx, Y = parent_y + ky };
+                        var tmp = new APoint { F = parentGCost + g + h, H = h, X = parentX + kx, Y = parentY + ky };
                         _openList.Add(tmp);
                     }
             }
@@ -140,41 +135,41 @@ namespace Tank2D_XNA.GameField
             if (_openList.Count == 0) return false;
             x = _openList[0].X;
             y = _openList[0].Y;
-            int min_F = _openList[0].F, min_H = _openList[0].H;
+            int minF = _openList[0].F, minH = _openList[0].H;
 
             for (int i = 0; i < _openList.Count; i++)
-                if (_openList[i].F < min_F && _openList[i].H <= min_H)
+                if (_openList[i].F < minF && _openList[i].H <= minH)
                 {
                     x = _openList[i].X;
                     y = _openList[i].Y;
-                    min_F = _openList[i].F;
-                    min_H = _openList[i].H;
+                    minF = _openList[i].F;
+                    minH = _openList[i].H;
                 }
             return true;
         }
 
         private void MarkCell()
         {
-            while (fx != lx || fy != ly)
+            while (_fx != _lx || _fy != _ly)
             {
-                SetCell(fx, fy, 0, -1);
-                SetCell(fx, fy, 1, -1);
-                SetCell(fx, fy, 1, 0);
-                SetCell(fx, fy, 1, 1);
-                SetCell(fx, fy, 0, 1);
-                SetCell(fx, fy, -1, 1);
-                SetCell(fx, fy, -1, 0);
-                SetCell(fx, fy, -1, -1);
+                SetCell(_fx, _fy, 0, -1);
+                SetCell(_fx, _fy, 1, -1);
+                SetCell(_fx, _fy, 1, 0);
+                SetCell(_fx, _fy, 1, 1);
+                SetCell(_fx, _fy, 0, 1);
+                SetCell(_fx, _fy, -1, 1);
+                SetCell(_fx, _fy, -1, 0);
+                SetCell(_fx, _fy, -1, -1);
 
                 int x = 0, y = 0;
                 if (!FindNextCell(ref x, ref y)) break;
                 if (x == -1 || y == -1) break;
                 APoint tmp = _openList.Find(point => point.X == x && point.Y == y);
-                APoint to_close_list = new APoint(tmp);
+                APoint toCloseList = new APoint(tmp);
                 _openList.Remove(tmp);
-                _closeList.Add(to_close_list);
-                fx = x;
-                fy = y;
+                _closeList.Add(toCloseList);
+                _fx = x;
+                _fy = y;
             }
         }
 
