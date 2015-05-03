@@ -22,7 +22,6 @@ namespace Tank2D_XNA.Tanks
         protected TankInfoPanel Pannel;
 
         protected Vector2 Direction;
-        private Vector2 _gunPos;
         protected int RotationSpeed;
         private int _rotateTo;
         protected int Speed;
@@ -53,9 +52,6 @@ namespace Tank2D_XNA.Tanks
             _beforeCollisionPos = spawnPosition;
 
             _currentReloadTime = 0.0;
-
-            //!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
-            _gunPos = new Vector2(45, 0);
         }
 
         [SuppressMessage("ReSharper", "PossibleLossOfFraction")]
@@ -115,10 +111,6 @@ namespace Tank2D_XNA.Tanks
             Direction = RotateVector(Direction, _rotateTo - RotationAngleDegrees);
             Direction *= Speed;
             RotationAngleDegrees = ((_rotateTo %= 360) + RotationSpeed * (int)(time));
-
-            //!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
-            SpriteCenter.X = Sprite.Width/2;
-            SpriteCenter.Y = Sprite.Height/2;
         }
 
         public void Fire(Vector2 direction)
