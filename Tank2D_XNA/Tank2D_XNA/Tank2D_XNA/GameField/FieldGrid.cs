@@ -35,13 +35,13 @@ namespace Tank2D_XNA.GameField
             _cellSize = cellSize;
         }
 
-        public void SetFirstPosition(int x, int y)
+        public void SetStartPosition(int x, int y)
         {
             _fx = x / _cellSize;
             _fy = y / _cellSize;
         }
 
-        public void SetLastPosition(int x, int y)
+        public void SetFinishPosition(int x, int y)
         {
             _lx = x / _cellSize;
             _ly = y / _cellSize;
@@ -52,10 +52,10 @@ namespace Tank2D_XNA.GameField
             _closeList.Clear();
 
             _closeList.Add(new APoint { H = HCost(_fx, _fy), F = HCost(_fx, _fy), X = _fx, Y = _fy });
-            MarkCell();
+            FindPath();
         }
 
-        public void SetWall(int x, int y)
+        public void PlaceWall(int x, int y)
         {
             _fieldGred[x / _cellSize, y / _cellSize] = 1;
         }
@@ -102,7 +102,7 @@ namespace Tank2D_XNA.GameField
             return length;
         }
 
-        private void SetCell(int parentX, int parentY, int kx, int ky)
+        private void MarkCell(int parentX, int parentY, int kx, int ky)
         {
             int g = GCost(parentX, parentY, kx, ky);
 
@@ -148,18 +148,18 @@ namespace Tank2D_XNA.GameField
             return true;
         }
 
-        private void MarkCell()
+        private void FindPath()
         {
             while (_fx != _lx || _fy != _ly)
             {
-                SetCell(_fx, _fy, 0, -1);
-                SetCell(_fx, _fy, 1, -1);
-                SetCell(_fx, _fy, 1, 0);
-                SetCell(_fx, _fy, 1, 1);
-                SetCell(_fx, _fy, 0, 1);
-                SetCell(_fx, _fy, -1, 1);
-                SetCell(_fx, _fy, -1, 0);
-                SetCell(_fx, _fy, -1, -1);
+                MarkCell(_fx, _fy, 0, -1);
+                MarkCell(_fx, _fy, 1, -1);
+                MarkCell(_fx, _fy, 1, 0);
+                MarkCell(_fx, _fy, 1, 1);
+                MarkCell(_fx, _fy, 0, 1);
+                MarkCell(_fx, _fy, -1, 1);
+                MarkCell(_fx, _fy, -1, 0);
+                MarkCell(_fx, _fy, -1, -1);
 
                 int x = 0, y = 0;
                 if (!FindNextCell(ref x, ref y)) break;

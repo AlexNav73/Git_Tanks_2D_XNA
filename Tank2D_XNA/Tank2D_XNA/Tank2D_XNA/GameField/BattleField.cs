@@ -28,6 +28,7 @@ namespace Tank2D_XNA.GameField
         private bool _isMenu;
         private KeyboardState _prevKeyboard;
         private Menu _menu;
+        private FieldGrid _grid;
 
         public ExitGame Exit { set; private get; }
 
@@ -46,6 +47,8 @@ namespace Tank2D_XNA.GameField
             _tanks = new List<AI>();
             _player = new Player(playerTank);
             _gui = new Gui(playerTank);
+
+            _grid = new FieldGrid(1920, 1080, 20); // A* pathfinding grid, sell size need to configurate
 
             _menu = new Menu(1920, 1080);
             _isMenu = false;
