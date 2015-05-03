@@ -112,6 +112,7 @@ namespace Tank2D_XNA.GameField
             _mouseCursor.InMenu = _isMenu;
             _mouseCursor.Update(gameTime);
             if (_isMenu) return;
+
             for (int i = 0; i < _tanks.Count; i++)
                 if (_tanks[i].Tank.IsAlive)
                 {
@@ -154,7 +155,7 @@ namespace Tank2D_XNA.GameField
             _gui.Message = message;
         }
 
-        public void SaveExit()
+        public void SafeExit()
         {
             Exit();
         }
