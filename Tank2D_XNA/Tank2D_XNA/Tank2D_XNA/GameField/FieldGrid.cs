@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using Microsoft.Xna.Framework;
 
 namespace Tank2D_XNA.GameField
 {
@@ -75,6 +76,11 @@ namespace Tank2D_XNA.GameField
         public void PlaceWall(int x, int y)
         {
             _fieldGred[x/_cellSize, y/_cellSize] = 1;
+        }
+
+        public List<Point> GetPath()
+        {
+            return _finalPath.Select(point => new Point() { X = point.X, Y = point.Y }).ToList();
         }
 
         private int GCost(int parentX, int parentY, int kx, int ky)
