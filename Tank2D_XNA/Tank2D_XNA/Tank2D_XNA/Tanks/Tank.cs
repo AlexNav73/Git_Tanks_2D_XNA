@@ -103,13 +103,13 @@ namespace Tank2D_XNA.Tanks
             _beforeCollisionRect.Y = (int)_beforeCollisionPos.Y - (int)(Sprite.Height * Scale) / 2;
         }
 
-        public void Turn(bool toLeft, double time)
+        public void TurnLeft(bool toLeft)
         {
             _rotateTo += (toLeft ? -1 : 1) * RotationSpeed;
             Direction.Normalize();
-            Direction = RotateVector(Direction, _rotateTo - RotationAngleDegrees);
+            Direction = Helper.RotateVector(Direction, _rotateTo - RotationAngleDegrees);
             Direction *= Speed;
-            RotationAngleDegrees = ((_rotateTo %= 360) + RotationSpeed * (int)(time));
+            RotationAngleDegrees = (_rotateTo %= 360);
         }
 
         public void Fire(Vector2 direction)
@@ -135,7 +135,7 @@ namespace Tank2D_XNA.Tanks
             }
         }
 
-        public void OnReload(object sender)
+        private void OnReload(object sender)
         {
             while (_currentReloadTime < ReloadTime)
             {
@@ -152,9 +152,10 @@ namespace Tank2D_XNA.Tanks
             IsAlive = Hp > 0;
         }
 
-        public void UpdatePosition(bool needUpdate)
+        public void UpdatePosition()
         {
-            if (needUpdate)
+            Entity collision = BattleField.GetInstance().Intersects(_beforeCollisionRect);
+            if (collision == this || collision == null)
                 Position = _beforeCollisionPos;
             else
                 _beforeCollisionPos = Position;

@@ -15,11 +15,12 @@ namespace Tank2D_XNA.Tanks
         private Vector2 _targetPosition;
         public Tank Tank { private set; get; }
         public Vector2 TankPosition { get { return Tank.TankPosition; } }
-
-        public AI(Tank tank, Vector2 target)
+        private bool _forw = false;
+        public AI(Tank tank, Vector2 target, bool t)
         {
             Tank = tank;
             _targetPosition = target;
+            _forw = t;
         }
 
         public void LoadContent(ContentManager content)
@@ -34,7 +35,15 @@ namespace Tank2D_XNA.Tanks
 
         public void Update(GameTime gameTime)
         {
+            if (_forw)
+                Tank.DriveForward(gameTime.ElapsedGameTime.TotalSeconds);
+            else
+                Tank.DriveBackward(gameTime.ElapsedGameTime.TotalSeconds);
             Tank.TankTurret.CursorPosition = _targetPosition;
+
+            Tank.Fire(_targetPosition);
+
+            Tank.UpdatePosition();
             Tank.Update(gameTime);
         }
 

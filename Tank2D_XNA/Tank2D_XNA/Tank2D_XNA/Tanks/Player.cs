@@ -9,15 +9,14 @@ namespace Tank2D_XNA.Tanks
 {
     class Player
     {
-        private readonly Tank _tank;
         private readonly Cursor _mouse;
         private bool _autoLock;
         private Vector2 _lockPosition;
-        public Vector2 TankPosition { get { return _tank.TankPosition; } }
+        public Tank Tank { private set; get; }
 
         public Player(Tank tank)
         {
-            _tank = tank;
+            Tank = tank;
             _mouse = Cursor.GetCursor();
             _mouse.AutoLock = SetTarget;
             _autoLock = false;
@@ -25,7 +24,7 @@ namespace Tank2D_XNA.Tanks
 
         public void LoadContent(ContentManager content)
         {
-            _tank.LoadContent(content);
+            Tank.LoadContent(content);
         }
 
         public void SetTarget(Vector2 position)
@@ -37,23 +36,23 @@ namespace Tank2D_XNA.Tanks
         public void Update(GameTime gameTime)
         {
             if (Keyboard.GetState().IsKeyDown(Keys.W))
-                _tank.DriveForward(gameTime.ElapsedGameTime.TotalSeconds);
+                Tank.DriveForward(gameTime.ElapsedGameTime.TotalSeconds);
             if (Keyboard.GetState().IsKeyDown(Keys.S))
-                _tank.DriveBackward(gameTime.ElapsedGameTime.TotalSeconds);
+                Tank.DriveBackward(gameTime.ElapsedGameTime.TotalSeconds);
             if (Keyboard.GetState().IsKeyDown(Keys.A))
-                _tank.Turn(true, gameTime.ElapsedGameTime.TotalSeconds);
+                Tank.TurnLeft(true);
             if (Keyboard.GetState().IsKeyDown(Keys.D))
-                _tank.Turn(false, gameTime.ElapsedGameTime.TotalSeconds);
+                Tank.TurnLeft(false);
 
-            _tank.UpdatePosition(BattleField.GetInstance().Intersects(_tank.Mesh) == null);
-            _tank.TankTurret.CursorPosition = !_autoLock ? _mouse.GetPosition : _lockPosition;
+            Tank.UpdatePosition();
+            Tank.TankTurret.CursorPosition = !_autoLock ? _mouse.GetPosition : _lockPosition;
 
-            _tank.Update(gameTime);
+            Tank.Update(gameTime);
         }
 
         public void Draw(SpriteBatch spriteBatch)
         {
-            _tank.Draw(spriteBatch);
+            Tank.Draw(spriteBatch);
         }
     }
 }

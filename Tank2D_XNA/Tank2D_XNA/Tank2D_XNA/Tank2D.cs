@@ -26,9 +26,9 @@ namespace Tank2D_XNA
         {
             _graphics = new GraphicsDeviceManager(this)
             {
-                PreferredBackBufferWidth = 1920,
-                PreferredBackBufferHeight = 1080,
-                IsFullScreen = true
+                PreferredBackBufferWidth = Helper.SCREEN_WIDTH,
+                PreferredBackBufferHeight = Helper.SCREEN_HEIGHT,
+                IsFullScreen = Helper.SCREEN_IS_FULL_SCREEN
             };
 
             Content.RootDirectory = "Content";

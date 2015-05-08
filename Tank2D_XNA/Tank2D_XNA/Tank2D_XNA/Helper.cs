@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Diagnostics.CodeAnalysis;
 using System.Linq;
 using System.Text;
+using Microsoft.Xna.Framework;
 
 namespace Tank2D_XNA
 {
@@ -23,10 +24,11 @@ namespace Tank2D_XNA
              {"Cursor", @"Sprites\Cursor"}
          };
 
-        // Screen resolution
+        // Screen properties
 
-        public const int SCREEN_WIDTH = 1920;
-        public const int SCREEN_HEIGHT = 1080;
+        public const int SCREEN_WIDTH = 1200;
+        public const int SCREEN_HEIGHT = 700;
+        public const bool SCREEN_IS_FULL_SCREEN = false;
 
         // Game field
         
@@ -42,7 +44,7 @@ namespace Tank2D_XNA
 
         // Medium tank TTX
 
-        public const int MEDIUM_TANK_SPEED = 15;
+        public const int MEDIUM_TANK_SPEED = 10;
         public const int MEDIUM_TANK_ROTATION_SPEED = 4;
         public const int MEDIUM_TANK_HP = 1200;
         public const double MEDIUM_TANK_RELOAD_TIME = 4.32;
@@ -66,6 +68,14 @@ namespace Tank2D_XNA
         // Turret TTX
 
         public const int TURRET_CENTR_X = 19;
+
+        public static Vector2 RotateVector(Vector2 vect, float angle)
+        {
+            angle = MathHelper.ToRadians(angle);
+            vect.X = (float)(vect.X * Math.Cos(angle) - vect.Y * Math.Sin(angle));
+            vect.Y = (float)(vect.X * Math.Sin(angle) + vect.Y * Math.Cos(angle));
+            return vect;
+        }
 
     }
 }

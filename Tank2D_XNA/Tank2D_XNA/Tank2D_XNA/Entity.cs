@@ -30,14 +30,6 @@ namespace Tank2D_XNA
 
         public Rectangle GetMeshRect { get { return EntityCollisionRect; } }
 
-        public static Vector2 RotateVector(Vector2 vect, float angle)
-        {
-            angle = MathHelper.ToRadians(angle);
-            vect.X = (float)(vect.X * Math.Cos(angle) - vect.Y * Math.Sin(angle));
-            vect.Y = (float)(vect.X * Math.Sin(angle) + vect.Y * Math.Cos(angle));
-            return vect;
-        }
-
         public virtual void LoadContent(ContentManager content)
         {
             Sprite = content.Load<Texture2D>(SpriteName);

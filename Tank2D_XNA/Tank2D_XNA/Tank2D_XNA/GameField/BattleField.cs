@@ -48,7 +48,7 @@ namespace Tank2D_XNA.GameField
             _player = new Player(playerTank);
             _gui = new Gui(playerTank);
 
-            _grid = new FieldGrid(Helper.SCREEN_WIDTH, Helper.SCREEN_HEIGHT, Helper.GRID_CELL_SIZE); // A* pathfinding grid, sell size need to configurate
+            _grid = new FieldGrid(Helper.SCREEN_WIDTH, Helper.SCREEN_HEIGHT, Helper.GRID_CELL_SIZE);
 
             _menu = new Menu(Helper.SCREEN_WIDTH, Helper.SCREEN_HEIGHT);
             _isMenu = false;
@@ -56,9 +56,11 @@ namespace Tank2D_XNA.GameField
 
         public void LoadGame()
         {
-            AddTank(new MediumTank(new Vector2(200, 200)));
-            AddTank(new MediumTank(new Vector2(1000, 100)));
-            AddTank(new MediumTank(new Vector2(700, 700)));
+            AddBot(new MediumTank(new Vector2(200, 200)), false);
+            AddBot(new MediumTank(new Vector2(700, 200)), true);
+
+            AddBot(new MediumTank(new Vector2(200, 400)), false);
+            AddBot(new MediumTank(new Vector2(700, 400)), true);
 
             AddBlock(new Vector2(50, 50));
             AddBlock(new Vector2(50, 150));
@@ -70,9 +72,9 @@ namespace Tank2D_XNA.GameField
             AddBlock(new Vector2(50, 750));
         }
 
-        public void AddTank(Tank tank)
+        public void AddBot(Tank tank, bool t)
         {
-            _tanks.Add(new AI(tank, _player.TankPosition));
+            _tanks.Add(new AI(tank, _player.Tank.TankPosition, t));
         }
 
         public void AddBlock(Vector2 pos)
@@ -91,7 +93,7 @@ namespace Tank2D_XNA.GameField
                 if (rect.Intersects(ai.Tank.GetMeshRect))
                     return ai.Tank;
 
-            return null;
+            return rect.Intersects(_player.Tank.GetMeshRect) ? _player.Tank : null;
         }
 
         public void LoadContent(ContentManager content)
@@ -120,7 +122,7 @@ namespace Tank2D_XNA.GameField
                 if (_tanks[i].Tank.IsAlive)
                 {
                     _tanks[i].Update(gameTime);
-                    _tanks[i].SetTargetPosition(_player.TankPosition);
+                    _tanks[i].SetTargetPosition(_player.Tank.TankPosition);
                 }
                 else
                     _tanks.Remove(_tanks[i--]);
