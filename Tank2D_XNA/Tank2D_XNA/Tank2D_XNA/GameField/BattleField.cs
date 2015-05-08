@@ -48,9 +48,9 @@ namespace Tank2D_XNA.GameField
             _player = new Player(playerTank);
             _gui = new Gui(playerTank);
 
-            _grid = new FieldGrid(1920, 1080, 20); // A* pathfinding grid, sell size need to configurate
+            _grid = new FieldGrid(Helper.SCREEN_WIDTH, Helper.SCREEN_HEIGHT, Helper.GRID_CELL_SIZE); // A* pathfinding grid, sell size need to configurate
 
-            _menu = new Menu(1920, 1080);
+            _menu = new Menu(Helper.SCREEN_WIDTH, Helper.SCREEN_HEIGHT);
             _isMenu = false;
         }
 

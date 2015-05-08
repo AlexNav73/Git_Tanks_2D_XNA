@@ -3,7 +3,7 @@ using System.Diagnostics.CodeAnalysis;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Content;
 
-namespace Tank2D_XNA.Ammo
+namespace Tank2D_XNA.AmmoType
 {
     class PiercingAmmo : Ammo
     {
@@ -13,12 +13,12 @@ namespace Tank2D_XNA.Ammo
         {
             direction.Normalize();
             Direction = direction;
-            Speed = 10;
+            Speed = Helper.PIERCING_AMMO_SPEED;
             Position = pos;
-            SpriteName = @"Sprites\Piercing";
+            SpriteName = Helper.Sprites["PiercingAmmo"];
             RotationAngleDegrees = angle;
             Damage = Rand.Next(minDamage, maxDamage);
-            MaxDistance = 600;
+            MaxDistance = Helper.PIERCING_AMMO_MAX_DISTANSE;
             IsAlive = true;
         }
 

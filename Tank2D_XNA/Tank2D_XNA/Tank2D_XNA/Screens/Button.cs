@@ -18,7 +18,7 @@ namespace Tank2D_XNA.Screens
 
         public Button(Rectangle area, Vector2 fontOffs, string text, ClickedEvent onClick)
         {
-            SpriteName = @"GUI\hp";
+            SpriteName = Helper.Sprites["Rectangle"];
             Position = new Vector2(area.X, area.Y);
             EntityCollisionRect = area;
             _fontOffs = fontOffs;
@@ -30,7 +30,7 @@ namespace Tank2D_XNA.Screens
         {
             base.LoadContent(content);
             SpriteCenter = new Vector2(Position.X, Position.Y);
-            _font = content.Load<SpriteFont>(@"GUI\MenuFont");
+            _font = content.Load<SpriteFont>(Helper.Sprites["MenuFont"]);
         }
 
         public override void Draw(SpriteBatch spriteBatch)

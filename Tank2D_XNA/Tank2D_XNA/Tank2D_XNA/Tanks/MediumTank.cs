@@ -6,14 +6,14 @@ namespace Tank2D_XNA.Tanks
     {
         public MediumTank(Vector2 spawnPosition) : base(spawnPosition)
         {
-            SpriteName = @"Sprites\PlayerTank";
+            SpriteName = Helper.Sprites["MediumTank"];
             Position = spawnPosition;
-            Speed = 15;
-            RotationSpeed = 4;
+            Speed = Helper.MEDIUM_TANK_SPEED;
+            RotationSpeed = Helper.MEDIUM_TANK_ROTATION_SPEED;
             Direction = new Vector2(-Speed, 0);
-            Hp = 1200;
+            Hp = Helper.MEDIUM_TANK_HP;
             Pannel = new TankInfoPanel(spawnPosition) { Hp = Hp, MaxHp = Hp };
-            ReloadTime = 4.32;
+            ReloadTime = Helper.MEDIUM_TANK_RELOAD_TIME;
         }
     }
 }

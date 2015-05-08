@@ -30,20 +30,20 @@ namespace Tank2D_XNA.Tanks
 
         public TankInfoPanel(Vector2 position)
         {
-            _barOffs = new Vector2(-30, 40);
-            _fontOffs = new Vector2(12, 5);
+            _barOffs = new Vector2(Helper.HP_BAR_OFFS_X, Helper.HP_BAR_OFFS_Y);
+            _fontOffs = new Vector2(Helper.HP_FONT_OFFS_X, Helper.HP_FONT_OFFS_Y);
             Position = position + _barOffs;
             _fontPosition = Position + _fontOffs;
-            SpriteName = @"GUI\hp";
-            _height = 7;
-            _width = 60;
+            SpriteName = Helper.Sprites["Rectangle"];
+            _height = Helper.HP_BAR_HEIGHT;
+            _width = Helper.HP_BAR_WIDTH;
         }
 
         public override void LoadContent(ContentManager content)
         {
             base.LoadContent(content);
             _barRect = new Rectangle((int)Position.X, (int)Position.Y, _width, _height);
-            _font = content.Load<SpriteFont>(@"GUI\PannelFont");
+            _font = content.Load<SpriteFont>(Helper.Sprites["PannelFont"]);
         }
 
         public override void Update(GameTime gameTime)

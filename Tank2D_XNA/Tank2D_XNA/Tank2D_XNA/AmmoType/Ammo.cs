@@ -1,6 +1,6 @@
 ﻿using Microsoft.Xna.Framework;
 
-namespace Tank2D_XNA.Ammo
+namespace Tank2D_XNA.AmmoType
 {
     abstract class Ammo : Entity
     {

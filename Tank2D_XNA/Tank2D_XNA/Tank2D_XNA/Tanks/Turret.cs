@@ -14,14 +14,14 @@ namespace Tank2D_XNA.Tanks
         public Turret(Vector2 spawnPosition)
         {
             Position = spawnPosition;
-            SpriteName = @"Sprites\Turret";
+            SpriteName = Helper.Sprites["Turret"];
         }
 
         public override void LoadContent(ContentManager content)
         {
             base.LoadContent(content);
             EntityCollisionRect = new Rectangle(0, 0, Sprite.Width, Sprite.Height);
-            SpriteCenter = new Vector2(19, Sprite.Height / 2);
+            SpriteCenter = new Vector2(Helper.TURRET_CENTR_X, Sprite.Height / 2);
         }
 
         public override void Update(GameTime gameTime)

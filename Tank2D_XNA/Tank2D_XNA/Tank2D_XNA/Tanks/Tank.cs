@@ -6,7 +6,7 @@ using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Content;
 using Microsoft.Xna.Framework.Graphics;
 
-using Tank2D_XNA.Ammo;
+using Tank2D_XNA.AmmoType;
 using Tank2D_XNA.GameField;
 
 namespace Tank2D_XNA.Tanks
@@ -17,7 +17,7 @@ namespace Tank2D_XNA.Tanks
     {
         private ContentManager _content;
 
-        private readonly List<Ammo.Ammo> _shells;
+        private readonly List<AmmoType.Ammo> _shells;
         private readonly Turret _tankTurret;
         protected TankInfoPanel Pannel;
 
@@ -44,9 +44,8 @@ namespace Tank2D_XNA.Tanks
         {
             _tankTurret = new Turret(spawnPosition);
             _isForward = true;
-            RotationSpeed = 4;
             _rotateTo = 0;
-            _shells = new List<Ammo.Ammo>();
+            _shells = new List<AmmoType.Ammo>();
             IsAlive = true;
             _isReloaded = true;
             _beforeCollisionPos = spawnPosition;
@@ -121,7 +120,13 @@ namespace Tank2D_XNA.Tanks
                 float deltaX = direction.X - Position.X;
                 int angle = (int)MathHelper.ToDegrees((float)Math.Atan2(deltaY, deltaX));
 
-                Ammo.Ammo shell = new PiercingAmmo(Position, direction - Position, angle, 100, 200);
+                AmmoType.Ammo shell = new PiercingAmmo(
+                    Position, 
+                    direction - Position, 
+                    angle, 
+                    Helper.PIERCING_AMMO_MIN_DAMAGE, 
+                    Helper.PIERCING_AMMO_MAX_DAMAGE
+                );
                 shell.LoadContent(_content);
                 _shells.Add(shell);
 
@@ -194,7 +199,7 @@ namespace Tank2D_XNA.Tanks
         {
             base.Draw(spriteBatch);
 
-            foreach (Ammo.Ammo shell in _shells)
+            foreach (AmmoType.Ammo shell in _shells)
                 shell.Draw(spriteBatch);
 
             _tankTurret.Draw(spriteBatch);

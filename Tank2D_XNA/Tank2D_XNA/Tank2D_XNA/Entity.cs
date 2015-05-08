@@ -43,7 +43,7 @@ namespace Tank2D_XNA
             Sprite = content.Load<Texture2D>(SpriteName);
 
             //!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
-            DebugTexture2D = content.Load<Texture2D>(@"GUI\hp");
+            DebugTexture2D = content.Load<Texture2D>(Helper.Sprites["Rectangle"]);
         }
 
         public virtual void Update(GameTime gameTime)

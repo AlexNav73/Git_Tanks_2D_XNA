@@ -30,7 +30,7 @@ namespace Tank2D_XNA
         private Cursor()
         {
             Position = new Vector2(0, 0);
-            SpriteName = @"Sprites\Cursor";
+            SpriteName = Helper.Sprites["Cursor"];
             _isLocked = false;
         }
 

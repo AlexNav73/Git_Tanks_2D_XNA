@@ -20,7 +20,7 @@ namespace Tank2D_XNA.Screens
 
         public override void LoadContent(ContentManager content)
         {
-            _font = content.Load<SpriteFont>(@"GUI\GuiFont");
+            _font = content.Load<SpriteFont>(Helper.Sprites["GuiFont"]);
         }
 
         public override void Draw(SpriteBatch spriteBatch)
@@ -31,7 +31,7 @@ namespace Tank2D_XNA.Screens
                     _tank.GetMeshRect.Y,
                     Message
                 ),
-                new Vector2(10, 10),
+                new Vector2(Helper.GUI_OFFS_X, Helper.GUI_OFFS_Y),
                 Color.Black);
         }
     }

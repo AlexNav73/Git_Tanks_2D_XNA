@@ -17,20 +17,20 @@ namespace Tank2D_XNA.Screens
 
         public MainMenu(int width, int height)
         {
-            SpriteName = @"Sprites\MainWindow2";
+            SpriteName = Helper.Sprites["MainMenu"];
             Position = new Vector2(0, 0);
             _buttons = new List<Button>
             {
-                new Button(new Rectangle(860, 390, 200, 50), new Vector2(18, 5), "New Game", 
+                new Button(new Rectangle(860, 390, Helper.BUTTON_WIDTH, Helper.BUTTON_HEIGHT), new Vector2(18, 5), "New Game", 
                     delegate
                 {
                     BattleField.GetInstance().Initialize(new MediumTank(new Vector2(400, 250)));
                     BattleField.GetInstance().LoadGame();
                     BattleField.GetInstance().LoadContent(_contentManager);
                 }), 
-                new Button(new Rectangle(860, 440, 200, 50), new Vector2(55, 5), "Return", delegate { BattleField.GetInstance().ReturnToGame(); }), 
-                new Button(new Rectangle(860, 490, 200, 50), new Vector2(55, 5), "Option", delegate { }), 
-                new Button(new Rectangle(860, 530, 200, 50), new Vector2(60, 5), "Exit", delegate { BattleField.GetInstance().SafeExit(); })
+                new Button(new Rectangle(860, 440, Helper.BUTTON_WIDTH, Helper.BUTTON_HEIGHT), new Vector2(55, 5), "Return", delegate { BattleField.GetInstance().ReturnToGame(); }), 
+                new Button(new Rectangle(860, 490, Helper.BUTTON_WIDTH, Helper.BUTTON_HEIGHT), new Vector2(55, 5), "Option", delegate { }), 
+                new Button(new Rectangle(860, 530, Helper.BUTTON_WIDTH, Helper.BUTTON_HEIGHT), new Vector2(60, 5), "Exit", delegate { BattleField.GetInstance().SafeExit(); })
             };
         }
 

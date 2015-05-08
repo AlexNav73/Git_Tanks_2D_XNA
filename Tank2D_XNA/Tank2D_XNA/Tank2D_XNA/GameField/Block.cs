@@ -9,9 +9,9 @@ namespace Tank2D_XNA.GameField
         public Block(Vector2 pos)
         {
             Position = pos;
-            SpriteName = @"Sprites\Block";
+            SpriteName = Helper.Sprites["Block"];
             RotationAngleDegrees = 0;
-            Scale = 0.5f;
+            Scale = Helper.BLOCK_SCALE;
         }
 
         [SuppressMessage("ReSharper", "PossibleLossOfFraction")]
