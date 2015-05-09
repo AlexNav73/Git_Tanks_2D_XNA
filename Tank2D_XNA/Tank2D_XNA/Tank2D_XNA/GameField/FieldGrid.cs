@@ -38,7 +38,7 @@ namespace Tank2D_XNA.GameField
 
         public FieldGrid(int width, int height, int cellSize)
         {
-            _fieldGred = new int[width, height];
+            _fieldGred = new int[width / cellSize + 1, height / cellSize + 1];
             _cellSize = cellSize;
         }
 

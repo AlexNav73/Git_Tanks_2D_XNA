@@ -57,19 +57,18 @@ namespace Tank2D_XNA.GameField
         public void LoadGame()
         {
             AddBot(new MediumTank(new Vector2(200, 200)), false);
-            AddBot(new MediumTank(new Vector2(700, 200)), true);
+            AddBot(new MediumTank(new Vector2(1000, 200)), true);
 
-            AddBot(new MediumTank(new Vector2(200, 400)), false);
-            AddBot(new MediumTank(new Vector2(700, 400)), true);
+            AddBot(new MediumTank(new Vector2(500, 200)), false);
 
-            AddBlock(new Vector2(50, 50));
-            AddBlock(new Vector2(50, 150));
-            AddBlock(new Vector2(50, 250));
-            AddBlock(new Vector2(50, 350));
-            AddBlock(new Vector2(50, 450));
-            AddBlock(new Vector2(50, 550));
-            AddBlock(new Vector2(50, 650));
-            AddBlock(new Vector2(50, 750));
+            //AddBlock(new Vector2(50, 50));
+            //AddBlock(new Vector2(50, 150));
+            //AddBlock(new Vector2(50, 250));
+            //AddBlock(new Vector2(50, 350));
+            //AddBlock(new Vector2(50, 450));
+            //AddBlock(new Vector2(50, 550));
+            //AddBlock(new Vector2(50, 650));
+            //AddBlock(new Vector2(50, 750));
         }
 
         public void AddBot(Tank tank, bool t)

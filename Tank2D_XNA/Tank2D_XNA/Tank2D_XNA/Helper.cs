@@ -32,7 +32,7 @@ namespace Tank2D_XNA
 
         // Game field
         
-        public const int GRID_CELL_SIZE = 12;
+        public const int GRID_CELL_SIZE = 50;
         public const float BLOCK_SCALE = 0.5f;
 
         // GUI

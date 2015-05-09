@@ -25,17 +25,11 @@ namespace Tank2D_XNA
         protected float Scale = 1.0f;
         protected Vector2 SpriteCenter;
 
-        //!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
-        protected Texture2D DebugTexture2D;
-
         public Rectangle GetMeshRect { get { return EntityCollisionRect; } }
 
         public virtual void LoadContent(ContentManager content)
         {
             Sprite = content.Load<Texture2D>(SpriteName);
-
-            //!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
-            DebugTexture2D = content.Load<Texture2D>(Helper.Sprites["Rectangle"]);
         }
 
         public virtual void Update(GameTime gameTime)
@@ -63,8 +57,6 @@ namespace Tank2D_XNA
                 SpriteEffects.None, 
                 0
             );
-
-            //spriteBatch.Draw(DebugTexture2D, new Vector2(EntityCollisionRect.X, EntityCollisionRect.Y), EntityCollisionRect, Color.White);
         }
     }
 }
