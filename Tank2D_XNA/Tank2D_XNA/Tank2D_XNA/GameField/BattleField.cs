@@ -1,5 +1,6 @@
 ﻿using System.Collections.Generic;
 using System.Diagnostics.CodeAnalysis;
+using System.Linq.Expressions;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Content;
 using Microsoft.Xna.Framework.Graphics;
@@ -56,10 +57,11 @@ namespace Tank2D_XNA.GameField
 
         public void LoadGame()
         {
-            AddBot(new MediumTank(new Vector2(200, 200)), false);
-            AddBot(new MediumTank(new Vector2(1000, 200)), true);
+            AddBot(new MediumTank(new Vector2(700, 200)), false);
+            //AddBot(new MediumTank(new Vector2(1000, 600)), true);
+            //AddBot(new MediumTank(new Vector2(700, 1000)), false);
 
-            AddBot(new MediumTank(new Vector2(500, 200)), false);
+            AddBlock(new Vector2(600, 500));
 
             //AddBlock(new Vector2(50, 50));
             //AddBlock(new Vector2(50, 150));
@@ -93,6 +95,37 @@ namespace Tank2D_XNA.GameField
                     return ai.Tank;
 
             return rect.Intersects(_player.Tank.GetMeshRect) ? _player.Tank : null;
+        }
+
+        private Vector2 _startPoint;
+        private Vector2 _endPoint;
+
+        public bool CanFire(Vector2 tankPos, Vector2 enemyPos)
+        {
+            foreach (Block block in _blocks)
+            {
+                _startPoint.X = block.Pos.X; _startPoint.Y = block.Pos.Y;
+                _endPoint.X = block.Pos.X + block.Windth; _endPoint.Y = block.Pos.Y;
+                if (Helper.Intersects(tankPos, enemyPos, _startPoint, _endPoint))
+                    return false;
+
+                _startPoint.X = block.Pos.X; _startPoint.Y = block.Pos.Y;
+                _endPoint.X = block.Pos.X; _endPoint.Y = block.Pos.Y + block.Height;
+                if (Helper.Intersects(tankPos, enemyPos, _startPoint, _endPoint))
+                    return false;
+
+                _startPoint.X = block.Pos.X + block.Windth; _startPoint.Y = block.Pos.Y;
+                _endPoint.X = block.Pos.X + block.Windth; _endPoint.Y = block.Pos.Y + block.Height;
+                if (Helper.Intersects(tankPos, enemyPos, _startPoint, _endPoint))
+                    return false;
+
+                _startPoint.X = block.Pos.X; _startPoint.Y = block.Pos.Y + block.Height;
+                _endPoint.X = block.Pos.X + block.Windth; _endPoint.Y = block.Pos.Y + block.Height;
+                if (Helper.Intersects(tankPos, enemyPos, _startPoint, _endPoint))
+                    return false;
+            }
+
+            return true;
         }
 
         public void LoadContent(ContentManager content)
@@ -151,12 +184,7 @@ namespace Tank2D_XNA.GameField
             else
                 _menu.Draw(spriteBatch);
 
-            _mouseCursor.Draw(spriteBatch);
-        }
-
-        public void PrintMessage(string message)
-        {
-            _gui.Message = message;
+            _mouseCursor.Draw(spriteBatch);;
         }
 
         public void SafeExit()

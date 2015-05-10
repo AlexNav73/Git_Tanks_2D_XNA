@@ -26,13 +26,13 @@ namespace Tank2D_XNA
 
         // Screen properties
 
-        public const int SCREEN_WIDTH = 1200;
-        public const int SCREEN_HEIGHT = 700;
+        public const int  SCREEN_WIDTH = 1200;
+        public const int  SCREEN_HEIGHT = 700;
         public const bool SCREEN_IS_FULL_SCREEN = false;
 
         // Game field
         
-        public const int GRID_CELL_SIZE = 50;
+        public const int   GRID_CELL_SIZE = 50;
         public const float BLOCK_SCALE = 0.5f;
 
         // GUI
@@ -44,9 +44,9 @@ namespace Tank2D_XNA
 
         // Medium tank TTX
 
-        public const int MEDIUM_TANK_SPEED = 10;
-        public const int MEDIUM_TANK_ROTATION_SPEED = 4;
-        public const int MEDIUM_TANK_HP = 1200;
+        public const int    MEDIUM_TANK_SPEED = 15;
+        public const int    MEDIUM_TANK_ROTATION_SPEED = 4;
+        public const int    MEDIUM_TANK_HP = 1200;
         public const double MEDIUM_TANK_RELOAD_TIME = 4.32;
 
         // Piercing ammo TTX
@@ -75,6 +75,27 @@ namespace Tank2D_XNA
             vect.X = (float)(vect.X * Math.Cos(angle) - vect.Y * Math.Sin(angle));
             vect.Y = (float)(vect.X * Math.Sin(angle) + vect.Y * Math.Cos(angle));
             return vect;
+        }
+
+        public static bool Intersects(Vector2 a1, Vector2 a2, Vector2 b1, Vector2 b2)
+        {
+            Vector2 b = a2 - a1;
+            Vector2 d = b2 - b1;
+            float bDotDPerp = b.X * d.Y - b.Y * d.X;
+
+            if (bDotDPerp == 0)
+                return false;
+
+            Vector2 c = b1 - a1;
+            float t = (c.X * d.Y - c.Y * d.X) / bDotDPerp;
+            if (t < 0 || t > 1)
+                return false;
+
+            float u = (c.X * b.Y - c.Y * b.X) / bDotDPerp;
+            if (u < 0 || u > 1)
+                return false;
+
+            return true;
         }
 
     }

@@ -26,10 +26,10 @@ namespace Tank2D_XNA.Screens
         public override void Draw(SpriteBatch spriteBatch)
         {
             spriteBatch.DrawString(_font,
-                String.Format("X = {0}\nY = {1}\nLog = {2}",
+                String.Format("X = {0}\nY = {1}\n{2} sec.",
                     _tank.GetMeshRect.X,
                     _tank.GetMeshRect.Y,
-                    Message
+                    Math.Round(_tank.CurrentReloadTime, 2)
                 ),
                 new Vector2(Helper.GUI_OFFS_X, Helper.GUI_OFFS_Y),
                 Color.Black);

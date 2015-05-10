@@ -35,13 +35,14 @@ namespace Tank2D_XNA.Tanks
 
         public void Update(GameTime gameTime)
         {
-            if (_forw)
-                Tank.DriveForward(gameTime.ElapsedGameTime.TotalSeconds);
-            else
-                Tank.DriveBackward(gameTime.ElapsedGameTime.TotalSeconds);
+            //if (_forw)
+            //    Tank.DriveForward(gameTime.ElapsedGameTime.TotalSeconds);
+            //else
+            //    Tank.DriveBackward(gameTime.ElapsedGameTime.TotalSeconds);
             Tank.TankTurret.CursorPosition = _targetPosition;
 
-            Tank.Fire(_targetPosition);
+            if (BattleField.GetInstance().CanFire(TankPosition, _targetPosition)) 
+                Tank.Fire(_targetPosition);
 
             Tank.UpdatePosition();
             Tank.Update(gameTime);

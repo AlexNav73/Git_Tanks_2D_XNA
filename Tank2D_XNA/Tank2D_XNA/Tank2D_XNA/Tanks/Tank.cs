@@ -33,7 +33,7 @@ namespace Tank2D_XNA.Tanks
 
         private bool _isReloaded;
         protected double ReloadTime;
-        private double _currentReloadTime;
+        public double CurrentReloadTime { get; private set; }
 
         public Rectangle Mesh { get { return _beforeCollisionRect; } }
         public Turret TankTurret { get { return _tankTurret; } }
@@ -50,7 +50,7 @@ namespace Tank2D_XNA.Tanks
             _isReloaded = true;
             _beforeCollisionPos = spawnPosition;
 
-            _currentReloadTime = 0.0;
+            CurrentReloadTime = 0.0;
         }
 
         [SuppressMessage("ReSharper", "PossibleLossOfFraction")]
@@ -137,13 +137,13 @@ namespace Tank2D_XNA.Tanks
 
         private void OnReload(object sender)
         {
-            while (_currentReloadTime < ReloadTime)
+            while (CurrentReloadTime < ReloadTime)
             {
-                _currentReloadTime += 0.01;
+                CurrentReloadTime += 0.01;
                 Thread.Sleep(10);
             }
             _isReloaded = true;
-            _currentReloadTime = 0.0;
+            CurrentReloadTime = 0.0;
         }
 
         public override void TakeDamage(int damage)
@@ -155,7 +155,7 @@ namespace Tank2D_XNA.Tanks
         public void UpdatePosition()
         {
             Entity collision = BattleField.GetInstance().Intersects(_beforeCollisionRect);
-            if (collision == this || collision == null)
+            if (object.ReferenceEquals(collision, this) || collision == null)
                 Position = _beforeCollisionPos;
             else
                 _beforeCollisionPos = Position;
@@ -164,11 +164,6 @@ namespace Tank2D_XNA.Tanks
         public override void Update(GameTime gameTime)
         {
             base.Update(gameTime);
-
-            BattleField.GetInstance()
-                .PrintMessage(
-                    String.Format("Reload: {0} s", _currentReloadTime == 0.0 ? ReloadTime : Math.Round(_currentReloadTime, 2))
-                );
 
             for (int i = 0; i < _shells.Count; i++)
             {

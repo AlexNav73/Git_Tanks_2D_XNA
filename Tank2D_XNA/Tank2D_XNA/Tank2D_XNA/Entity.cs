@@ -39,10 +39,7 @@ namespace Tank2D_XNA
             EntityCollisionRect.Y = (int)Position.Y - (int)(Sprite.Height * Scale) / 2;
         }
 
-        public virtual void TakeDamage(int damage)
-        {
-            BattleField.GetInstance().PrintMessage("TakingDamage");
-        }
+        public virtual void TakeDamage(int damage) { }
 
         public virtual void Draw(SpriteBatch spriteBatch)
         {

@@ -39,7 +39,7 @@ namespace Tank2D_XNA
         {
             _field = BattleField.GetInstance();
             _field.Exit = Exit;
-            _field.Initialize(new MediumTank(new Vector2(100, 100)));
+            _field.Initialize(new MediumTank(new Vector2(500, 600)));
             _field.LoadGame();
 
             base.Initialize();

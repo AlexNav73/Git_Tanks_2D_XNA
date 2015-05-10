@@ -13,15 +13,15 @@ namespace Tank2D_XNA
 
         public Cell()
         {
-            Position = new Vector2(0, 0);
+            Position = new Vector2(573, 502);
             SpriteName = Helper.Sprites["Rectangle"];
         }
 
         public override void LoadContent(ContentManager content)
         {
             base.LoadContent(content);
-            EntityCollisionRect = new Rectangle(0, 0, Helper.GRID_CELL_SIZE, Helper.GRID_CELL_SIZE);
-            SpriteCenter = new Vector2(0, 0);
+            EntityCollisionRect = new Rectangle(573, 502, 112, 122);
+            
         }
 
         public override void Draw(SpriteBatch spriteBatch)
