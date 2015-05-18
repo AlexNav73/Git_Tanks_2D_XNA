@@ -41,7 +41,6 @@ namespace Tank2D_XNA
             _field = BattleField.GetInstance();
             _field.Exit = Exit;
             _field.Initialize();
-            _field.LoadGame();
 
             base.Initialize();
         }

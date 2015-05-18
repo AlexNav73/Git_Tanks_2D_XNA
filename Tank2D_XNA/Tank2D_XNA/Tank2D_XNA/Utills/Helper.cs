@@ -1,6 +1,8 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Diagnostics.CodeAnalysis;
+using System.IO;
+using System.Reflection;
 using Microsoft.Xna.Framework;
 
 namespace Tank2D_XNA.Utills
@@ -22,18 +24,19 @@ namespace Tank2D_XNA.Utills
              {"Cursor", @"Sprites\Cursor"}
          };
 
+
+
         // Screen properties
 
-        public const int  SCREEN_WIDTH = 1200;
-        public const int  SCREEN_HEIGHT = 700;
-        public const bool SCREEN_IS_FULL_SCREEN = false;
+        public const int  SCREEN_WIDTH = 1920; // 1200
+        public const int  SCREEN_HEIGHT = 1080; // 700
+        public const bool SCREEN_IS_FULL_SCREEN = true;
 
         // Game field
         
         public const int   GRID_CELL_SIZE = 50;
-        public const float BLOCK_SCALE = 0.1f;
-        public const string MAP_PATH =
-            @"D:\Programms\Git_Tanks_2D_XNA\Tank2D_XNA\Tank2D_XNA\Tank2D_XNAContent\Maps\Map_1.xml";
+        public const float BLOCK_SCALE = 0.27f;
+        public static string MAP_PATH = Path.GetDirectoryName(Assembly.GetEntryAssembly().Location) + @"\Content\Maps\Map_1.xml";
 
         // GUI
 

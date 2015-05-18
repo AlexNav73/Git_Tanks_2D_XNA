@@ -26,7 +26,6 @@ namespace Tank2D_XNA.Screens
                     delegate
                 {
                     BattleField.GetInstance().Initialize();
-                    BattleField.GetInstance().LoadGame();
                     BattleField.GetInstance().LoadContent(_contentManager);
                 }), 
                 new Button(new Rectangle(860, 440, Helper.BUTTON_WIDTH, Helper.BUTTON_HEIGHT), new Vector2(55, 5), "Return", delegate { BattleField.GetInstance().ReturnToGame(); }), 
