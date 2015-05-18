@@ -1,11 +1,9 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Diagnostics.CodeAnalysis;
-using System.Linq;
-using System.Text;
 using Microsoft.Xna.Framework;
 
-namespace Tank2D_XNA
+namespace Tank2D_XNA.Utills
 {
     [SuppressMessage("ReSharper", "InconsistentNaming")]
     class Helper
@@ -33,12 +31,16 @@ namespace Tank2D_XNA
         // Game field
         
         public const int   GRID_CELL_SIZE = 50;
-        public const float BLOCK_SCALE = 0.5f;
+        public const float BLOCK_SCALE = 0.1f;
+        public const string MAP_PATH =
+            @"D:\Programms\Git_Tanks_2D_XNA\Tank2D_XNA\Tank2D_XNA\Tank2D_XNAContent\Maps\Map_1.xml";
 
         // GUI
 
         public const int GUI_OFFS_X = 10;
         public const int GUI_OFFS_Y = 10;
+        public const int GUI_RELOAD_X = 25;
+        public const int GUI_RELOAD_Y = -10; 
         public const int BUTTON_WIDTH = 200;
         public const int BUTTON_HEIGHT = 50;
 

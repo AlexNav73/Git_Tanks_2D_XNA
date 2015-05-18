@@ -12,6 +12,7 @@ using Microsoft.Xna.Framework.Input;
 using Microsoft.Xna.Framework.Media;
 using Tank2D_XNA.GameField;
 using Tank2D_XNA.Tanks;
+using Tank2D_XNA.Utills;
 
 namespace Tank2D_XNA
 {
@@ -39,7 +40,7 @@ namespace Tank2D_XNA
         {
             _field = BattleField.GetInstance();
             _field.Exit = Exit;
-            _field.Initialize(new MediumTank(new Vector2(500, 600)));
+            _field.Initialize();
             _field.LoadGame();
 
             base.Initialize();

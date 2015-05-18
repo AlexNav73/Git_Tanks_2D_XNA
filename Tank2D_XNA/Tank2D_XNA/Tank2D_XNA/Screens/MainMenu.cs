@@ -6,6 +6,7 @@ using Microsoft.Xna.Framework.Graphics;
 
 using Tank2D_XNA.GameField;
 using Tank2D_XNA.Tanks;
+using Tank2D_XNA.Utills;
 
 namespace Tank2D_XNA.Screens
 {
@@ -24,7 +25,7 @@ namespace Tank2D_XNA.Screens
                 new Button(new Rectangle(860, 390, Helper.BUTTON_WIDTH, Helper.BUTTON_HEIGHT), new Vector2(18, 5), "New Game", 
                     delegate
                 {
-                    BattleField.GetInstance().Initialize(new MediumTank(new Vector2(400, 250)));
+                    BattleField.GetInstance().Initialize();
                     BattleField.GetInstance().LoadGame();
                     BattleField.GetInstance().LoadContent(_contentManager);
                 }), 

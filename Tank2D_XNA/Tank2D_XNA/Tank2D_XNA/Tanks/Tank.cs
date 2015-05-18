@@ -8,6 +8,7 @@ using Microsoft.Xna.Framework.Graphics;
 
 using Tank2D_XNA.AmmoType;
 using Tank2D_XNA.GameField;
+using Tank2D_XNA.Utills;
 
 namespace Tank2D_XNA.Tanks
 {
@@ -32,7 +33,8 @@ namespace Tank2D_XNA.Tanks
         private Rectangle _beforeCollisionRect;
 
         private bool _isReloaded;
-        protected double ReloadTime;
+        //protected double ReloadTime;
+        public double ReloadTime { get; protected set; }
         public double CurrentReloadTime { get; private set; }
 
         public Rectangle Mesh { get { return _beforeCollisionRect; } }

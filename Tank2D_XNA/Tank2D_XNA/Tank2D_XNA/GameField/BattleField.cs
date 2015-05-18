@@ -8,6 +8,7 @@ using Microsoft.Xna.Framework.Input;
 
 using Tank2D_XNA.Screens;
 using Tank2D_XNA.Tanks;
+using Tank2D_XNA.Utills;
 
 namespace Tank2D_XNA.GameField
 {
@@ -40,42 +41,52 @@ namespace Tank2D_XNA.GameField
 
         private BattleField() { }
 
-        public void Initialize(Tank playerTank)
+        public void Initialize()
         {
             _mouseCursor = Cursor.GetCursor();
-            Cursor.GetCursor().Fire = playerTank.Fire;
-            _blocks = new List<Block>();
-            _tanks = new List<AI>();
-            _player = new Player(playerTank);
-            _gui = new Gui(playerTank);
-
+            if (_blocks == null) _blocks = new List<Block>();
+            else _blocks.Clear();
+            if (_tanks == null ) _tanks = new List<AI>();
+            else _tanks.Clear();
             _grid = new FieldGrid(Helper.SCREEN_WIDTH, Helper.SCREEN_HEIGHT, Helper.GRID_CELL_SIZE);
 
             _menu = new Menu(Helper.SCREEN_WIDTH, Helper.SCREEN_HEIGHT);
             _isMenu = false;
+
+            LoadGame();
         }
 
         public void LoadGame()
         {
-            AddBot(new MediumTank(new Vector2(700, 200)), false);
-            //AddBot(new MediumTank(new Vector2(1000, 600)), true);
-            //AddBot(new MediumTank(new Vector2(700, 1000)), false);
-
-            AddBlock(new Vector2(600, 500));
-
-            //AddBlock(new Vector2(50, 50));
-            //AddBlock(new Vector2(50, 150));
-            //AddBlock(new Vector2(50, 250));
-            //AddBlock(new Vector2(50, 350));
-            //AddBlock(new Vector2(50, 450));
-            //AddBlock(new Vector2(50, 550));
-            //AddBlock(new Vector2(50, 650));
-            //AddBlock(new Vector2(50, 750));
+            MapReader reader = new MapReader(Helper.MAP_PATH);
+            reader.Map(info =>
+            {
+                switch (info.Type)
+                {
+                    case "Block":
+                        AddBlock(info.Position);
+                        break;
+                    case "AI":
+                        AddBot(TankFactory.GetInstance().CreateTank(info.TankType, info.Position), true);
+                        break;
+                    case "Player":
+                        Tank playerTank = TankFactory.GetInstance().CreateTank(info.TankType, info.Position);
+                        if (playerTank != null)
+                        {
+                            Cursor.GetCursor().Fire = playerTank.Fire;
+                            _player = new Player(playerTank);
+                            _gui = new Gui(playerTank);
+                        }
+                        else SafeExit();
+                        break;
+                }
+            });
         }
 
         public void AddBot(Tank tank, bool t)
         {
-            _tanks.Add(new AI(tank, _player.Tank.TankPosition, t));
+            if (tank != null)
+                _tanks.Add(new AI(tank, _player.Tank.TankPosition, t));
         }
 
         public void AddBlock(Vector2 pos)

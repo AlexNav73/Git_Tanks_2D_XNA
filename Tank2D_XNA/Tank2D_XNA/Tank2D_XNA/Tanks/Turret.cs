@@ -1,6 +1,7 @@
 ﻿using System;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Content;
+using Tank2D_XNA.Utills;
 
 namespace Tank2D_XNA.Tanks
 {
