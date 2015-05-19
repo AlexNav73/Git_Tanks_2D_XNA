@@ -24,15 +24,27 @@ namespace Tank2D_XNA.Screens
             Position = new Vector2(0, 0);
             _buttons = new List<Button>
             {
-                new Button(new Rectangle(860, 390, Helper.BUTTON_WIDTH, Helper.BUTTON_HEIGHT), new Vector2(18, 5), "New Game", 
+                new Button(new Rectangle(Helper.BUTTON_START_X, Helper.BUTTON_START_Y, Helper.BUTTON_WIDTH, Helper.BUTTON_HEIGHT), new Vector2(18, 5), "New Game", 
                     delegate
                 {
                     BattleField.GetInstance().Initialize();
                     BattleField.GetInstance().LoadContent(_contentManager);
                 }), 
-                new Button(new Rectangle(860, 440, Helper.BUTTON_WIDTH, Helper.BUTTON_HEIGHT), new Vector2(55, 5), "Return", delegate { BattleField.GetInstance().ReturnToGame(); }), 
-                new Button(new Rectangle(860, 490, Helper.BUTTON_WIDTH, Helper.BUTTON_HEIGHT), new Vector2(55, 5), "Load Map", delegate {  }), 
-                new Button(new Rectangle(860, 530, Helper.BUTTON_WIDTH, Helper.BUTTON_HEIGHT), new Vector2(60, 5), "Exit", delegate { BattleField.GetInstance().SafeExit(); })
+                new Button(
+                    new Rectangle(
+                        Helper.BUTTON_START_X, Helper.BUTTON_START_Y + 50, Helper.BUTTON_WIDTH, Helper.BUTTON_HEIGHT), 
+                        new Vector2(55, 5), 
+                        "Return", delegate { BattleField.GetInstance().ReturnToGame(); }), 
+                new Button(
+                    new Rectangle(
+                        Helper.BUTTON_START_X, Helper.BUTTON_START_Y + 100, Helper.BUTTON_WIDTH, Helper.BUTTON_HEIGHT), 
+                        new Vector2(30, 5), 
+                        "Load Map", delegate { _menu.SetWindow("LoadMapMenu"); }), 
+                new Button(
+                    new Rectangle(
+                        Helper.BUTTON_START_X, Helper.BUTTON_START_Y + 150, Helper.BUTTON_WIDTH, Helper.BUTTON_HEIGHT), 
+                        new Vector2(60, 5), 
+                        "Exit", delegate { BattleField.GetInstance().SafeExit(); })
             };
         }
 

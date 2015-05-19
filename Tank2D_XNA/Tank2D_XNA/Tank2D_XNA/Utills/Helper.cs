@@ -26,9 +26,9 @@ namespace Tank2D_XNA.Utills
 
         // Screen properties
 
-         public const int SCREEN_WIDTH = 1200; // 1200
-         public const int SCREEN_HEIGHT = 700; // 700
-        public const bool SCREEN_IS_FULL_SCREEN = false;
+         public const int SCREEN_WIDTH = 1920; // 1200
+         public const int SCREEN_HEIGHT = 1080; // 700
+        public const bool SCREEN_IS_FULL_SCREEN = true;
 
         // Game field
         
@@ -41,7 +41,9 @@ namespace Tank2D_XNA.Utills
         public const int GUI_OFFS_X = 10;
         public const int GUI_OFFS_Y = 10;
         public const int GUI_RELOAD_X = 25;
-        public const int GUI_RELOAD_Y = -10; 
+        public const int GUI_RELOAD_Y = -10;
+        public const int BUTTON_START_X = 860;
+        public const int BUTTON_START_Y = 390;
         public const int BUTTON_WIDTH = 200;
         public const int BUTTON_HEIGHT = 50;
 

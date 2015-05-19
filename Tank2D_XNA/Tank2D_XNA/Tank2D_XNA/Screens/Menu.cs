@@ -13,11 +13,12 @@ namespace Tank2D_XNA.Screens
         private readonly Dictionary<string, Screen> _menus;
         private Screen _currentScreen;
 
-        public Menu(int width, int height)
+        public Menu()
         {
             _menus = new Dictionary<string, Screen>
             {
-                { "MainMenu", new MainMenu(this) }
+                { "MainMenu", new MainMenu(this) },
+                { "LoadMapMenu", new LoadMap(this) }
             };
             Cursor.GetCursor().MenuClick = ButtonClicked;
             _currentScreen = _menus["MainMenu"];
@@ -26,6 +27,11 @@ namespace Tank2D_XNA.Screens
         public void SetWindow(string windowName)
         {
             _currentScreen = _menus[windowName];
+        }
+
+        public void SetDefaultWindow()
+        {
+            _currentScreen = _menus["MainMenu"];
         }
 
         public void LoadContent(ContentManager content)
@@ -41,8 +47,7 @@ namespace Tank2D_XNA.Screens
 
         private void ButtonClicked(Vector2 location)
         {
-            foreach (KeyValuePair<string, Screen> pair in _menus)
-                pair.Value.ButtonClicked(location);
+            _currentScreen.ButtonClicked(location);
         }
 
     }

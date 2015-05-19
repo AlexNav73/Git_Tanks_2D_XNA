@@ -11,7 +11,6 @@ using System.Xml;
 
 namespace MapMaker
 {
-
     public struct EntityInfo
     {
         public string Type;
@@ -55,31 +54,56 @@ namespace MapMaker
             _cellSize = scale;
         }
 
+        public void ClearField()
+        {
+            for (int i = 0; i < _width; i++)
+                for (int j = 0; j < _height; j++)
+                    _grid[i, j] = 0;
+            _isPlayerSpoted = false;
+            _entity.Clear();
+        }
+
         public void ClearCell(int x, int y)
         {
-            if (_grid[x / _cellSize, y / _cellSize] == 3) 
-                _isPlayerSpoted = false;
-            _grid[x / _cellSize, y / _cellSize] = 0;
+            if (x/_cellSize >= 0 && x/_cellSize < _width &&
+                y/_cellSize >= 0 && y/_cellSize < _height)
+            {
+                if (_grid[x/_cellSize, y/_cellSize] == 3)
+                    _isPlayerSpoted = false;
+                _grid[x/_cellSize, y/_cellSize] = 0;
+            }
         }
 
         public void SetBlock(int x, int y)
         {
-            if (_grid[x / _cellSize, y / _cellSize] == 0)
-                _grid[x/_cellSize, y/_cellSize] = 1;
+            if (x/_cellSize >= 0 && x/_cellSize < _width &&
+                y/_cellSize >= 0 && y/_cellSize < _height)
+            {
+                if (_grid[x/_cellSize, y/_cellSize] == 0)
+                    _grid[x/_cellSize, y/_cellSize] = 1;
+            }
         }
 
         public void SetAI(int x, int y)
         {
-            if (_grid[x / _cellSize, y / _cellSize] == 0)
-                _grid[x/_cellSize, y/_cellSize] = 2;
+            if (x/_cellSize >= 0 && x/_cellSize < _width &&
+                y/_cellSize >= 0 && y/_cellSize < _height)
+            {
+                if (_grid[x/_cellSize, y/_cellSize] == 0)
+                    _grid[x/_cellSize, y/_cellSize] = 2;
+            }
         }
 
         public void SetPlayer(int x, int y)
         {
-            if (!_isPlayerSpoted && _grid[x / _cellSize, y / _cellSize] == 0)
+            if (x/_cellSize >= 0 && x/_cellSize < _width &&
+                y/_cellSize >= 0 && y/_cellSize < _height)
             {
-                _grid[x/_cellSize, y/_cellSize] = 3;
-                _isPlayerSpoted = true;
+                if (!_isPlayerSpoted && _grid[x/_cellSize, y/_cellSize] == 0)
+                {
+                    _grid[x/_cellSize, y/_cellSize] = 3;
+                    _isPlayerSpoted = true;
+                }
             }
         }
 
@@ -101,6 +125,8 @@ namespace MapMaker
 
         private void PrepareData()
         {
+            _entity.Clear();
+
             for (int i = 0; i < _width; i++)
                 for (int j = 0; j < _height; j++)
                 {
@@ -157,7 +183,12 @@ namespace MapMaker
                 {
                     writer.WriteStartElement("root");
 
-                    if (!_isPlayerSpoted) return;
+                    if (!_isPlayerSpoted)
+                    {
+                        MessageBox.Show("Place player on the field", "Error!", MessageBoxButtons.OK,
+                            MessageBoxIcon.Error);
+                        return;
+                    }
                     EntityInfo tmp = _entity.Find(n => n.Type == "Player");
                     SetTag(writer, "Player", "MT", tmp.Position.X, tmp.Position.Y);
 
@@ -173,7 +204,7 @@ namespace MapMaker
                 }
             }
 
-            MessageBox.Show("Map saved!", "Save");
+            MessageBox.Show("Map " + fileName + " saved!", "Map saving", MessageBoxButtons.OK, MessageBoxIcon.Information);
         }
 
     }

@@ -109,5 +109,11 @@ namespace MapMaker
             _grid.Zoom(zoom);
             Map.Invalidate();
         }
+
+        private void button3_Click(object sender, EventArgs e)
+        {
+            _grid.ClearField();
+            Map.Invalidate();
+        }
     }
 }

@@ -31,6 +31,7 @@ namespace Tank2D_XNA.GameField
         private KeyboardState _prevKeyboard;
         private Menu _menu;
         private FieldGrid _grid;
+        private int _currentMap;
 
         public ExitGame Exit { set; private get; }
 
@@ -41,7 +42,7 @@ namespace Tank2D_XNA.GameField
 
         private BattleField() { }
 
-        public void Initialize(int mapIndex = 0)
+        public void Initialize(int mapIndex = -1)
         {
             _mouseCursor = Cursor.GetCursor();
             if (_blocks == null) _blocks = new List<Block>();
@@ -50,13 +51,15 @@ namespace Tank2D_XNA.GameField
             else _tanks.Clear();
             _grid = new FieldGrid(Helper.SCREEN_WIDTH, Helper.SCREEN_HEIGHT, Helper.GRID_CELL_SIZE);
 
-            _menu = new Menu(Helper.SCREEN_WIDTH, Helper.SCREEN_HEIGHT);
+            _menu = new Menu();
             _isMenu = false;
 
-            LoadGame(mapIndex);
+            if (mapIndex != -1) 
+                _currentMap = mapIndex;
+            LoadGame(_currentMap);
         }
 
-        public void LoadGame(int mapIndex = 0)
+        public void LoadGame(int mapIndex)
         {
             MapReader reader = new MapReader(Helper.Maps[mapIndex]);
             reader.Map(info =>
@@ -108,8 +111,10 @@ namespace Tank2D_XNA.GameField
             return rect.Intersects(_player.Tank.GetMeshRect) ? _player.Tank : null;
         }
 
+        // Need to determinate start and ending point of box side
         private Vector2 _startPoint;
         private Vector2 _endPoint;
+        // -----------------------------------------------------
 
         public bool CanFire(Vector2 tankPos, Vector2 enemyPos)
         {
@@ -177,17 +182,20 @@ namespace Tank2D_XNA.GameField
         public void Draw(SpriteBatch spriteBatch)
         {
             if (Keyboard.GetState().IsKeyDown(Keys.Escape) && !_prevKeyboard.IsKeyDown(Keys.Escape))
+            {
+                if (_isMenu) _menu.SetDefaultWindow();
                 _isMenu = !_isMenu;
+            }
             _prevKeyboard = Keyboard.GetState();
 
             if (!_isMenu)
-            {
+            {                
+                foreach (var block in _blocks)
+                    block.Draw(spriteBatch);
+
                 foreach (var tank in _tanks)
                     if (tank.Tank.IsAlive)
                         tank.Draw(spriteBatch);
-
-                foreach (var block in _blocks)
-                    block.Draw(spriteBatch);
 
                 _player.Draw(spriteBatch);
                 _gui.Draw(spriteBatch);
