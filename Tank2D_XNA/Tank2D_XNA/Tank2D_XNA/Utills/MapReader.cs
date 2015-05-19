@@ -12,7 +12,8 @@ namespace Tank2D_XNA.Utills
 {
     class MapReader
     {
-        private readonly List<EntityInfo> _entity; 
+        private readonly List<EntityInfo> _entity;
+
         public MapReader(string fileName)
         {
             _entity = new List<EntityInfo>();

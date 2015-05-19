@@ -10,31 +10,39 @@ namespace Tank2D_XNA.Screens
     class Menu
     {
 
-        private readonly List<Screen> _menus;
+        private readonly Dictionary<string, Screen> _menus;
         private Screen _currentScreen;
 
         public Menu(int width, int height)
         {
-            _menus = new List<Screen> { new MainMenu(width, height) };
+            _menus = new Dictionary<string, Screen>
+            {
+                { "MainMenu", new MainMenu(this) }
+            };
             Cursor.GetCursor().MenuClick = ButtonClicked;
+            _currentScreen = _menus["MainMenu"];
+        }
+
+        public void SetWindow(string windowName)
+        {
+            _currentScreen = _menus[windowName];
         }
 
         public void LoadContent(ContentManager content)
         {
-            foreach (Screen screen in _menus)
-                screen.LoadContent(content);
+            foreach (KeyValuePair<string, Screen> pair in _menus)
+                pair.Value.LoadContent(content);
         }
 
         public void Draw(SpriteBatch spriteBatch)
         {
-            //_currentScreen.Draw(spriteBatch);
-            _menus[0].Draw(spriteBatch);
+            _currentScreen.Draw(spriteBatch);
         }
 
         private void ButtonClicked(Vector2 location)
         {
-            foreach (Screen screen in _menus)
-                screen.ButtonClicked(location);
+            foreach (KeyValuePair<string, Screen> pair in _menus)
+                pair.Value.ButtonClicked(location);
         }
 
     }

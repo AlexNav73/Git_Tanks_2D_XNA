@@ -15,9 +15,11 @@ namespace Tank2D_XNA.Screens
     {
         private readonly List<Button> _buttons;
         private ContentManager _contentManager;
+        private Menu _menu;
 
-        public MainMenu(int width, int height)
+        public MainMenu(Menu menu)
         {
+            _menu = menu;
             SpriteName = Helper.Sprites["MainMenu"];
             Position = new Vector2(0, 0);
             _buttons = new List<Button>
@@ -29,7 +31,7 @@ namespace Tank2D_XNA.Screens
                     BattleField.GetInstance().LoadContent(_contentManager);
                 }), 
                 new Button(new Rectangle(860, 440, Helper.BUTTON_WIDTH, Helper.BUTTON_HEIGHT), new Vector2(55, 5), "Return", delegate { BattleField.GetInstance().ReturnToGame(); }), 
-                new Button(new Rectangle(860, 490, Helper.BUTTON_WIDTH, Helper.BUTTON_HEIGHT), new Vector2(55, 5), "Option", delegate { }), 
+                new Button(new Rectangle(860, 490, Helper.BUTTON_WIDTH, Helper.BUTTON_HEIGHT), new Vector2(55, 5), "Load Map", delegate {  }), 
                 new Button(new Rectangle(860, 530, Helper.BUTTON_WIDTH, Helper.BUTTON_HEIGHT), new Vector2(60, 5), "Exit", delegate { BattleField.GetInstance().SafeExit(); })
             };
         }

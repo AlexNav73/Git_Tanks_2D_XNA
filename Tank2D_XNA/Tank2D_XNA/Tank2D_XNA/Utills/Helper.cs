@@ -24,19 +24,17 @@ namespace Tank2D_XNA.Utills
              {"Cursor", @"Sprites\Cursor"}
          };
 
-
-
         // Screen properties
 
-        public const int  SCREEN_WIDTH = 1920; // 1200
-        public const int  SCREEN_HEIGHT = 1080; // 700
-        public const bool SCREEN_IS_FULL_SCREEN = true;
+         public const int SCREEN_WIDTH = 1200; // 1200
+         public const int SCREEN_HEIGHT = 700; // 700
+        public const bool SCREEN_IS_FULL_SCREEN = false;
 
         // Game field
         
         public const int   GRID_CELL_SIZE = 50;
         public const float BLOCK_SCALE = 0.27f;
-        public static string MAP_PATH = Path.GetDirectoryName(Assembly.GetEntryAssembly().Location) + @"\Content\Maps\Map_2.xml";
+        public static string[] Maps = Directory.GetFiles(Path.GetDirectoryName(Assembly.GetEntryAssembly().Location) + @"\Content\Maps\");
 
         // GUI
 

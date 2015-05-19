@@ -41,7 +41,7 @@ namespace Tank2D_XNA.GameField
 
         private BattleField() { }
 
-        public void Initialize()
+        public void Initialize(int mapIndex = 0)
         {
             _mouseCursor = Cursor.GetCursor();
             if (_blocks == null) _blocks = new List<Block>();
@@ -53,12 +53,12 @@ namespace Tank2D_XNA.GameField
             _menu = new Menu(Helper.SCREEN_WIDTH, Helper.SCREEN_HEIGHT);
             _isMenu = false;
 
-            LoadGame();
+            LoadGame(mapIndex);
         }
 
-        public void LoadGame()
+        public void LoadGame(int mapIndex = 0)
         {
-            MapReader reader = new MapReader(Helper.MAP_PATH);
+            MapReader reader = new MapReader(Helper.Maps[mapIndex]);
             reader.Map(info =>
             {
                 switch (info.Type)
