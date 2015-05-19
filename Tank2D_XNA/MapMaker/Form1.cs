@@ -20,7 +20,8 @@ namespace MapMaker
         {
             InitializeComponent();
 
-            _grid = new FieldGrid(Map.Width, Map.Height, 20);
+            _grid = new FieldGrid(20, 1920, 1080);
+            Zoom.SelectedIndex = 10;
         }
 
         private void button1_Click(object sender, EventArgs e)
@@ -42,6 +43,8 @@ namespace MapMaker
                             _grid.SetAI(e.X, e.Y);
                         else if (control.Tag.ToString() == "2")
                             _grid.SetBlock(e.X, e.Y);
+                        else if (control.Tag.ToString() == "3")
+                            _grid.ClearCell(e.X, e.Y);
             Map.Invalidate();
         }
 
@@ -88,12 +91,22 @@ namespace MapMaker
 
         private void button2_Click(object sender, EventArgs e)
         {
-            int tankWidth = 30, tankHeigth = 24;
+            int screenWidth = 1920, screenHeigth = 1080;
 
-            if (!String.IsNullOrEmpty(TW.Text)) Int32.TryParse(TW.Text, out tankWidth);
-            if (!String.IsNullOrEmpty(TH.Text)) Int32.TryParse(TH.Text, out tankHeigth);
+            if (!String.IsNullOrEmpty(SW.Text)) Int32.TryParse(SW.Text, out screenWidth);
+            if (!String.IsNullOrEmpty(SH.Text)) Int32.TryParse(SH.Text, out screenHeigth);
 
-            _grid = new FieldGrid(Map.Width, Map.Height, 20, tankWidth, tankHeigth);
+            _grid = new FieldGrid(20, screenWidth, screenHeigth);
+            Map.Invalidate();
+        }
+
+        private void Zoom_SelectedItemChanged(object sender, EventArgs e)
+        {
+            int zoom;
+
+            Int32.TryParse(Zoom.Items[Zoom.SelectedIndex].ToString(), out zoom);
+            
+            _grid.Zoom(zoom);
             Map.Invalidate();
         }
     }

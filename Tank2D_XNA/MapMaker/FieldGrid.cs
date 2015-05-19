@@ -27,11 +27,11 @@ namespace MapMaker
         private readonly List<EntityInfo> _entity;
         private readonly int _width;
         private readonly int _height;
-        private readonly int _cellSize;
+        private int _cellSize;
 
-        private readonly int _cellS; // cell size for game
-        private readonly int _tankWidth; // half of tank width
-        private readonly int _tankHeight; // half of tank height
+        private const int _cellS = 60; // cell size for game
+        private const int _tankWidth = 30; // half of tank width
+        private const int _tankHeight = 24; // half of tank height
 
         private readonly SolidBrush _emptyPlace = new SolidBrush(Color.White);
         private readonly SolidBrush _wallBrush = new SolidBrush(Color.Black);
@@ -40,34 +40,43 @@ namespace MapMaker
 
         private readonly Pen _blackPen = new Pen(Color.Black);
 
-        public FieldGrid(int width, int height, int cellSize, 
-            int tankWidth = 30, 
-            int tankHeight = 24)
+        public FieldGrid(int cellSize, int gameScreenWidth, int gameScreenHeight)
         {
             _cellSize = cellSize;
-            _tankWidth = tankWidth;
-            _tankHeight = tankHeight;
-            _width = width / _cellSize;
-            _height = height / _cellSize;
-            _cellS = tankWidth * 2;
+            _width = (int)((float) gameScreenWidth / _cellS);
+            _height = (int)((float)gameScreenHeight / _cellS);
             _entity = new List<EntityInfo>();
 
-            _grid = new int[width / _cellSize, height / _cellSize];
+            _grid = new int[_width, _height];
+        }
+
+        public void Zoom(int scale)
+        {
+            _cellSize = scale;
+        }
+
+        public void ClearCell(int x, int y)
+        {
+            if (_grid[x / _cellSize, y / _cellSize] == 3) 
+                _isPlayerSpoted = false;
+            _grid[x / _cellSize, y / _cellSize] = 0;
         }
 
         public void SetBlock(int x, int y)
         {
-            _grid[x/_cellSize, y/_cellSize] = 1;
+            if (_grid[x / _cellSize, y / _cellSize] == 0)
+                _grid[x/_cellSize, y/_cellSize] = 1;
         }
 
         public void SetAI(int x, int y)
         {
-            _grid[x/_cellSize, y/_cellSize] = 2;
+            if (_grid[x / _cellSize, y / _cellSize] == 0)
+                _grid[x/_cellSize, y/_cellSize] = 2;
         }
 
         public void SetPlayer(int x, int y)
         {
-            if (!_isPlayerSpoted)
+            if (!_isPlayerSpoted && _grid[x / _cellSize, y / _cellSize] == 0)
             {
                 _grid[x/_cellSize, y/_cellSize] = 3;
                 _isPlayerSpoted = true;
@@ -85,7 +94,7 @@ namespace MapMaker
                     else if (_grid[i, j] == 2) brush = _aiBrush;
                     else brush = _playerBrush;
 
-                    g.FillRectangle(brush, i*_cellSize, j*_cellSize, _cellSize, _cellSize);
+                    g.FillRectangle(brush, i * _cellSize, j * _cellSize, _cellSize, _cellSize);
                     g.DrawRectangle(_blackPen, i * _cellSize, j * _cellSize, _cellSize, _cellSize);
                 }
         }
@@ -148,8 +157,8 @@ namespace MapMaker
                 {
                     writer.WriteStartElement("root");
 
+                    if (!_isPlayerSpoted) return;
                     EntityInfo tmp = _entity.Find(n => n.Type == "Player");
-                    if (tmp.Type == null) return;
                     SetTag(writer, "Player", "MT", tmp.Position.X, tmp.Position.Y);
 
                     foreach (EntityInfo info in _entity)

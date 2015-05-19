@@ -36,7 +36,7 @@ namespace Tank2D_XNA.Utills
         
         public const int   GRID_CELL_SIZE = 50;
         public const float BLOCK_SCALE = 0.27f;
-        public static string MAP_PATH = Path.GetDirectoryName(Assembly.GetEntryAssembly().Location) + @"\Content\Maps\Map_1.xml";
+        public static string MAP_PATH = Path.GetDirectoryName(Assembly.GetEntryAssembly().Location) + @"\Content\Maps\Map_2.xml";
 
         // GUI
 
