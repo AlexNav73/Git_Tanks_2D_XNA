@@ -7,6 +7,7 @@ using Microsoft.Xna.Framework.Content;
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
 using Tank2D_XNA.GameField;
+using Tank2D_XNA.Utills;
 
 namespace Tank2D_XNA.Tanks
 {
@@ -42,7 +43,7 @@ namespace Tank2D_XNA.Tanks
             //    Tank.DriveBackward(gameTime.ElapsedGameTime.TotalSeconds);
             Tank.TankTurret.CursorPosition = _targetPosition;
 
-            if (BattleField.GetInstance().CanFire(TankPosition, _targetPosition)) 
+            if (BattleField.GetInstance().CanSeeEnemy(TankPosition, _targetPosition, Helper.PIERCING_AMMO_MAX_DISTANSE)) 
                 Tank.Fire(_targetPosition);
 
             Tank.Update(gameTime);

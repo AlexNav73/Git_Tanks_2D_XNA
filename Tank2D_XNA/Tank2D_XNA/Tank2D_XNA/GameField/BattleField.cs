@@ -116,32 +116,38 @@ namespace Tank2D_XNA.GameField
         private Vector2 _endPoint;
         // -----------------------------------------------------
 
-        public bool CanFire(Vector2 tankPos, Vector2 enemyPos)
+        private bool CheckIntersectsWithBlockSide(Block block, Vector2 tankPos, Vector2 enemyPos, int bitMask)
+        {
+            _startPoint.X = block.Pos.X + ((bitMask & 8) != 0 ? 1 : 0) * block.Windth;
+            _startPoint.Y = block.Pos.Y + ((bitMask & 4) != 0 ? 1 : 0) * block.Height;
+            _endPoint.X = block.Pos.X + ((bitMask & 2) != 0 ? 1 : 0) * block.Windth;            
+            _endPoint.Y = block.Pos.Y + ((bitMask & 1) != 0 ? 1 : 0) * block.Height;
+            return Helper.Intersects(tankPos, enemyPos, _startPoint, _endPoint);
+        }
+
+        public bool CheckIntersectsWithBlock(Block block, Vector2 tankPos, Vector2 enemyPos)
+        {
+            if (CheckIntersectsWithBlockSide(block, tankPos, enemyPos, 2)) return true;
+            if (CheckIntersectsWithBlockSide(block, tankPos, enemyPos, 1)) return true;
+            if (CheckIntersectsWithBlockSide(block, tankPos, enemyPos, 11)) return true;
+            if (CheckIntersectsWithBlockSide(block, tankPos, enemyPos, 7)) return true;
+            return false;
+        }
+
+        public bool CanSeeEnemy(Vector2 tankPos, Vector2 enemyPos, int distance)
         {
             foreach (Block block in _blocks)
-            {
-                _startPoint.X = block.Pos.X; _startPoint.Y = block.Pos.Y;
-                _endPoint.X = block.Pos.X + block.Windth; _endPoint.Y = block.Pos.Y;
-                if (Helper.Intersects(tankPos, enemyPos, _startPoint, _endPoint))
+                if (CheckIntersectsWithBlock(block, tankPos, enemyPos))
                     return false;
 
-                _startPoint.X = block.Pos.X; _startPoint.Y = block.Pos.Y;
-                _endPoint.X = block.Pos.X; _endPoint.Y = block.Pos.Y + block.Height;
-                if (Helper.Intersects(tankPos, enemyPos, _startPoint, _endPoint))
-                    return false;
+            return !((enemyPos - tankPos).Length() > distance);
+        }
 
-                _startPoint.X = block.Pos.X + block.Windth; _startPoint.Y = block.Pos.Y;
-                _endPoint.X = block.Pos.X + block.Windth; _endPoint.Y = block.Pos.Y + block.Height;
-                if (Helper.Intersects(tankPos, enemyPos, _startPoint, _endPoint))
-                    return false;
-
-                _startPoint.X = block.Pos.X; _startPoint.Y = block.Pos.Y + block.Height;
-                _endPoint.X = block.Pos.X + block.Windth; _endPoint.Y = block.Pos.Y + block.Height;
-                if (Helper.Intersects(tankPos, enemyPos, _startPoint, _endPoint))
-                    return false;
-            }
-
-            return !((enemyPos - tankPos).Length() > Helper.PIERCING_AMMO_MAX_DISTANSE);
+        public void LightArea(Tank player)
+        {
+            foreach (AI ai in _tanks)
+                if (CanSeeEnemy(player.Location, ai.Tank.Location, Helper.MEDIUM_TANK_OVERLOOK))
+                    ai.Tank.IsSpoted = true;
         }
 
         public void LoadContent(ContentManager content)

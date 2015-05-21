@@ -29,13 +29,14 @@ namespace Tank2D_XNA.Tanks
         private bool _isForward;
         protected int Hp;
 
+        private Vector2 _bounseVector;
         public Vector2 GetDirection { get { return Direction; } } // for debug pnnel uses
-        public int Degrees { get { return RotationAngleDegrees; } }
 
         public double ReloadTime { get; protected set; }
         public double CurrentReloadTime { get; private set; }
         public Turret TankTurret { get { return _tankTurret; } }
         public bool IsAlive { private set; get; }
+        public bool IsSpoted { get; set; }
 
         protected Tank(Vector2 spawnPosition)
         {
@@ -75,8 +76,8 @@ namespace Tank2D_XNA.Tanks
                 _isForward = true;
                 Direction *= -1;
             }
-            if (!TryCollide(Position, EntityCollisionRect, time)) return;
-            Position += Direction * Speed * (float)time;
+            TryCollide(Position, EntityCollisionRect, time, out _bounseVector);
+            Position += (Direction + _bounseVector) * Speed * (float)time;
             EntityCollisionRect.X = (int)Position.X - (int)(Sprite.Width * Scale) / 2;
             EntityCollisionRect.Y = (int)Position.Y - (int)(Sprite.Height * Scale) / 2;
         }
@@ -88,8 +89,8 @@ namespace Tank2D_XNA.Tanks
                 _isForward = false;
                 Direction *= -1;
             }
-            if (!TryCollide(Position, EntityCollisionRect, time)) return;
-            Position += Direction * Speed * (float)time;
+            TryCollide(Position, EntityCollisionRect, time, out _bounseVector);
+            Position += (Direction + _bounseVector) * Speed * (float)time;
             EntityCollisionRect.X = (int)Position.X - (int)(Sprite.Width * Scale) / 2;
             EntityCollisionRect.Y = (int)Position.Y - (int)(Sprite.Height * Scale) / 2;
         }
@@ -141,14 +142,23 @@ namespace Tank2D_XNA.Tanks
             IsAlive = Hp > 0;
         }
 
-        public bool TryCollide(Vector2 pos, Rectangle mesh, double time)
+        public void TryCollide(Vector2 pos, Rectangle mesh, double time, out Vector2 bounse)
         {
             pos += Direction * Speed * (float)time;
             mesh.X = (int)pos.X - (int)(Sprite.Width * Scale) / 2;
             mesh.Y = (int)pos.Y - (int)(Sprite.Height * Scale) / 2;
 
-            Entity collision = BattleField.GetInstance().Intersects(mesh);      
-            return object.ReferenceEquals(collision, this) || collision == null;
+            Entity collision = BattleField.GetInstance().Intersects(mesh);
+            if (object.ReferenceEquals(collision, this) || collision == null)
+            {
+                bounse.X = 0;
+                bounse.Y = 0;
+            }
+            else
+            {
+                bounse.X = -Direction.X;
+                bounse.Y = -Direction.Y;
+            }
         }
 
         public override void Update(GameTime gameTime)
@@ -183,13 +193,16 @@ namespace Tank2D_XNA.Tanks
 
         public override void Draw(SpriteBatch spriteBatch)
         {
-            base.Draw(spriteBatch);
-
             foreach (AmmoType.Ammo shell in _shells)
                 shell.Draw(spriteBatch);
 
-            _tankTurret.Draw(spriteBatch);
-            Pannel.Draw(spriteBatch);
+            if (IsSpoted)
+            {
+                base.Draw(spriteBatch);
+
+                _tankTurret.Draw(spriteBatch);
+                Pannel.Draw(spriteBatch);
+            }
         }
     }
 }

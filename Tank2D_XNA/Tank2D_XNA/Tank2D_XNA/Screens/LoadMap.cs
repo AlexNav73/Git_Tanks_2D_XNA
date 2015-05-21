@@ -27,16 +27,21 @@ namespace Tank2D_XNA.Screens
             foreach (string map in Helper.Maps)
             {
                 int mapIndexToClosure = index;
+                string mapName = "";
+                if (map != null) mapName = Path.GetFileName(map);
+
                 _buttons.Add(
                     new Button(
-                        new Rectangle(0, y += 55, Helper.BUTTON_WIDTH, Helper.BUTTON_HEIGHT), 
-                        new Vector2(20, 5),
-                        Path.GetFileName(map), 
+                        new Rectangle(0, y += 55, mapName.Length * 15, Helper.BUTTON_HEIGHT), 
+                        new Vector2(5, 2),
+                        mapName.Substring(0, mapName.Length - 4),
                         delegate
                         {
                             BattleField.GetInstance().Initialize(mapIndexToClosure);
                             BattleField.GetInstance().LoadContent(_contentManager);
-                        }));
+                        })
+                );
+
                 ++index;
             }
         }

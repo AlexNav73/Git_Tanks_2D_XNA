@@ -26,15 +26,15 @@ namespace Tank2D_XNA.Utills
 
         // Screen properties
 
-         public const int SCREEN_WIDTH = 1920; // 1200
-         public const int SCREEN_HEIGHT = 1080; // 700
-        public const bool SCREEN_IS_FULL_SCREEN = true;
+        public const int    SCREEN_WIDTH = 1920; // 1200
+        public const int    SCREEN_HEIGHT = 1080; // 700
+        public const bool   SCREEN_IS_FULL_SCREEN = true;
 
         // Game field
         
-        public const int   GRID_CELL_SIZE = 50;
-        public const float BLOCK_SCALE = 0.27f;
-        public static string[] Maps = Directory.GetFiles(Path.GetDirectoryName(Assembly.GetEntryAssembly().Location) + @"\Content\Maps\");
+        public const int        GRID_CELL_SIZE = 50;
+        public const float      BLOCK_SCALE = 0.27f;
+        public static string[]  Maps = Directory.GetFiles(Path.GetDirectoryName(Assembly.GetEntryAssembly().Location) + @"\Content\Maps\");
 
         // GUI
 
@@ -53,12 +53,13 @@ namespace Tank2D_XNA.Utills
         public const int    MEDIUM_TANK_ROTATION_SPEED = 4;
         public const int    MEDIUM_TANK_HP = 1200;
         public const double MEDIUM_TANK_RELOAD_TIME = 4.32;
+        public const int    MEDIUM_TANK_OVERLOOK = 400;
 
         // Piercing ammo TTX
 
         public const int PIERCING_AMMO_MIN_DAMAGE = 100;
         public const int PIERCING_AMMO_MAX_DAMAGE = 200;
-        public const int PIERCING_AMMO_MAX_DISTANSE = 600;
+        public const int PIERCING_AMMO_MAX_DISTANSE = 700;
         public const int PIERCING_AMMO_SPEED = 10;
 
         // Tank info pannel params

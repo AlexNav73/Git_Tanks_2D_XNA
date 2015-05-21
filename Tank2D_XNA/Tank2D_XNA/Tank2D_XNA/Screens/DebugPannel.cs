@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Diagnostics.CodeAnalysis;
 using System.Globalization;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Content;
@@ -9,6 +10,7 @@ using Tank2D_XNA.Utills;
 
 namespace Tank2D_XNA.Screens
 {
+    [SuppressMessage("ReSharper", "CompareOfFloatsByEqualityOperator")]
     class DebugPannel : Entity
     {
         private readonly Tank _tank;
@@ -32,14 +34,13 @@ namespace Tank2D_XNA.Screens
         public override void Draw(SpriteBatch spriteBatch)
         {
             spriteBatch.DrawString(_font,
-                String.Format("X = {0}\nY = {1}\nDegrees = {2}",
+                String.Format("X = {0}\nY = {1}\n",
                     _tank.GetDirection.X,
-                    _tank.GetDirection.Y,
-                    _tank.Degrees
+                    _tank.GetDirection.Y
                 ),
                 Position, Color.Black);
 
-            if (_tank.CurrentReloadTime != 0)
+            if (_tank.CurrentReloadTime != 0.0)
             {
                 spriteBatch.DrawString(_font,
                     String.Format("{0} s", Math.Round(_tank.CurrentReloadTime, 2)),

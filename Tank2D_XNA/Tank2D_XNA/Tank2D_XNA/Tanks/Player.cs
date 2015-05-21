@@ -20,6 +20,7 @@ namespace Tank2D_XNA.Tanks
             _mouse = Cursor.GetCursor();
             _mouse.AutoLock = SetTarget;
             _autoLock = false;
+            Tank.IsSpoted = true;
         }
 
         public void LoadContent(ContentManager content)
@@ -45,6 +46,7 @@ namespace Tank2D_XNA.Tanks
                 Tank.TurnLeft(false);
 
             Tank.TankTurret.CursorPosition = !_autoLock ? _mouse.Location : _lockPosition;
+            BattleField.GetInstance().LightArea(Tank);
 
             Tank.Update(gameTime);
         }
