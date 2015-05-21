@@ -89,7 +89,7 @@ namespace Tank2D_XNA.GameField
         public void AddBot(Tank tank, bool t)
         {
             if (tank != null)
-                _tanks.Add(new AI(tank, _player.Tank.TankPosition, t));
+                _tanks.Add(new AI(tank, _player.Tank.Location, t));
         }
 
         public void AddBlock(Vector2 pos)
@@ -100,15 +100,15 @@ namespace Tank2D_XNA.GameField
         public Entity Intersects(Rectangle rect)
         {
             foreach (Block block in _blocks)
-                if (rect.Intersects(block.GetMeshRect))
+                if (rect.Intersects(block.MeshRect))
                     return block;
                     
 
             foreach (AI ai in _tanks)
-                if (rect.Intersects(ai.Tank.GetMeshRect))
+                if (rect.Intersects(ai.Tank.MeshRect))
                     return ai.Tank;
 
-            return rect.Intersects(_player.Tank.GetMeshRect) ? _player.Tank : null;
+            return rect.Intersects(_player.Tank.MeshRect) ? _player.Tank : null;
         }
 
         // Need to determinate start and ending point of box side
@@ -141,7 +141,7 @@ namespace Tank2D_XNA.GameField
                     return false;
             }
 
-            return true;
+            return !((enemyPos - tankPos).Length() > Helper.PIERCING_AMMO_MAX_DISTANSE);
         }
 
         public void LoadContent(ContentManager content)
@@ -170,7 +170,7 @@ namespace Tank2D_XNA.GameField
                 if (_tanks[i].Tank.IsAlive)
                 {
                     _tanks[i].Update(gameTime);
-                    _tanks[i].SetTargetPosition(_player.Tank.TankPosition);
+                    _tanks[i].SetTargetPosition(_player.Tank.Location);
                 }
                 else
                     _tanks.Remove(_tanks[i--]);

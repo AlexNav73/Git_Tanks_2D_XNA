@@ -33,8 +33,8 @@ namespace Tank2D_XNA.Screens
         {
             spriteBatch.DrawString(_font,
                 String.Format("X = {0}\nY = {1}",
-                    _tank.GetMeshRect.X,
-                    _tank.GetMeshRect.Y
+                    _tank.MeshRect.X,
+                    _tank.MeshRect.Y
                 ),
                 Position, Color.Black);
 
@@ -42,14 +42,14 @@ namespace Tank2D_XNA.Screens
             {
                 spriteBatch.DrawString(_font,
                     String.Format("{0} s", Math.Round(_tank.CurrentReloadTime, 2)),
-                    Cursor.GetCursor().GetPosition - _reloadTimeOffs,
+                    Cursor.GetCursor().Location - _reloadTimeOffs,
                     Color.Red);    
             }
             else
             {
                 spriteBatch.DrawString(_font,
                     String.Format("{0} s", Math.Round(_tank.ReloadTime, 2)),
-                    Cursor.GetCursor().GetPosition - _reloadTimeOffs,
+                    Cursor.GetCursor().Location - _reloadTimeOffs,
                     Color.Green);    
             }
             

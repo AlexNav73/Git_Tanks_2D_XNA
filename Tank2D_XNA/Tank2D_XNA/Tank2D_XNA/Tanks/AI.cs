@@ -14,8 +14,9 @@ namespace Tank2D_XNA.Tanks
     {
         private Vector2 _targetPosition;
         public Tank Tank { private set; get; }
-        public Vector2 TankPosition { get { return Tank.TankPosition; } }
+        public Vector2 TankPosition { get { return Tank.Location; } }
         private bool _forw = false;
+
         public AI(Tank tank, Vector2 target, bool t)
         {
             Tank = tank;
@@ -44,7 +45,6 @@ namespace Tank2D_XNA.Tanks
             if (BattleField.GetInstance().CanFire(TankPosition, _targetPosition)) 
                 Tank.Fire(_targetPosition);
 
-            Tank.UpdatePosition();
             Tank.Update(gameTime);
         }
 

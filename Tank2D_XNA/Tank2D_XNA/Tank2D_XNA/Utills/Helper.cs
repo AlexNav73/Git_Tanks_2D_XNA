@@ -74,12 +74,11 @@ namespace Tank2D_XNA.Utills
 
         public const int TURRET_CENTR_X = 19;
 
-        public static Vector2 RotateVector(Vector2 vect, float angle)
+        public static void RotateVector(ref Vector2 vect, float angle)
         {
             angle = MathHelper.ToRadians(angle);
             vect.X = (float)(vect.X * Math.Cos(angle) - vect.Y * Math.Sin(angle));
             vect.Y = (float)(vect.X * Math.Sin(angle) + vect.Y * Math.Cos(angle));
-            return vect;
         }
 
         public static bool Intersects(Vector2 a1, Vector2 a2, Vector2 b1, Vector2 b2)

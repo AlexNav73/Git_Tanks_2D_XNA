@@ -21,11 +21,13 @@ namespace Tank2D_XNA
         protected Texture2D Sprite;
         protected string SpriteName;
         protected Rectangle EntityCollisionRect;
-        protected int RotationAngleDegrees = 0;
+        protected int RotationAngleDegrees;
         protected float Scale = 1.0f;
         protected Vector2 SpriteCenter;
 
-        public Rectangle GetMeshRect { get { return EntityCollisionRect; } }
+        public Vector2 Location { get { return Position; } }
+
+        public Rectangle MeshRect { get { return EntityCollisionRect; } }
 
         public virtual void LoadContent(ContentManager content)
         {

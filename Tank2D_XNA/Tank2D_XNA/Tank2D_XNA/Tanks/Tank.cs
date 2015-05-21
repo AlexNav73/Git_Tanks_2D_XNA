@@ -24,33 +24,24 @@ namespace Tank2D_XNA.Tanks
 
         protected Vector2 Direction;
         protected int RotationSpeed;
-        private int _rotateTo;
         protected int Speed;
         private bool _isForward;
         protected int Hp;
 
-        private Vector2 _beforeCollisionPos;
-        private Rectangle _beforeCollisionRect;
-
         private bool _isReloaded;
-        //protected double ReloadTime;
+
         public double ReloadTime { get; protected set; }
         public double CurrentReloadTime { get; private set; }
-
-        public Rectangle Mesh { get { return _beforeCollisionRect; } }
         public Turret TankTurret { get { return _tankTurret; } }
-        public Vector2 TankPosition { set { Position = value; } get { return Position; } }
         public bool IsAlive { private set; get; }
 
         protected Tank(Vector2 spawnPosition)
         {
             _tankTurret = new Turret(spawnPosition);
             _isForward = true;
-            _rotateTo = 0;
             _shells = new List<AmmoType.Ammo>();
             IsAlive = true;
             _isReloaded = true;
-            _beforeCollisionPos = spawnPosition;
 
             CurrentReloadTime = 0.0;
         }
@@ -74,11 +65,6 @@ namespace Tank2D_XNA.Tanks
             };
             _tankTurret.LoadContent(content);
             Pannel.LoadContent(content);
-
-            _beforeCollisionRect.X = EntityCollisionRect.X;
-            _beforeCollisionRect.Y = EntityCollisionRect.Y;
-            _beforeCollisionRect.Width = EntityCollisionRect.Width;
-            _beforeCollisionRect.Height = EntityCollisionRect.Height;
         }
 
         public void DriveForward(double time)
@@ -88,9 +74,10 @@ namespace Tank2D_XNA.Tanks
                 _isForward = true;
                 Direction *= -1;
             }
-            _beforeCollisionPos += Direction * Speed * (float)time;
-            _beforeCollisionRect.X = (int)_beforeCollisionPos.X - (int)(Sprite.Width * Scale) / 2;
-            _beforeCollisionRect.Y = (int)_beforeCollisionPos.Y - (int)(Sprite.Height * Scale) / 2;
+            if (!TryCollide(Position, EntityCollisionRect, time)) return;
+            Position += Direction * Speed * (float)time;
+            EntityCollisionRect.X = (int)Position.X - (int)(Sprite.Width * Scale) / 2;
+            EntityCollisionRect.Y = (int)Position.Y - (int)(Sprite.Height * Scale) / 2;
         }
 
         public void DriveBackward(double time)
@@ -100,18 +87,19 @@ namespace Tank2D_XNA.Tanks
                 _isForward = false;
                 Direction *= -1;
             }
-            _beforeCollisionPos += Direction * Speed * (float)time;
-            _beforeCollisionRect.X = (int)_beforeCollisionPos.X - (int)(Sprite.Width * Scale) / 2;
-            _beforeCollisionRect.Y = (int)_beforeCollisionPos.Y - (int)(Sprite.Height * Scale) / 2;
+            if (!TryCollide(Position, EntityCollisionRect, time)) return;
+            Position += Direction * Speed * (float)time;
+            EntityCollisionRect.X = (int)Position.X - (int)(Sprite.Width * Scale) / 2;
+            EntityCollisionRect.Y = (int)Position.Y - (int)(Sprite.Height * Scale) / 2;
         }
 
         public void TurnLeft(bool toLeft)
         {
-            _rotateTo += (toLeft ? -1 : 1) * RotationSpeed;
+            int deltaFi = ((toLeft ? -1 : 1) * RotationSpeed) % 360;
             Direction.Normalize();
-            Direction = Helper.RotateVector(Direction, _rotateTo - RotationAngleDegrees);
+            Helper.RotateVector(ref Direction, deltaFi);
             Direction *= Speed;
-            RotationAngleDegrees = (_rotateTo %= 360);
+            RotationAngleDegrees += deltaFi;
         }
 
         public void Fire(Vector2 direction)
@@ -154,13 +142,14 @@ namespace Tank2D_XNA.Tanks
             IsAlive = Hp > 0;
         }
 
-        public void UpdatePosition()
+        public bool TryCollide(Vector2 pos, Rectangle mesh, double time)
         {
-            Entity collision = BattleField.GetInstance().Intersects(_beforeCollisionRect);
-            if (object.ReferenceEquals(collision, this) || collision == null)
-                Position = _beforeCollisionPos;
-            else
-                _beforeCollisionPos = Position;
+            pos += Direction * Speed * (float)time;
+            mesh.X = (int)pos.X - (int)(Sprite.Width * Scale) / 2;
+            mesh.Y = (int)pos.Y - (int)(Sprite.Height * Scale) / 2;
+
+            Entity collision = BattleField.GetInstance().Intersects(mesh);      
+            return object.ReferenceEquals(collision, this) || collision == null;
         }
 
         public override void Update(GameTime gameTime)
@@ -175,7 +164,7 @@ namespace Tank2D_XNA.Tanks
                     --i;
                     continue;
                 }
-                Entity obj = BattleField.GetInstance().Intersects(_shells[i].GetMeshRect);
+                Entity obj = BattleField.GetInstance().Intersects(_shells[i].MeshRect);
                 if (obj == null || obj == this)
                 {
                     _shells[i].UpdatePosition(gameTime, Position);

@@ -44,8 +44,7 @@ namespace Tank2D_XNA.Tanks
             if (Keyboard.GetState().IsKeyDown(Keys.D))
                 Tank.TurnLeft(false);
 
-            Tank.UpdatePosition();
-            Tank.TankTurret.CursorPosition = !_autoLock ? _mouse.GetPosition : _lockPosition;
+            Tank.TankTurret.CursorPosition = !_autoLock ? _mouse.Location : _lockPosition;
 
             Tank.Update(gameTime);
         }

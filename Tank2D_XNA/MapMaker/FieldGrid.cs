@@ -21,6 +21,7 @@ namespace MapMaker
     [SuppressMessage("ReSharper", "InconsistentNaming")]
     class FieldGrid
     {
+
         private readonly int[,] _grid;
         private bool _isPlayerSpoted;
         private readonly List<EntityInfo> _entity;

@@ -21,7 +21,6 @@ namespace Tank2D_XNA
         public Click Fire { set; private get; }
         public Click AutoLock { set; private get; }
         public Click MenuClick { set; private get; }
-        public Vector2 GetPosition { get { return Position; } }
 
         public static Cursor GetCursor()
         {
