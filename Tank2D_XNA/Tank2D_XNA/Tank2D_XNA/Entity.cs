@@ -25,9 +25,11 @@ namespace Tank2D_XNA
         protected float Scale = 1.0f;
         protected Vector2 SpriteCenter;
 
-        public Vector2 Location { get { return Position; } }
+        protected Vector2 EntityC;//!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
 
+        public Vector2 Location { get { return Position; } }
         public Rectangle MeshRect { get { return EntityCollisionRect; } }
+        public Vector2 EntityCentr { get { return EntityC; } } //!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
 
         public virtual void LoadContent(ContentManager content)
         {
@@ -39,6 +41,8 @@ namespace Tank2D_XNA
             if (Sprite == null) return;
             EntityCollisionRect.X = (int)Position.X - (int)(Sprite.Width * Scale) / 2;
             EntityCollisionRect.Y = (int)Position.Y - (int)(Sprite.Height * Scale) / 2;
+            EntityC.X = Position.X + Sprite.Width / 2;//!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+            EntityC.Y = Position.Y + Sprite.Height / 2;//!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
         }
 
         public virtual void TakeDamage(int damage) { }

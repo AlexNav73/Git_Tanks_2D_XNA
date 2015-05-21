@@ -53,7 +53,7 @@ namespace Tank2D_XNA.Utills
         public const int    MEDIUM_TANK_ROTATION_SPEED = 4;
         public const int    MEDIUM_TANK_HP = 1200;
         public const double MEDIUM_TANK_RELOAD_TIME = 4.32;
-        public const int    MEDIUM_TANK_OVERLOOK = 400;
+        public const int    MEDIUM_TANK_OVERLOOK = 700;
 
         // Piercing ammo TTX
 

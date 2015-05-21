@@ -116,28 +116,28 @@ namespace Tank2D_XNA.GameField
         private Vector2 _endPoint;
         // -----------------------------------------------------
 
-        private bool CheckIntersectsWithBlockSide(Block block, Vector2 tankPos, Vector2 enemyPos, int bitMask)
+        private bool CheckIntersectsWithEntitySide(Entity entity, Vector2 tankPos, Vector2 enemyPos, int bitMask)
         {
-            _startPoint.X = block.Pos.X + ((bitMask & 8) != 0 ? 1 : 0) * block.Windth;
-            _startPoint.Y = block.Pos.Y + ((bitMask & 4) != 0 ? 1 : 0) * block.Height;
-            _endPoint.X = block.Pos.X + ((bitMask & 2) != 0 ? 1 : 0) * block.Windth;            
-            _endPoint.Y = block.Pos.Y + ((bitMask & 1) != 0 ? 1 : 0) * block.Height;
+            _startPoint.X = entity.Location.X + ((bitMask & 8) != 0 ? 1 : 0) * entity.MeshRect.Width;
+            _startPoint.Y = entity.Location.Y + ((bitMask & 4) != 0 ? 1 : 0) * entity.MeshRect.Height;
+            _endPoint.X = entity.Location.X + ((bitMask & 2) != 0 ? 1 : 0) * entity.MeshRect.Width;
+            _endPoint.Y = entity.Location.Y + ((bitMask & 1) != 0 ? 1 : 0) * entity.MeshRect.Height;
             return Helper.Intersects(tankPos, enemyPos, _startPoint, _endPoint);
         }
 
-        public bool CheckIntersectsWithBlock(Block block, Vector2 tankPos, Vector2 enemyPos)
+        public int CheckIntersectsWithEntity(Entity entity, Vector2 tankPos, Vector2 enemyPos)
         {
-            if (CheckIntersectsWithBlockSide(block, tankPos, enemyPos, 2)) return true;
-            if (CheckIntersectsWithBlockSide(block, tankPos, enemyPos, 1)) return true;
-            if (CheckIntersectsWithBlockSide(block, tankPos, enemyPos, 11)) return true;
-            if (CheckIntersectsWithBlockSide(block, tankPos, enemyPos, 7)) return true;
-            return false;
+            if (CheckIntersectsWithEntitySide(entity, tankPos, enemyPos, 2)) return 2;
+            if (CheckIntersectsWithEntitySide(entity, tankPos, enemyPos, 1)) return 1;
+            if (CheckIntersectsWithEntitySide(entity, tankPos, enemyPos, 11)) return 11;
+            if (CheckIntersectsWithEntitySide(entity, tankPos, enemyPos, 7)) return 7;
+            return 0;
         }
 
         public bool CanSeeEnemy(Vector2 tankPos, Vector2 enemyPos, int distance)
         {
             foreach (Block block in _blocks)
-                if (CheckIntersectsWithBlock(block, tankPos, enemyPos))
+                if (CheckIntersectsWithEntity(block, tankPos, enemyPos) != 0)
                     return false;
 
             return !((enemyPos - tankPos).Length() > distance);

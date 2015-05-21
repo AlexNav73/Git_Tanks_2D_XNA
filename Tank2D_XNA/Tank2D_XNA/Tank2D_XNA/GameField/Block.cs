@@ -8,10 +8,6 @@ namespace Tank2D_XNA.GameField
 {
     class Block : Entity
     {
-        public Vector2 Pos { get { return Position; } }
-        public int Windth { get { return EntityCollisionRect.Width; } }
-        public int Height { get { return EntityCollisionRect.Height; } }
-
         public Block(Vector2 pos)
         {
             Position = pos;

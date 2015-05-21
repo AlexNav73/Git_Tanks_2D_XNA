@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Diagnostics.CodeAnalysis;
 using System.Threading;
 using Microsoft.Xna.Framework;
@@ -31,6 +32,7 @@ namespace Tank2D_XNA.Tanks
 
         private Vector2 _bounseVector;
         public Vector2 GetDirection { get { return Direction; } } // for debug pnnel uses
+        public int IsCollision { get; set; }
 
         public double ReloadTime { get; protected set; }
         public double CurrentReloadTime { get; private set; }
@@ -76,8 +78,8 @@ namespace Tank2D_XNA.Tanks
                 _isForward = true;
                 Direction *= -1;
             }
-            TryCollide(Position, EntityCollisionRect, time, out _bounseVector);
-            Position += (Direction + _bounseVector) * Speed * (float)time;
+            if (!TryCollide(Position, EntityCollisionRect, time)) return;
+            Position += Direction * Speed * (float)time;
             EntityCollisionRect.X = (int)Position.X - (int)(Sprite.Width * Scale) / 2;
             EntityCollisionRect.Y = (int)Position.Y - (int)(Sprite.Height * Scale) / 2;
         }
@@ -89,8 +91,8 @@ namespace Tank2D_XNA.Tanks
                 _isForward = false;
                 Direction *= -1;
             }
-            TryCollide(Position, EntityCollisionRect, time, out _bounseVector);
-            Position += (Direction + _bounseVector) * Speed * (float)time;
+            if (!TryCollide(Position, EntityCollisionRect, time)) return;
+            Position += Direction * Speed * (float)time;
             EntityCollisionRect.X = (int)Position.X - (int)(Sprite.Width * Scale) / 2;
             EntityCollisionRect.Y = (int)Position.Y - (int)(Sprite.Height * Scale) / 2;
         }
@@ -98,7 +100,9 @@ namespace Tank2D_XNA.Tanks
         public void TurnLeft(bool toLeft)
         {
             RotationAngleDegrees += ((toLeft ? -1 : 1) * RotationSpeed) % 360;
+            Vector2 prevDir = new Vector2(Direction.X, Direction.Y);
             Helper.RotateVector(ref Direction, RotationAngleDegrees);
+            if (Vector2.Dot(prevDir, Direction) < 0) Direction *= -1;
             Direction.Normalize();
             Direction *= Speed;
         }
@@ -142,23 +146,15 @@ namespace Tank2D_XNA.Tanks
             IsAlive = Hp > 0;
         }
 
-        public void TryCollide(Vector2 pos, Rectangle mesh, double time, out Vector2 bounse)
+        public bool TryCollide(Vector2 pos, Rectangle mesh, double time)
         {
             pos += Direction * Speed * (float)time;
             mesh.X = (int)pos.X - (int)(Sprite.Width * Scale) / 2;
             mesh.Y = (int)pos.Y - (int)(Sprite.Height * Scale) / 2;
 
             Entity collision = BattleField.GetInstance().Intersects(mesh);
-            if (object.ReferenceEquals(collision, this) || collision == null)
-            {
-                bounse.X = 0;
-                bounse.Y = 0;
-            }
-            else
-            {
-                bounse.X = -Direction.X;
-                bounse.Y = -Direction.Y;
-            }
+            IsCollision = BattleField.GetInstance().CheckIntersectsWithEntity(collision, Position, collision.EntityCentr); //!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+            return (object.ReferenceEquals(collision, this) || collision == null);
         }
 
         public override void Update(GameTime gameTime)

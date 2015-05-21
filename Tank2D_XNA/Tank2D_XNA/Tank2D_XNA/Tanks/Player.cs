@@ -9,16 +9,15 @@ namespace Tank2D_XNA.Tanks
 {
     class Player
     {
-        private readonly Cursor _mouse;
         private bool _autoLock;
         private Vector2 _lockPosition;
+
         public Tank Tank { private set; get; }
 
         public Player(Tank tank)
         {
             Tank = tank;
-            _mouse = Cursor.GetCursor();
-            _mouse.AutoLock = SetTarget;
+            Cursor.GetCursor().AutoLock = SetTarget;
             _autoLock = false;
             Tank.IsSpoted = true;
         }
@@ -45,7 +44,7 @@ namespace Tank2D_XNA.Tanks
             if (Keyboard.GetState().IsKeyDown(Keys.D))
                 Tank.TurnLeft(false);
 
-            Tank.TankTurret.CursorPosition = !_autoLock ? _mouse.Location : _lockPosition;
+            Tank.TankTurret.CursorPosition = !_autoLock ? Cursor.GetCursor().Location : _lockPosition;
             BattleField.GetInstance().LightArea(Tank);
 
             Tank.Update(gameTime);

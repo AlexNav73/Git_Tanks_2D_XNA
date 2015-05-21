@@ -34,9 +34,10 @@ namespace Tank2D_XNA.Screens
         public override void Draw(SpriteBatch spriteBatch)
         {
             spriteBatch.DrawString(_font,
-                String.Format("X = {0}\nY = {1}\n",
-                    _tank.GetDirection.X,
-                    _tank.GetDirection.Y
+                String.Format("X = {0}\nY = {1}\nCollide = {2}",
+                    _tank.Location.X,
+                    _tank.Location.Y,
+                    _tank.IsCollision
                 ),
                 Position, Color.Black);
 
