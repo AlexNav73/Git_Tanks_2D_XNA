@@ -9,14 +9,14 @@ using Tank2D_XNA.Utills;
 
 namespace Tank2D_XNA.Screens
 {
-    class Gui : Entity
+    class DebugPannel : Entity
     {
         private readonly Tank _tank;
         private readonly Vector2 _reloadTimeOffs;
         public string Message = "null";
         private SpriteFont _font;
 
-        public Gui(Tank tank)
+        public DebugPannel(Tank tank)
         {
             _tank = tank;
             Position.X = Helper.GUI_OFFS_X;
@@ -32,9 +32,10 @@ namespace Tank2D_XNA.Screens
         public override void Draw(SpriteBatch spriteBatch)
         {
             spriteBatch.DrawString(_font,
-                String.Format("X = {0}\nY = {1}",
-                    _tank.MeshRect.X,
-                    _tank.MeshRect.Y
+                String.Format("X = {0}\nY = {1}\nDegrees = {2}",
+                    _tank.GetDirection.X,
+                    _tank.GetDirection.Y,
+                    _tank.Degrees
                 ),
                 Position, Color.Black);
 

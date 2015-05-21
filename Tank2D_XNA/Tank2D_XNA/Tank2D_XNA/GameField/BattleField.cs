@@ -26,7 +26,7 @@ namespace Tank2D_XNA.GameField
         private List<Block> _blocks;
         private List<AI> _tanks;
         private Player _player;
-        private Gui _gui;
+        private DebugPannel _gui;
         private bool _isMenu;
         private KeyboardState _prevKeyboard;
         private Menu _menu;
@@ -78,7 +78,7 @@ namespace Tank2D_XNA.GameField
                         {
                             Cursor.GetCursor().Fire = playerTank.Fire;
                             _player = new Player(playerTank);
-                            _gui = new Gui(playerTank);
+                            _gui = new DebugPannel(playerTank);
                         }
                         else SafeExit();
                         break;

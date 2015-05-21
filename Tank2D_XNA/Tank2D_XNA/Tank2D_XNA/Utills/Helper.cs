@@ -76,9 +76,18 @@ namespace Tank2D_XNA.Utills
 
         public static void RotateVector(ref Vector2 vect, float angle)
         {
-            angle = MathHelper.ToRadians(angle);
-            vect.X = (float)(vect.X * Math.Cos(angle) - vect.Y * Math.Sin(angle));
-            vect.Y = (float)(vect.X * Math.Sin(angle) + vect.Y * Math.Cos(angle));
+            // 100 need to minimize error when cast double to int
+            angle = MathHelper.ToRadians(angle + 90);
+            if (angle >= 0 && angle <= 180)
+            {
+                vect.X += (int)(100 * Math.Sin(angle));
+                vect.Y -= (int)(100 * Math.Cos(angle));
+            }
+            else
+            {
+                vect.X -= (int)(100 * -Math.Sin(angle));
+                vect.Y -= (int)(100 * Math.Cos(angle));
+            }
         }
 
         public static bool Intersects(Vector2 a1, Vector2 a2, Vector2 b1, Vector2 b2)

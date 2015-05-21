@@ -14,6 +14,7 @@ namespace Tank2D_XNA.Tanks
 {
     [SuppressMessage("ReSharper", "SuggestVarOrType_SimpleTypes")]
     [SuppressMessage("ReSharper", "SuggestVarOrType_BuiltInTypes")]
+    [SuppressMessage("ReSharper", "CompareOfFloatsByEqualityOperator")]
     abstract class Tank : Entity
     {
         private ContentManager _content;
@@ -28,7 +29,8 @@ namespace Tank2D_XNA.Tanks
         private bool _isForward;
         protected int Hp;
 
-        private bool _isReloaded;
+        public Vector2 GetDirection { get { return Direction; } } // for debug pnnel uses
+        public int Degrees { get { return RotationAngleDegrees; } }
 
         public double ReloadTime { get; protected set; }
         public double CurrentReloadTime { get; private set; }
@@ -41,7 +43,6 @@ namespace Tank2D_XNA.Tanks
             _isForward = true;
             _shells = new List<AmmoType.Ammo>();
             IsAlive = true;
-            _isReloaded = true;
 
             CurrentReloadTime = 0.0;
         }
@@ -95,22 +96,21 @@ namespace Tank2D_XNA.Tanks
 
         public void TurnLeft(bool toLeft)
         {
-            int deltaFi = ((toLeft ? -1 : 1) * RotationSpeed) % 360;
+            RotationAngleDegrees += ((toLeft ? -1 : 1) * RotationSpeed) % 360;
+            Helper.RotateVector(ref Direction, RotationAngleDegrees);
             Direction.Normalize();
-            Helper.RotateVector(ref Direction, deltaFi);
             Direction *= Speed;
-            RotationAngleDegrees += deltaFi;
         }
 
         public void Fire(Vector2 direction)
         {
-            if (_isReloaded)
+            if (CurrentReloadTime == 0.0)
             {
                 float deltaY = direction.Y - Position.Y;
                 float deltaX = direction.X - Position.X;
                 int angle = (int)MathHelper.ToDegrees((float)Math.Atan2(deltaY, deltaX));
 
-                AmmoType.Ammo shell = new PiercingAmmo(
+                Ammo shell = new PiercingAmmo(
                     Position, 
                     direction - Position, 
                     angle, 
@@ -120,7 +120,6 @@ namespace Tank2D_XNA.Tanks
                 shell.LoadContent(_content);
                 _shells.Add(shell);
 
-                _isReloaded = false;
                 ThreadPool.QueueUserWorkItem(OnReload);
             }
         }
@@ -132,7 +131,7 @@ namespace Tank2D_XNA.Tanks
                 CurrentReloadTime += 0.01;
                 Thread.Sleep(10);
             }
-            _isReloaded = true;
+
             CurrentReloadTime = 0.0;
         }
 
