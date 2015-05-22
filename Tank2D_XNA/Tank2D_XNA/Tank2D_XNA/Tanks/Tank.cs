@@ -30,8 +30,8 @@ namespace Tank2D_XNA.Tanks
         private bool _isForward;
         protected int Hp;
 
-        private Vector2 _bounseVector;
-        public Vector2 GetDirection { get { return Direction; } } // for debug pnnel uses
+        //private Vector2 _bounseVector;
+        public Vector2 Direct { set { Direction = value; } get { return Direction; } } // for debug pnnel uses
         public int IsCollision { get; set; }
 
         public double ReloadTime { get; protected set; }
@@ -100,7 +100,7 @@ namespace Tank2D_XNA.Tanks
         public void TurnLeft(bool toLeft)
         {
             RotationAngleDegrees += ((toLeft ? -1 : 1) * RotationSpeed) % 360;
-            Vector2 prevDir = new Vector2(Direction.X, Direction.Y);
+            Vector2 prevDir = new Vector2(Direction.X, Direction.Y); // GC crying
             Helper.RotateVector(ref Direction, RotationAngleDegrees);
             if (Vector2.Dot(prevDir, Direction) < 0) Direction *= -1;
             Direction.Normalize();
@@ -115,8 +115,12 @@ namespace Tank2D_XNA.Tanks
                 float deltaX = direction.X - Position.X;
                 int angle = (int)MathHelper.ToDegrees((float)Math.Atan2(deltaY, deltaX));
 
+                Vector2 shellOffs = _tankTurret.CursorPosition - Position;
+                shellOffs.Normalize();
+                shellOffs *= 45;
+
                 Ammo shell = new PiercingAmmo(
-                    Position, 
+                    Position + shellOffs, 
                     direction - Position, 
                     angle, 
                     Helper.PIERCING_AMMO_MIN_DAMAGE, 
@@ -153,7 +157,8 @@ namespace Tank2D_XNA.Tanks
             mesh.Y = (int)pos.Y - (int)(Sprite.Height * Scale) / 2;
 
             Entity collision = BattleField.GetInstance().Intersects(mesh);
-            IsCollision = BattleField.GetInstance().CheckIntersectsWithEntity(collision, Position, collision.EntityCentr); //!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+            //!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+            IsCollision = BattleField.GetInstance().CheckIntersectsWithEntity(collision, Position, collision.EntityCentr);
             return (object.ReferenceEquals(collision, this) || collision == null);
         }
 

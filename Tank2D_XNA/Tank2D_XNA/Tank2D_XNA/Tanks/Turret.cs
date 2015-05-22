@@ -7,9 +7,7 @@ namespace Tank2D_XNA.Tanks
 {
     class Turret : Entity
     {
-        
-        private Vector2 _cursorPosition;
-        public Vector2 CursorPosition { set { _cursorPosition = value; } }
+        public Vector2 CursorPosition { set; get; }
         public Vector2 TurretPosition { set { Position = value; } }
 
         public Turret(Vector2 spawnPosition)
@@ -27,8 +25,8 @@ namespace Tank2D_XNA.Tanks
 
         public override void Update(GameTime gameTime)
         {
-            float deltaY = _cursorPosition.Y - Position.Y;
-            float deltaX = _cursorPosition.X - Position.X;
+            float deltaY = CursorPosition.Y - Position.Y;
+            float deltaX = CursorPosition.X - Position.X;
             RotationAngleDegrees = (int)MathHelper.ToDegrees((float)Math.Atan2(deltaY, deltaX));
 
             base.Update(gameTime);

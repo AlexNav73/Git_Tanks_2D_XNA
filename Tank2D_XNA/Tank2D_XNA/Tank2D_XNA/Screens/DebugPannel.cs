@@ -15,7 +15,7 @@ namespace Tank2D_XNA.Screens
     {
         private readonly Tank _tank;
         private readonly Vector2 _reloadTimeOffs;
-        public string Message = "null";
+        public static string Message = "null";
         private SpriteFont _font;
 
         public DebugPannel(Tank tank)
@@ -37,7 +37,7 @@ namespace Tank2D_XNA.Screens
                 String.Format("X = {0}\nY = {1}\nCollide = {2}",
                     _tank.Location.X,
                     _tank.Location.Y,
-                    _tank.IsCollision
+                    Message
                 ),
                 Position, Color.Black);
 
