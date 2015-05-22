@@ -6,33 +6,22 @@ namespace Tank2D_XNA.Utills
 {
     class Cell : Entity
     {
-
-        public Cell()
+        private Rectangle _mash;
+        public Cell(Vector2 position)
         {
-            Position = new Vector2(573, 502);
+            Position = position;
             SpriteName = Helper.Sprites["Rectangle"];
         }
 
         public override void LoadContent(ContentManager content)
         {
             base.LoadContent(content);
-            EntityCollisionRect = new Rectangle(573, 502, 112, 122);
-            
+            _mash = new Rectangle((int)(Position.X), (int)(Position.Y), 60, 60);
         }
 
         public override void Draw(SpriteBatch spriteBatch)
         {
-            spriteBatch.Draw(
-                Sprite,
-                Position,
-                EntityCollisionRect,
-                Color.White,
-                MathHelper.ToRadians(RotationAngleDegrees),
-                SpriteCenter,
-                Scale,
-                SpriteEffects.None,
-                0
-            );
+            spriteBatch.Draw(Sprite, Position, _mash, Color.White);
         }
     }
 }

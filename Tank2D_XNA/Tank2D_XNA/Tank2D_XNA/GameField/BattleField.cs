@@ -30,7 +30,6 @@ namespace Tank2D_XNA.GameField
         private bool _isMenu;
         private KeyboardState _prevKeyboard;
         private Menu _menu;
-        private FieldGrid _grid;
         private int _currentMap;
 
         public ExitGame Exit { set; private get; }
@@ -47,9 +46,8 @@ namespace Tank2D_XNA.GameField
             _mouseCursor = Cursor.GetCursor();
             if (_blocks == null) _blocks = new List<Block>();
             else _blocks.Clear();
-            if (_tanks == null ) _tanks = new List<AI>();
+            if (_tanks == null) _tanks = new List<AI>();
             else _tanks.Clear();
-            _grid = new FieldGrid(Helper.SCREEN_WIDTH, Helper.SCREEN_HEIGHT, Helper.GRID_CELL_SIZE);
 
             _menu = new Menu();
             _isMenu = false;
@@ -70,7 +68,7 @@ namespace Tank2D_XNA.GameField
                         AddBlock(info.Position);
                         break;
                     case "AI":
-                        AddBot(TankFactory.GetInstance().CreateTank(info.TankType, info.Position), true);
+                        AddBot(TankFactory.GetInstance().CreateTank(info.TankType, info.Position));
                         break;
                     case "Player":
                         Tank playerTank = TankFactory.GetInstance().CreateTank(info.TankType, info.Position);
@@ -86,15 +84,23 @@ namespace Tank2D_XNA.GameField
             });
         }
 
-        public void AddBot(Tank tank, bool t)
+        public void AddBot(Tank tank)
         {
             if (tank != null)
-                _tanks.Add(new AI(tank, _player.Tank.Location, t));
+                _tanks.Add(new AI(tank, _player.Tank.Location));
         }
 
         public void AddBlock(Vector2 pos)
         {
             _blocks.Add(new Block(pos));
+        }
+
+        public void AddWallsToGrid(FieldGrid grid)
+        {
+            foreach (Block block in _blocks)
+            {
+                grid.PlaceWall(block.Location);
+            }
         }
 
         public Entity Intersects(Rectangle rect)

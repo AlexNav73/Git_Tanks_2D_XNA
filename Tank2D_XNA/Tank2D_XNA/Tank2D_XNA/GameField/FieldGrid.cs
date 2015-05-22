@@ -3,6 +3,9 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using Microsoft.Xna.Framework;
+using Microsoft.Xna.Framework.Content;
+using Microsoft.Xna.Framework.Graphics;
+using Tank2D_XNA.Utills;
 
 namespace Tank2D_XNA.GameField
 {
@@ -42,21 +45,21 @@ namespace Tank2D_XNA.GameField
             _cellSize = cellSize;
         }
 
-        public void SetStart(int x, int y)
+        public void SetStart(Vector2 pos)
         {
-            _firstX = x / _cellSize;
-            _firstY = y / _cellSize;
+            _firstX = (int)(pos.X / _cellSize);
+            _firstY = (int)(pos.Y / _cellSize);
 
             _currentX = _firstX;
             _currentY = _firstY;
         }
 
-        public void SetFinish(int x, int y)
+        public bool SetFinish(Vector2 pos)
         {
-            _lastX = x / _cellSize;
-            _lastY = y / _cellSize;
+            _lastX = (int)(pos.X / _cellSize);
+            _lastY = (int)(pos.Y / _cellSize);
 
-            if (_fieldGred[_lastX, _lastY] != 0) return;
+            if (_fieldGred[_lastX, _lastY] != 0) return false;
 
             _openList.Clear();
             _closeList.Clear();
@@ -71,16 +74,18 @@ namespace Tank2D_XNA.GameField
                 ParentY = -1
             });
             SearchPath();
+
+            return true;
         }
 
-        public void PlaceWall(int x, int y)
+        public void PlaceWall(Vector2 pos)
         {
-            _fieldGred[x/_cellSize, y/_cellSize] = 1;
+            _fieldGred[(int)(pos.X / _cellSize), (int)(pos.Y / _cellSize)] = 1;
         }
 
-        public List<Point> GetPath()
+        public List<Vector2> GetPath()
         {
-            return _finalPath.Select(point => new Point() { X = point.X, Y = point.Y }).ToList();
+            return _finalPath.Select(point => new Vector2() { X = point.X * _cellSize, Y = point.Y * _cellSize }).ToList();
         }
 
         private int GCost(int parentX, int parentY, int kx, int ky)
@@ -195,18 +200,19 @@ namespace Tank2D_XNA.GameField
             }
         }
 
+        // Corner cells not used
         private void SearchPath()
         {
             while (_currentX != _lastX || _currentY != _lastY)
             {
                 MarkCell(_currentX, _currentY, 0, -1);
-                MarkCell(_currentX, _currentY, 1, -1);
+                //MarkCell(_currentX, _currentY, 1, -1);
                 MarkCell(_currentX, _currentY, 1, 0);
-                MarkCell(_currentX, _currentY, 1, 1);
+                //MarkCell(_currentX, _currentY, 1, 1);
                 MarkCell(_currentX, _currentY, 0, 1);
-                MarkCell(_currentX, _currentY, -1, 1);
+                //MarkCell(_currentX, _currentY, -1, 1);
                 MarkCell(_currentX, _currentY, -1, 0);
-                MarkCell(_currentX, _currentY, -1, -1);
+                //MarkCell(_currentX, _currentY, -1, -1);
 
                 int x = 0, y = 0;
                 if (!FindNextCell(ref x, ref y)) break;

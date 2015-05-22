@@ -10,29 +10,29 @@ namespace Tank2D_XNA.Utills
     [SuppressMessage("ReSharper", "InconsistentNaming")]
     class Helper
     {
-         public static Dictionary<string, string> Sprites = new Dictionary<string, string>
-         {
-             {"PiercingAmmo", @"Sprites\Piercing"},
-             {"Block", @"Sprites\Block"},
-             {"Rectangle", @"GUI\hp"},
-             {"MenuFont", @"GUI\MenuFont"},
-             {"GuiFont", @"GUI\GuiFont"},
-             {"MainMenu", @"Sprites\MainWindow2"},
-             {"MediumTank", @"Sprites\PlayerTank"},
-             {"PannelFont", @"GUI\PannelFont"},
-             {"Turret", @"Sprites\Turret"},
-             {"Cursor", @"Sprites\Cursor"}
-         };
+        public static Dictionary<string, string> Sprites = new Dictionary<string, string>
+        {
+            {"PiercingAmmo", @"Sprites\Piercing"},
+            {"Block", @"Sprites\Block"},
+            {"Rectangle", @"GUI\hp"},
+            {"MenuFont", @"GUI\MenuFont"},
+            {"GuiFont", @"GUI\GuiFont"},
+            {"MainMenu", @"Sprites\MainWindow"},
+            {"MediumTank", @"Sprites\PlayerTank"},
+            {"PannelFont", @"GUI\PannelFont"},
+            {"Turret", @"Sprites\Turret"},
+            {"Cursor", @"Sprites\Cursor"}
+        };
 
         // Screen properties
 
         public const int    SCREEN_WIDTH = 1920; // 1200
         public const int    SCREEN_HEIGHT = 1080; // 700
-        public const bool   SCREEN_IS_FULL_SCREEN = true;
+        public const bool   SCREEN_IS_FULL_SCREEN = false;
 
         // Game field
         
-        public const int        GRID_CELL_SIZE = 50;
+        public const int        GRID_CELL_SIZE = 60;
         public const float      BLOCK_SCALE = 0.27f;
         public static string[]  Maps = Directory.GetFiles(Path.GetDirectoryName(Assembly.GetEntryAssembly().Location) + @"\Content\Maps\");
 
