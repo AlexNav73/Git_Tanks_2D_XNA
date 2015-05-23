@@ -32,7 +32,7 @@ namespace Tank2D_XNA.AmmoType
                 X = Sprite.Width / 2,
                 Y = Sprite.Height / 2
             };
-            EntityCollisionRect = new Rectangle((int)Position.X, (int)Position.Y, Sprite.Width, Sprite.Height);
+            CollisionMesh = new Rectangle((int)Position.X, (int)Position.Y, Sprite.Width, Sprite.Height);
         }
     }
 }

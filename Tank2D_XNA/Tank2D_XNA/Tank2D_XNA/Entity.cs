@@ -20,7 +20,7 @@ namespace Tank2D_XNA
         protected Vector2 Position;
         protected Texture2D Sprite;
         protected string SpriteName;
-        protected Rectangle EntityCollisionRect;
+        protected Rectangle CollisionMesh;
         protected int RotationAngleDegrees;
         protected float Scale = 1.0f;
         protected Vector2 SpriteCenter;
@@ -28,7 +28,7 @@ namespace Tank2D_XNA
         protected Vector2 EntityC;//!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
 
         public Vector2 Location { get { return Position; } }
-        public Rectangle MeshRect { get { return EntityCollisionRect; } }
+        public Rectangle MeshRect { get { return CollisionMesh; } }
         public Vector2 EntityCentr { get { return EntityC; } } //!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
 
         public virtual void LoadContent(ContentManager content)
@@ -39,8 +39,8 @@ namespace Tank2D_XNA
         public virtual void Update(GameTime gameTime)
         {
             if (Sprite == null) return;
-            EntityCollisionRect.X = (int)Position.X - (int)(Sprite.Width * Scale) / 2;
-            EntityCollisionRect.Y = (int)Position.Y - (int)(Sprite.Height * Scale) / 2;
+            CollisionMesh.X = (int)Position.X - (int)(Sprite.Width * Scale) / 2;
+            CollisionMesh.Y = (int)Position.Y - (int)(Sprite.Height * Scale) / 2;
             EntityC.X = Position.X + Sprite.Width / 2;//!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
             EntityC.Y = Position.Y + Sprite.Height / 2;//!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
         }

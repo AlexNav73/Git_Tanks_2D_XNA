@@ -56,7 +56,7 @@ namespace Tank2D_XNA.Tanks
         {
             _content = content;
             base.LoadContent(content);
-            EntityCollisionRect = new Rectangle
+            CollisionMesh = new Rectangle
             {
                 X = (int)Position.X - Sprite.Width, 
                 Y = (int)Position.Y - Sprite.Height, 
@@ -79,10 +79,10 @@ namespace Tank2D_XNA.Tanks
                 _isForward = true;
                 Direction *= -1;
             }
-            if (!TryCollide(Position, EntityCollisionRect, time)) return;
+            if (!TryCollide(Position, CollisionMesh, time)) return;
             Position += Direction * Speed * (float)time;
-            EntityCollisionRect.X = (int)Position.X - (int)(Sprite.Width * Scale) / 2;
-            EntityCollisionRect.Y = (int)Position.Y - (int)(Sprite.Height * Scale) / 2;
+            CollisionMesh.X = (int)Position.X - (int)(Sprite.Width * Scale) / 2;
+            CollisionMesh.Y = (int)Position.Y - (int)(Sprite.Height * Scale) / 2;
         }
 
         public void DriveBackward(double time)
@@ -92,10 +92,10 @@ namespace Tank2D_XNA.Tanks
                 _isForward = false;
                 Direction *= -1;
             }
-            if (!TryCollide(Position, EntityCollisionRect, time)) return;
+            if (!TryCollide(Position, CollisionMesh, time)) return;
             Position += Direction * Speed * (float)time;
-            EntityCollisionRect.X = (int)Position.X - (int)(Sprite.Width * Scale) / 2;
-            EntityCollisionRect.Y = (int)Position.Y - (int)(Sprite.Height * Scale) / 2;
+            CollisionMesh.X = (int)Position.X - (int)(Sprite.Width * Scale) / 2;
+            CollisionMesh.Y = (int)Position.Y - (int)(Sprite.Height * Scale) / 2;
         }
 
         public void TurnLeft(bool toLeft)

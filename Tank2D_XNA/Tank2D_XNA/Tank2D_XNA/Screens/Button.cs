@@ -21,7 +21,7 @@ namespace Tank2D_XNA.Screens
         {
             SpriteName = Helper.Sprites["Rectangle"];
             Position = new Vector2(area.X, area.Y);
-            EntityCollisionRect = area;
+            CollisionMesh = area;
             _fontOffs = fontOffs;
             _text = text;
             _click = onClick;
@@ -36,7 +36,7 @@ namespace Tank2D_XNA.Screens
 
         public override void Draw(SpriteBatch spriteBatch)
         {
-            spriteBatch.Draw(Sprite, Position, EntityCollisionRect, Color.White);
+            spriteBatch.Draw(Sprite, Position, CollisionMesh, Color.White);
             spriteBatch.DrawString(_font, _text, Position + _fontOffs, Color.White);
         }
 
@@ -44,7 +44,7 @@ namespace Tank2D_XNA.Screens
         {
             _mouseClicked.X = Convert.ToInt32(position.X);
             _mouseClicked.Y = Convert.ToInt32(position.Y);
-            if (EntityCollisionRect.Contains(_mouseClicked))
+            if (CollisionMesh.Contains(_mouseClicked))
                 _click();
         }
     }

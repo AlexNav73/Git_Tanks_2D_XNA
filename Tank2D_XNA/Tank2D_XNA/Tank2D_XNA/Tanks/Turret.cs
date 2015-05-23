@@ -19,7 +19,7 @@ namespace Tank2D_XNA.Tanks
         public override void LoadContent(ContentManager content)
         {
             base.LoadContent(content);
-            EntityCollisionRect = new Rectangle(0, 0, Sprite.Width, Sprite.Height);
+            CollisionMesh = new Rectangle(0, 0, Sprite.Width, Sprite.Height);
             SpriteCenter = new Vector2(Helper.TURRET_CENTR_X, Sprite.Height / 2);
         }
 

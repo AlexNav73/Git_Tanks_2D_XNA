@@ -18,7 +18,7 @@ namespace Tank2D_XNA.Tanks
         private ContentManager _content;
         private readonly FieldGrid _grid;
         private Vector2 _targetPosition;
-        private Vector2 _targetDirection;
+        private Vector2 _toTargetDirection;
         private Vector2 _direction;
         private int _prevTargetX, _prevTargetY;
         public Tank Tank { private set; get; }
@@ -31,7 +31,7 @@ namespace Tank2D_XNA.Tanks
         {
             Tank = tank;
             _targetPosition = target;
-            _direction = target - Tank.Location;
+            _direction = Tank.Direct;
             _direction.Normalize();
             _grid = new FieldGrid(Helper.SCREEN_WIDTH, Helper.SCREEN_HEIGHT, Helper.GRID_CELL_SIZE);
         }
@@ -60,7 +60,10 @@ namespace Tank2D_XNA.Tanks
                 _cells.Clear();
 
                 _pathToTarget = _grid.GetPath();
+                _pathToTarget.Reverse();
+                _pathToTarget.RemoveAt(_pathToTarget.Count - 1);
 
+                _cells.Clear();
                 foreach (Vector2 pos in _pathToTarget)
                 {
                     Cell c = new Cell(pos);
@@ -68,29 +71,61 @@ namespace Tank2D_XNA.Tanks
                     _cells.Add(c);
                 }
 
-                _pathToTarget.RemoveRange(0, 1);
-                _pathToTarget.RemoveAt(_pathToTarget.Count - 1);
-
-                _direction = position - _pathToTarget.First();
-                _direction.Normalize();
-                _pathToTarget.RemoveAt(0);
+                _pathToTarget[0] = new Vector2(
+                    _pathToTarget[0].X + Helper.GRID_CELL_SIZE/2,
+                    _pathToTarget[0].Y + Helper.GRID_CELL_SIZE/2);
+                _toTargetDirection = _pathToTarget[0] - Tank.Location;
+                _toTargetDirection.Normalize();
+                //_pathToTarget.RemoveAt(_pathToTarget.Count - 1);
             }
+        }
+
+        private bool CanMoveNext(Vector2 destination)
+        {
+            int tankLocationX = (int)(Tank.Location.X / Helper.GRID_CELL_SIZE);
+            int tankLocationY = (int)(Tank.Location.Y / Helper.GRID_CELL_SIZE);
+
+            int nextPosX = (int)(destination.X / Helper.GRID_CELL_SIZE);
+            int nextPosY = (int)(destination.Y / Helper.GRID_CELL_SIZE);
+
+            return (tankLocationX == nextPosX && tankLocationY == nextPosY);
         }
 
         public void Update(GameTime gameTime)
         {
             Tank.TankTurret.CursorPosition = _targetPosition;
 
-            _targetDirection.X = -Tank.Direct.Y;
-            _targetDirection.Y = Tank.Direct.X;
-            _targetDirection.Normalize();
-            if (Vector2.Dot(_direction, _targetDirection) <= 0.0f) Tank.TurnLeft(true);
-            else if (Vector2.Dot(_direction, _targetDirection) >= 0.0f) Tank.TurnLeft(false);
+            _direction.X = -Tank.Direct.Y;
+            _direction.Y = Tank.Direct.X;
+            _direction.Normalize();
+
+            if (_pathToTarget.Count > 0 && CanMoveNext(_pathToTarget[0]))
+            {
+                _pathToTarget.RemoveAt(0);
+                if (_pathToTarget.Count != 0)
+                {
+                    _pathToTarget[0] = new Vector2(
+                        _pathToTarget[0].X + Helper.GRID_CELL_SIZE/2,
+                        _pathToTarget[0].Y + Helper.GRID_CELL_SIZE/2);
+                    _toTargetDirection = _pathToTarget[0] - Tank.Location;
+                    _toTargetDirection.Normalize();
+
+                    //_toTargetDirection.Y += 0.6f;
+                    //_toTargetDirection.X += 0.6f;
+
+                    _cells.RemoveAt(0);
+                }
+            }
+
+            if ((int)(Vector2.Dot(_direction, _toTargetDirection) * 100) < 0) Tank.TurnLeft(true);
+            else if ((int)(Vector2.Dot(_direction, _toTargetDirection) * 100) > 0) Tank.TurnLeft(false);
+            else Tank.DriveForward(gameTime.ElapsedGameTime.TotalSeconds);
+
+            //if (_pathToTarget.Count != 0 && !CanMoveNext(_pathToTarget[0])) 
+            //    Tank.DriveForward(gameTime.ElapsedGameTime.TotalSeconds);
 
             //if (BattleField.GetInstance().CanSeeEnemy(TankPosition, _targetPosition, Helper.PIERCING_AMMO_MAX_DISTANSE)) 
             //    Tank.Fire(_targetPosition);
-
-            Tank.DriveForward(gameTime.ElapsedGameTime.TotalSeconds);
 
             Tank.Update(gameTime);
         }

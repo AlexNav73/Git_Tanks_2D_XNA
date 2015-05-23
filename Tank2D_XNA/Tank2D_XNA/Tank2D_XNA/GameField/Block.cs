@@ -20,12 +20,12 @@ namespace Tank2D_XNA.GameField
         public override void LoadContent(ContentManager content)
         {
             base.LoadContent(content);
-            EntityCollisionRect = new Rectangle
+            CollisionMesh = new Rectangle
             {
-                X = (int)Position.X,
-                Y = (int)Position.Y,
-                Width = (int)(Sprite.Width * Scale), 
-                Height = (int)(Sprite.Height * Scale)
+                X = (int)Position.X + 10,
+                Y = (int)Position.Y + 10,
+                Width = (int)(Sprite.Width * Scale) - 10, 
+                Height = (int)(Sprite.Height * Scale) - 10
             };
 
         }

@@ -50,7 +50,7 @@ namespace Tank2D_XNA.Screens
         {
             base.LoadContent(content);
             _contentManager = content;
-            EntityCollisionRect = new Rectangle
+            CollisionMesh = new Rectangle
             {
                 X = 0,
                 Y = 0,
