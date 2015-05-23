@@ -21,7 +21,7 @@ namespace Tank2D_XNA.Utills
         public override void LoadContent(ContentManager content)
         {
             base.LoadContent(content);
-            _mash = new Rectangle((int)(Position.X), (int)(Position.Y), 55, 50); // 60 60
+            _mash = new Rectangle((int)(Position.X), (int)(Position.Y), 55, 50);
         }
 
         public override void Draw(SpriteBatch spriteBatch)

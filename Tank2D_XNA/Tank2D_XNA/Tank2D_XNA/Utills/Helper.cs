@@ -35,6 +35,7 @@ namespace Tank2D_XNA.Utills
         public const int        GRID_CELL_SIZE = 60;
         public const float      BLOCK_SCALE = 0.27f;
         public static string[]  Maps = Directory.GetFiles(Path.GetDirectoryName(Assembly.GetEntryAssembly().Location) + @"\Content\Maps\");
+        public const bool       SHOW_AI_CHECK_POINTS = false;
 
         // GUI
 

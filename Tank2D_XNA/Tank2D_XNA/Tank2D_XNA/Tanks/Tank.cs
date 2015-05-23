@@ -9,6 +9,7 @@ using Microsoft.Xna.Framework.Graphics;
 
 using Tank2D_XNA.AmmoType;
 using Tank2D_XNA.GameField;
+using Tank2D_XNA.Screens;
 using Tank2D_XNA.Utills;
 
 namespace Tank2D_XNA.Tanks
@@ -30,7 +31,7 @@ namespace Tank2D_XNA.Tanks
         private bool _isForward;
         protected int Hp;
 
-        //private Vector2 _bounseVector;
+        private const float Resistance = 0.7f;
         public Vector2 Direct { set { Direction = value; } get { return Direction; } } // for debug pnnel uses
         public int IsCollision { get; set; }
 
@@ -48,7 +49,7 @@ namespace Tank2D_XNA.Tanks
             IsAlive = true;
 
             CurrentReloadTime = 0.0;
-            IsSpoted = true; // !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+            //IsSpoted = true; // !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
         }
 
         [SuppressMessage("ReSharper", "PossibleLossOfFraction")]
@@ -79,8 +80,7 @@ namespace Tank2D_XNA.Tanks
                 _isForward = true;
                 Direction *= -1;
             }
-            if (!TryCollide(Position, CollisionMesh, time)) return;
-            Position += Direction * Speed * (float)time;
+            Position += Direction * Speed * (float)time + ResistanceForse(CollisionMesh);
             CollisionMesh.X = (int)Position.X - (int)(Sprite.Width * Scale) / 2;
             CollisionMesh.Y = (int)Position.Y - (int)(Sprite.Height * Scale) / 2;
         }
@@ -92,8 +92,7 @@ namespace Tank2D_XNA.Tanks
                 _isForward = false;
                 Direction *= -1;
             }
-            if (!TryCollide(Position, CollisionMesh, time)) return;
-            Position += Direction * Speed * (float)time;
+            Position += Direction * Speed * (float)time + ResistanceForse(CollisionMesh);
             CollisionMesh.X = (int)Position.X - (int)(Sprite.Width * Scale) / 2;
             CollisionMesh.Y = (int)Position.Y - (int)(Sprite.Height * Scale) / 2;
         }
@@ -151,16 +150,25 @@ namespace Tank2D_XNA.Tanks
             IsAlive = Hp > 0;
         }
 
-        public bool TryCollide(Vector2 pos, Rectangle mesh, double time)
+        public override Vector2 GetResistenceForce(Vector2 target, Vector2 targetDirection)
         {
-            pos += Direction * Speed * (float)time;
-            mesh.X = (int)pos.X - (int)(Sprite.Width * Scale) / 2;
-            mesh.Y = (int)pos.Y - (int)(Sprite.Height * Scale) / 2;
+            Vector2 result = new Vector2(
+                Position.X + Sprite.Width * Scale / 2,
+                Position.Y + Sprite.Height * Scale / 2);
+            result.X = target.X - result.X;
+            result.Y = target.Y - result.Y;
+            int dir = (int)(Vector2.Dot(result, targetDirection) * 100);
+            if (dir < 5 && dir > -5)
+                return -targetDirection;
+            return result * Resistance;
+        }
 
+        public Vector2 ResistanceForse(Rectangle mesh)
+        {
             Entity collision = BattleField.GetInstance().Intersects(mesh);
-            //!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
-            IsCollision = BattleField.GetInstance().CheckIntersectsWithEntity(collision, Position, collision.EntityCentr);
-            return (object.ReferenceEquals(collision, this) || collision == null);
+            if (!object.ReferenceEquals(collision, this) && collision != null)
+                return collision.GetResistenceForce(Position, Direction);
+            return Vector2.Zero;
         }
 
         public override void Update(GameTime gameTime)

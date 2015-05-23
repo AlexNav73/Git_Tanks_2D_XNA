@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Diagnostics.CodeAnalysis;
 using System.Linq;
 using System.Text;
 using System.Threading;
@@ -26,7 +27,7 @@ namespace Tank2D_XNA.Tanks
         public Vector2 TankPosition { get { return Tank.Location; } }
 
         private List<Vector2> _pathToTarget = new List<Vector2>();
-        //private readonly List<Cell> _cells = new List<Cell>();
+        private readonly List<Cell> _cells = new List<Cell>();
 
         public AI(Tank tank, Vector2 target)
         {
@@ -55,7 +56,6 @@ namespace Tank2D_XNA.Tanks
             if (_prevTargetX != currentTargetX || _prevTargetY != currentTargetY)
             {
                 _stop = false;
-
                 _prevTargetX = currentTargetX;
                 _prevTargetY = currentTargetY;
 
@@ -66,20 +66,22 @@ namespace Tank2D_XNA.Tanks
                 _pathToTarget.Reverse();
                 _pathToTarget.RemoveAt(_pathToTarget.Count - 1);
 
-                //_cells.Clear();
-                //foreach (Vector2 pos in _pathToTarget)
-                //{
-                //    Cell c = new Cell(pos);
-                //    c.LoadContent(_content);
-                //    _cells.Add(c);
-                //}
+                _cells.Clear();
+                foreach (Vector2 pos in _pathToTarget)
+                {
+                    Cell c = new Cell(pos);
+                    c.LoadContent(_content);
+                    _cells.Add(c);
+                }
 
-                _pathToTarget[0] = new Vector2(
-                    _pathToTarget[0].X + Helper.GRID_CELL_SIZE/2,
-                    _pathToTarget[0].Y + Helper.GRID_CELL_SIZE/2);
-                _toTargetDirection = _pathToTarget[0] - Tank.Location;
-                _toTargetDirection.Normalize();
-                //_pathToTarget.RemoveAt(_pathToTarget.Count - 1);
+                if (_pathToTarget.Count != 0)
+                {
+                    _pathToTarget[0] = new Vector2(
+                        _pathToTarget[0].X + Helper.GRID_CELL_SIZE/2,
+                        _pathToTarget[0].Y + Helper.GRID_CELL_SIZE/2);
+                    _toTargetDirection = _pathToTarget[0] - Tank.Location;
+                    _toTargetDirection.Normalize();
+                }
             }
         }
 
@@ -108,13 +110,11 @@ namespace Tank2D_XNA.Tanks
                 if (_pathToTarget.Count != 0 && (Tank.Location - _targetPosition).Length() > Helper.GRID_CELL_SIZE * 1.5)
                 {
                     _pathToTarget[0] = new Vector2(
-                        _pathToTarget[0].X + Helper.GRID_CELL_SIZE/2,
-                        _pathToTarget[0].Y + Helper.GRID_CELL_SIZE/2);
+                        _pathToTarget[0].X + Helper.GRID_CELL_SIZE / 2,
+                        _pathToTarget[0].Y + Helper.GRID_CELL_SIZE / 2);
                     _toTargetDirection = _pathToTarget[0] - Tank.Location;
                     _toTargetDirection.Normalize();
-                    //_toTargetDirection.Y += 0.6f;
-                    //_toTargetDirection.X += 0.6f;
-                    //_cells.RemoveAt(0);
+                    _cells.RemoveAt(0);
                 }
                 else _stop = true;
             }
@@ -132,13 +132,19 @@ namespace Tank2D_XNA.Tanks
             Tank.Update(gameTime);
         }
 
+        [SuppressMessage("ReSharper", "ConditionIsAlwaysTrueOrFalse")]
         public void Draw(SpriteBatch spriteBatch)
         {
             Tank.Draw(spriteBatch);
-            //foreach (Cell cell in _cells)
-            //{
-            //    cell.Draw(spriteBatch);
-            //}
+            if (Helper.SHOW_AI_CHECK_POINTS)
+            #pragma warning disable 162
+            {
+                foreach (Cell cell in _cells)
+                {
+                    cell.Draw(spriteBatch);
+                }
+            }
+            #pragma warning restore 162
         }
     }
 }

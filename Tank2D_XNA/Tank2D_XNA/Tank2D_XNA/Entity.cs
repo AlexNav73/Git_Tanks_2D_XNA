@@ -47,6 +47,8 @@ namespace Tank2D_XNA
 
         public virtual void TakeDamage(int damage) { }
 
+        public virtual Vector2 GetResistenceForce(Vector2 target, Vector2 targetDirection) { return new Vector2(); }
+
         public virtual void Draw(SpriteBatch spriteBatch)
         {
             spriteBatch.Draw(
