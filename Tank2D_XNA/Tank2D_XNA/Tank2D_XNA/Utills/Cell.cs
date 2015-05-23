@@ -13,10 +13,15 @@ namespace Tank2D_XNA.Utills
             SpriteName = Helper.Sprites["Rectangle"];
         }
 
+        public void SetPosition(Vector2 newPos)
+        {
+            Position = newPos;
+        }
+
         public override void LoadContent(ContentManager content)
         {
             base.LoadContent(content);
-            _mash = new Rectangle((int)(Position.X), (int)(Position.Y), 60, 60);
+            _mash = new Rectangle((int)(Position.X), (int)(Position.Y), 55, 50); // 60 60
         }
 
         public override void Draw(SpriteBatch spriteBatch)

@@ -48,6 +48,7 @@ namespace Tank2D_XNA.Tanks
             IsAlive = true;
 
             CurrentReloadTime = 0.0;
+            IsSpoted = true; // !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
         }
 
         [SuppressMessage("ReSharper", "PossibleLossOfFraction")]
