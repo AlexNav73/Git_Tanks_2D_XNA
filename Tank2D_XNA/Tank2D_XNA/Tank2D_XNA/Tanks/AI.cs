@@ -21,14 +21,16 @@ namespace Tank2D_XNA.Tanks
         private Vector2 _toTargetDirection;
         private Vector2 _direction;
         private int _prevTargetX, _prevTargetY;
+        private bool _stop;
         public Tank Tank { private set; get; }
         public Vector2 TankPosition { get { return Tank.Location; } }
 
         private List<Vector2> _pathToTarget = new List<Vector2>();
-        private readonly List<Cell> _cells = new List<Cell>();
+        //private readonly List<Cell> _cells = new List<Cell>();
 
         public AI(Tank tank, Vector2 target)
         {
+            _stop = true;
             Tank = tank;
             _targetPosition = target;
             _direction = Tank.Direct;
@@ -52,24 +54,25 @@ namespace Tank2D_XNA.Tanks
             int currentTargetY = (int)(position.Y / Helper.GRID_CELL_SIZE);
             if (_prevTargetX != currentTargetX || _prevTargetY != currentTargetY)
             {
+                _stop = false;
+
                 _prevTargetX = currentTargetX;
                 _prevTargetY = currentTargetY;
 
                 _grid.SetStart(Tank.Location);
                 _grid.SetFinish(position);
-                _cells.Clear();
 
                 _pathToTarget = _grid.GetPath();
                 _pathToTarget.Reverse();
                 _pathToTarget.RemoveAt(_pathToTarget.Count - 1);
 
-                _cells.Clear();
-                foreach (Vector2 pos in _pathToTarget)
-                {
-                    Cell c = new Cell(pos);
-                    c.LoadContent(_content);
-                    _cells.Add(c);
-                }
+                //_cells.Clear();
+                //foreach (Vector2 pos in _pathToTarget)
+                //{
+                //    Cell c = new Cell(pos);
+                //    c.LoadContent(_content);
+                //    _cells.Add(c);
+                //}
 
                 _pathToTarget[0] = new Vector2(
                     _pathToTarget[0].X + Helper.GRID_CELL_SIZE/2,
@@ -102,30 +105,29 @@ namespace Tank2D_XNA.Tanks
             if (_pathToTarget.Count > 0 && CanMoveNext(_pathToTarget[0]))
             {
                 _pathToTarget.RemoveAt(0);
-                if (_pathToTarget.Count != 0)
+                if (_pathToTarget.Count != 0 && (Tank.Location - _targetPosition).Length() > Helper.GRID_CELL_SIZE * 1.5)
                 {
                     _pathToTarget[0] = new Vector2(
                         _pathToTarget[0].X + Helper.GRID_CELL_SIZE/2,
                         _pathToTarget[0].Y + Helper.GRID_CELL_SIZE/2);
                     _toTargetDirection = _pathToTarget[0] - Tank.Location;
                     _toTargetDirection.Normalize();
-
                     //_toTargetDirection.Y += 0.6f;
                     //_toTargetDirection.X += 0.6f;
-
-                    _cells.RemoveAt(0);
+                    //_cells.RemoveAt(0);
                 }
+                else _stop = true;
             }
 
-            if ((int)(Vector2.Dot(_direction, _toTargetDirection) * 100) < 0) Tank.TurnLeft(true);
-            else if ((int)(Vector2.Dot(_direction, _toTargetDirection) * 100) > 0) Tank.TurnLeft(false);
-            else Tank.DriveForward(gameTime.ElapsedGameTime.TotalSeconds);
+            if (!_stop)
+            {
+                if ((int)(Vector2.Dot(_direction, _toTargetDirection) * 100) < -2) Tank.TurnLeft(true);
+                else if ((int)(Vector2.Dot(_direction, _toTargetDirection) * 100) > 2) Tank.TurnLeft(false);
+                else Tank.DriveForward(gameTime.ElapsedGameTime.TotalSeconds);
+            }
 
-            //if (_pathToTarget.Count != 0 && !CanMoveNext(_pathToTarget[0])) 
-            //    Tank.DriveForward(gameTime.ElapsedGameTime.TotalSeconds);
-
-            //if (BattleField.GetInstance().CanSeeEnemy(TankPosition, _targetPosition, Helper.PIERCING_AMMO_MAX_DISTANSE)) 
-            //    Tank.Fire(_targetPosition);
+            if (BattleField.GetInstance().CanSeeEnemy(TankPosition, _targetPosition, Helper.PIERCING_AMMO_MAX_DISTANSE))
+                Tank.Fire(_targetPosition);
 
             Tank.Update(gameTime);
         }
@@ -133,10 +135,10 @@ namespace Tank2D_XNA.Tanks
         public void Draw(SpriteBatch spriteBatch)
         {
             Tank.Draw(spriteBatch);
-            foreach (Cell cell in _cells)
-            {
-                cell.Draw(spriteBatch);
-            }
+            //foreach (Cell cell in _cells)
+            //{
+            //    cell.Draw(spriteBatch);
+            //}
         }
     }
 }
