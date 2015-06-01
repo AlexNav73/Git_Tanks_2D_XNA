@@ -46,6 +46,7 @@ namespace Tank2D_XNA.Tanks
 
             Tank.TankTurret.CursorPosition = !_autoLock ? Cursor.GetCursor().Location : _lockPosition;
             BattleField.GetInstance().LightArea(Tank);
+            if (!Tank.IsAlive) BattleField.GetInstance().IsMenu = true;
 
             Tank.Update(gameTime);
         }

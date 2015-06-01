@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Diagnostics.CodeAnalysis;
 using System.Linq;
+using System.Security.Cryptography;
 using System.Text;
 using System.Threading;
 using Microsoft.Xna.Framework;
@@ -24,7 +25,6 @@ namespace Tank2D_XNA.Tanks
         private int _prevTargetX, _prevTargetY;
         private bool _stop;
         public Tank Tank { private set; get; }
-        public Vector2 TankPosition { get { return Tank.Location; } }
 
         private List<Vector2> _pathToTarget = new List<Vector2>();
         private readonly List<Cell> _cells = new List<Cell>();
@@ -64,7 +64,12 @@ namespace Tank2D_XNA.Tanks
 
                 _pathToTarget = _grid.GetPath();
                 _pathToTarget.Reverse();
-                _pathToTarget.RemoveAt(_pathToTarget.Count - 1);
+                if (_pathToTarget.Count > 0)
+                {
+                    _pathToTarget.RemoveAt(_pathToTarget.Count - 1);
+                    _stop = false;
+                }
+                else _stop = true;
 
                 _cells.Clear();
                 foreach (Vector2 pos in _pathToTarget)
@@ -74,7 +79,7 @@ namespace Tank2D_XNA.Tanks
                     _cells.Add(c);
                 }
 
-                if (_pathToTarget.Count != 0)
+                if (_pathToTarget.Count > 0)
                 {
                     _pathToTarget[0] = new Vector2(
                         _pathToTarget[0].X + Helper.GRID_CELL_SIZE/2,
@@ -96,14 +101,8 @@ namespace Tank2D_XNA.Tanks
             return (tankLocationX == nextPosX && tankLocationY == nextPosY);
         }
 
-        public void Update(GameTime gameTime)
+        private void DriveToNextCheckPoint()
         {
-            Tank.TankTurret.CursorPosition = _targetPosition;
-
-            _direction.X = -Tank.Direct.Y;
-            _direction.Y = Tank.Direct.X;
-            _direction.Normalize();
-
             if (_pathToTarget.Count > 0 && CanMoveNext(_pathToTarget[0]))
             {
                 _pathToTarget.RemoveAt(0);
@@ -118,6 +117,17 @@ namespace Tank2D_XNA.Tanks
                 }
                 else _stop = true;
             }
+        }
+
+        public void Update(GameTime gameTime)
+        {
+            Tank.TankTurret.CursorPosition = _targetPosition;
+
+            _direction.X = -Tank.Direct.Y;
+            _direction.Y = Tank.Direct.X;
+            _direction.Normalize();
+
+            DriveToNextCheckPoint();
 
             if (!_stop)
             {
@@ -126,7 +136,7 @@ namespace Tank2D_XNA.Tanks
                 else Tank.DriveForward(gameTime.ElapsedGameTime.TotalSeconds);
             }
 
-            if (BattleField.GetInstance().CanSeeEnemy(TankPosition, _targetPosition, Helper.PIERCING_AMMO_MAX_DISTANSE))
+            if (BattleField.GetInstance().CanSeeEnemy(Tank.Location, _targetPosition, Helper.PIERCING_AMMO_MAX_DISTANSE))
                 Tank.Fire(_targetPosition);
 
             Tank.Update(gameTime);

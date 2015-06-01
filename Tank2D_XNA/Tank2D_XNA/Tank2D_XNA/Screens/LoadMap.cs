@@ -14,7 +14,7 @@ namespace Tank2D_XNA.Screens
     class LoadMap : Screen
     {
         private readonly List<Button> _buttons;
-        private Menu _menu;
+        private readonly Menu _menu;
         private ContentManager _contentManager;
 
         public LoadMap(Menu menu)
@@ -39,6 +39,8 @@ namespace Tank2D_XNA.Screens
                         {
                             BattleField.GetInstance().Initialize(mapIndexToClosure);
                             BattleField.GetInstance().LoadContent(_contentManager);
+                            _menu.SetDefaultWindow();
+                            BattleField.GetInstance().IsMenu = false;
                         })
                 );
 

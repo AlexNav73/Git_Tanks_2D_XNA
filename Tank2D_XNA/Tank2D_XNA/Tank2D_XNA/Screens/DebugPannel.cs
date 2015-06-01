@@ -15,7 +15,6 @@ namespace Tank2D_XNA.Screens
     {
         private readonly Tank _tank;
         private readonly Vector2 _reloadTimeOffs;
-        public static string Message = "null";
         private SpriteFont _font;
 
         public DebugPannel(Tank tank)
@@ -34,10 +33,9 @@ namespace Tank2D_XNA.Screens
         public override void Draw(SpriteBatch spriteBatch)
         {
             spriteBatch.DrawString(_font,
-                String.Format("X = {0}\nY = {1}\nCollide = {2}",
+                String.Format("X = {0}\nY = {1}",
                     _tank.Location.X,
-                    _tank.Location.Y,
-                    Message
+                    _tank.Location.Y
                 ),
                 Position, Color.Black);
 

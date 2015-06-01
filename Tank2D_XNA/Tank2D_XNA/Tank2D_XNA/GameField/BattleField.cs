@@ -27,12 +27,12 @@ namespace Tank2D_XNA.GameField
         private List<AI> _tanks;
         private Player _player;
         private DebugPannel _gui;
-        private bool _isMenu;
         private KeyboardState _prevKeyboard;
         private Menu _menu;
         private int _currentMap;
 
         public ExitGame Exit { set; private get; }
+        public bool IsMenu { set; get; }
 
         public static BattleField GetInstance()
         {
@@ -49,8 +49,8 @@ namespace Tank2D_XNA.GameField
             if (_tanks == null) _tanks = new List<AI>();
             else _tanks.Clear();
 
-            _menu = new Menu();
-            _isMenu = false;
+            if (_menu == null) _menu = new Menu();
+            IsMenu = true;
 
             if (mapIndex != -1) 
                 _currentMap = mapIndex;
@@ -117,7 +117,7 @@ namespace Tank2D_XNA.GameField
             return rect.Intersects(_player.Tank.MeshRect) ? _player.Tank : null;
         }
 
-        // Need to determinate start and ending point of box side
+        // Need to determinate start and ending point of entity side
         private Vector2 _startPoint;
         private Vector2 _endPoint;
         // -----------------------------------------------------
@@ -152,8 +152,7 @@ namespace Tank2D_XNA.GameField
         public void LightArea(Tank player)
         {
             foreach (AI ai in _tanks)
-                if (CanSeeEnemy(player.Location, ai.Tank.Location, Helper.MEDIUM_TANK_OVERLOOK))
-                    ai.Tank.IsSpoted = true;
+                ai.Tank.IsSpoted = CanSeeEnemy(player.Location, ai.Tank.Location, Helper.MEDIUM_TANK_OVERLOOK);
         }
 
         public void LoadContent(ContentManager content)
@@ -174,9 +173,9 @@ namespace Tank2D_XNA.GameField
 
         public void Update(GameTime gameTime)
         {
-            _mouseCursor.InMenu = _isMenu;
+            _mouseCursor.InMenu = IsMenu;
             _mouseCursor.Update(gameTime);
-            if (_isMenu) return;
+            if (IsMenu) return;
 
             for (int i = 0; i < _tanks.Count; i++)
                 if (_tanks[i].Tank.IsAlive)
@@ -187,6 +186,8 @@ namespace Tank2D_XNA.GameField
                 else
                     _tanks.Remove(_tanks[i--]);
 
+            if (_tanks.Count == 0) IsMenu = true;
+
             _player.Update(gameTime);
             _gui.Update(gameTime);
         }
@@ -195,12 +196,12 @@ namespace Tank2D_XNA.GameField
         {
             if (Keyboard.GetState().IsKeyDown(Keys.Escape) && !_prevKeyboard.IsKeyDown(Keys.Escape))
             {
-                if (_isMenu) _menu.SetDefaultWindow();
-                _isMenu = !_isMenu;
+                if (IsMenu) _menu.SetDefaultWindow();
+                IsMenu = !IsMenu;
             }
             _prevKeyboard = Keyboard.GetState();
 
-            if (!_isMenu)
+            if (!IsMenu)
             {                
                 foreach (var block in _blocks)
                     block.Draw(spriteBatch);
@@ -225,7 +226,7 @@ namespace Tank2D_XNA.GameField
 
         public void ReturnToGame()
         {
-            _isMenu = !_isMenu;
+            IsMenu = !IsMenu;
         }
 
     }

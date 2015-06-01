@@ -31,8 +31,8 @@ namespace Tank2D_XNA.Tanks
         private bool _isForward;
         protected int Hp;
 
-        private const float Resistance = 0.7f;
-        public Vector2 Direct { set { Direction = value; } get { return Direction; } } // for debug pnnel uses
+        private readonly float _resistance;
+        public Vector2 Direct { set { Direction = value; } get { return Direction; } }
         public int IsCollision { get; set; }
 
         public double ReloadTime { get; protected set; }
@@ -49,7 +49,9 @@ namespace Tank2D_XNA.Tanks
             IsAlive = true;
 
             CurrentReloadTime = 0.0;
-            //IsSpoted = true; // !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+            _resistance = Helper.RESISTANCE_FORCE;
+
+            IsSpoted = true;
         }
 
         [SuppressMessage("ReSharper", "PossibleLossOfFraction")]
@@ -160,7 +162,7 @@ namespace Tank2D_XNA.Tanks
             int dir = (int)(Vector2.Dot(result, targetDirection) * 100);
             if (dir < 5 && dir > -5)
                 return -targetDirection;
-            return result * Resistance;
+            return result * _resistance;
         }
 
         public Vector2 ResistanceForse(Rectangle mesh)

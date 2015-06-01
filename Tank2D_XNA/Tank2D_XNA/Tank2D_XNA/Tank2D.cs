@@ -62,7 +62,7 @@ namespace Tank2D_XNA
 
         protected override void Draw(GameTime gameTime)
         {
-            GraphicsDevice.Clear(Color.White);
+            GraphicsDevice.Clear(Color.SandyBrown);
             _spriteBatch.Begin();
 
             _field.Draw(_spriteBatch);

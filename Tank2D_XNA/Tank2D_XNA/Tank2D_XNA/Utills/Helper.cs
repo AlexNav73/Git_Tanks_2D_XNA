@@ -17,7 +17,7 @@ namespace Tank2D_XNA.Utills
             {"Rectangle", @"GUI\hp"},
             {"MenuFont", @"GUI\MenuFont"},
             {"GuiFont", @"GUI\GuiFont"},
-            {"MainMenu", @"Sprites\MainWindow"},
+            {"MainMenu", @"Sprites\MainWindow2"},
             {"MediumTank", @"Sprites\PlayerTank"},
             {"PannelFont", @"GUI\PannelFont"},
             {"Turret", @"Sprites\Turret"},
@@ -28,12 +28,13 @@ namespace Tank2D_XNA.Utills
 
         public const int    SCREEN_WIDTH = 1920; // 1200
         public const int    SCREEN_HEIGHT = 1080; // 700
-        public const bool   SCREEN_IS_FULL_SCREEN = false;
+        public const bool   SCREEN_IS_FULL_SCREEN = true;
 
         // Game field
         
         public const int        GRID_CELL_SIZE = 60;
         public const float      BLOCK_SCALE = 0.27f;
+        public const float      RESISTANCE_FORCE = 0.07f;
         public static string[]  Maps = Directory.GetFiles(Path.GetDirectoryName(Assembly.GetEntryAssembly().Location) + @"\Content\Maps\");
         public const bool       SHOW_AI_CHECK_POINTS = false;
 

@@ -18,7 +18,7 @@ namespace Tank2D_XNA.GameField
             RotationAngleDegrees = 0;
             Scale = Helper.BLOCK_SCALE;
 
-            _resistance = 0.07f;
+            _resistance = Helper.RESISTANCE_FORCE;
         }
 
         public override Vector2 GetResistenceForce(Vector2 target, Vector2 targetDirection)
