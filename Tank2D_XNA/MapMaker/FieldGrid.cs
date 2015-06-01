@@ -29,6 +29,8 @@ namespace MapMaker
         private readonly int _height;
         private int _cellSize;
 
+
+
         private const int _cellS = 60; // cell size for game
         private const int _tankWidth = 30; // half of tank width
         private const int _tankHeight = 24; // half of tank height

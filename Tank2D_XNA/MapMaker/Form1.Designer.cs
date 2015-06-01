@@ -36,22 +36,18 @@
             this.radioButton1 = new System.Windows.Forms.RadioButton();
             this.FileName = new System.Windows.Forms.TextBox();
             this.label1 = new System.Windows.Forms.Label();
-            this.button1 = new System.Windows.Forms.Button();
+            this.Save = new System.Windows.Forms.Button();
             this.SW = new System.Windows.Forms.TextBox();
             this.label2 = new System.Windows.Forms.Label();
             this.label3 = new System.Windows.Forms.Label();
             this.SH = new System.Windows.Forms.TextBox();
-            this.button2 = new System.Windows.Forms.Button();
+            this.SetAttr = new System.Windows.Forms.Button();
             this.Zoom = new System.Windows.Forms.DomainUpDown();
             this.label4 = new System.Windows.Forms.Label();
-            this.groupBox1 = new System.Windows.Forms.GroupBox();
-            this.radioButton7 = new System.Windows.Forms.RadioButton();
-            this.radioButton6 = new System.Windows.Forms.RadioButton();
-            this.radioButton5 = new System.Windows.Forms.RadioButton();
-            this.button3 = new System.Windows.Forms.Button();
+            this.Clear = new System.Windows.Forms.Button();
+            this.Load = new System.Windows.Forms.Button();
             ((System.ComponentModel.ISupportInitialize)(this.Map)).BeginInit();
             this.EntityType.SuspendLayout();
-            this.groupBox1.SuspendLayout();
             this.SuspendLayout();
             // 
             // Map
@@ -143,19 +139,19 @@
             this.label1.TabIndex = 3;
             this.label1.Text = "Output File:";
             // 
-            // button1
+            // Save
             // 
-            this.button1.Location = new System.Drawing.Point(961, 572);
-            this.button1.Name = "button1";
-            this.button1.Size = new System.Drawing.Size(155, 47);
-            this.button1.TabIndex = 4;
-            this.button1.Text = "Save";
-            this.button1.UseVisualStyleBackColor = true;
-            this.button1.Click += new System.EventHandler(this.button1_Click);
+            this.Save.Location = new System.Drawing.Point(961, 572);
+            this.Save.Name = "Save";
+            this.Save.Size = new System.Drawing.Size(155, 47);
+            this.Save.TabIndex = 4;
+            this.Save.Text = "Save";
+            this.Save.UseVisualStyleBackColor = true;
+            this.Save.Click += new System.EventHandler(this.Save_Click);
             // 
             // SW
             // 
-            this.SW.Location = new System.Drawing.Point(1012, 301);
+            this.SW.Location = new System.Drawing.Point(1012, 190);
             this.SW.Name = "SW";
             this.SW.Size = new System.Drawing.Size(147, 22);
             this.SW.TabIndex = 5;
@@ -163,7 +159,7 @@
             // label2
             // 
             this.label2.AutoSize = true;
-            this.label2.Location = new System.Drawing.Point(914, 304);
+            this.label2.Location = new System.Drawing.Point(914, 193);
             this.label2.Name = "label2";
             this.label2.Size = new System.Drawing.Size(93, 17);
             this.label2.TabIndex = 6;
@@ -172,7 +168,7 @@
             // label3
             // 
             this.label3.AutoSize = true;
-            this.label3.Location = new System.Drawing.Point(914, 332);
+            this.label3.Location = new System.Drawing.Point(914, 221);
             this.label3.Name = "label3";
             this.label3.Size = new System.Drawing.Size(98, 17);
             this.label3.TabIndex = 8;
@@ -180,20 +176,20 @@
             // 
             // SH
             // 
-            this.SH.Location = new System.Drawing.Point(1012, 329);
+            this.SH.Location = new System.Drawing.Point(1012, 218);
             this.SH.Name = "SH";
             this.SH.Size = new System.Drawing.Size(147, 22);
             this.SH.TabIndex = 7;
             // 
-            // button2
+            // SetAttr
             // 
-            this.button2.Location = new System.Drawing.Point(961, 401);
-            this.button2.Name = "button2";
-            this.button2.Size = new System.Drawing.Size(155, 47);
-            this.button2.TabIndex = 15;
-            this.button2.Text = "Set Attributes";
-            this.button2.UseVisualStyleBackColor = true;
-            this.button2.Click += new System.EventHandler(this.button2_Click);
+            this.SetAttr.Location = new System.Drawing.Point(961, 291);
+            this.SetAttr.Name = "SetAttr";
+            this.SetAttr.Size = new System.Drawing.Size(155, 47);
+            this.SetAttr.TabIndex = 15;
+            this.SetAttr.Text = "Set Attributes";
+            this.SetAttr.UseVisualStyleBackColor = true;
+            this.SetAttr.Click += new System.EventHandler(this.SetAttr_Click);
             // 
             // Zoom
             // 
@@ -215,7 +211,7 @@
             this.Zoom.Items.Add("25");
             this.Zoom.Items.Add("26");
             this.Zoom.Items.Add("27");
-            this.Zoom.Location = new System.Drawing.Point(1040, 357);
+            this.Zoom.Location = new System.Drawing.Point(1040, 246);
             this.Zoom.Name = "Zoom";
             this.Zoom.Size = new System.Drawing.Size(120, 22);
             this.Zoom.TabIndex = 16;
@@ -225,83 +221,47 @@
             // label4
             // 
             this.label4.AutoSize = true;
-            this.label4.Location = new System.Drawing.Point(988, 359);
+            this.label4.Location = new System.Drawing.Point(988, 248);
             this.label4.Name = "label4";
             this.label4.Size = new System.Drawing.Size(44, 17);
             this.label4.TabIndex = 17;
             this.label4.Text = "Zoom";
             // 
-            // groupBox1
+            // Clear
             // 
-            this.groupBox1.Controls.Add(this.radioButton7);
-            this.groupBox1.Controls.Add(this.radioButton6);
-            this.groupBox1.Controls.Add(this.radioButton5);
-            this.groupBox1.Location = new System.Drawing.Point(918, 176);
-            this.groupBox1.Name = "groupBox1";
-            this.groupBox1.Size = new System.Drawing.Size(241, 100);
-            this.groupBox1.TabIndex = 18;
-            this.groupBox1.TabStop = false;
-            this.groupBox1.Text = "Tank Type";
+            this.Clear.Location = new System.Drawing.Point(961, 344);
+            this.Clear.Name = "Clear";
+            this.Clear.Size = new System.Drawing.Size(155, 49);
+            this.Clear.TabIndex = 19;
+            this.Clear.Text = "Clear Field";
+            this.Clear.UseVisualStyleBackColor = true;
+            this.Clear.Click += new System.EventHandler(this.Clear_Click);
             // 
-            // radioButton7
+            // Load
             // 
-            this.radioButton7.AutoSize = true;
-            this.radioButton7.Location = new System.Drawing.Point(7, 73);
-            this.radioButton7.Name = "radioButton7";
-            this.radioButton7.Size = new System.Drawing.Size(60, 21);
-            this.radioButton7.TabIndex = 2;
-            this.radioButton7.TabStop = true;
-            this.radioButton7.Text = "Light";
-            this.radioButton7.UseVisualStyleBackColor = true;
-            // 
-            // radioButton6
-            // 
-            this.radioButton6.AutoSize = true;
-            this.radioButton6.Location = new System.Drawing.Point(7, 48);
-            this.radioButton6.Name = "radioButton6";
-            this.radioButton6.Size = new System.Drawing.Size(69, 21);
-            this.radioButton6.TabIndex = 1;
-            this.radioButton6.TabStop = true;
-            this.radioButton6.Text = "Heavy";
-            this.radioButton6.UseVisualStyleBackColor = true;
-            // 
-            // radioButton5
-            // 
-            this.radioButton5.AutoSize = true;
-            this.radioButton5.Checked = true;
-            this.radioButton5.Location = new System.Drawing.Point(7, 22);
-            this.radioButton5.Name = "radioButton5";
-            this.radioButton5.Size = new System.Drawing.Size(78, 21);
-            this.radioButton5.TabIndex = 0;
-            this.radioButton5.TabStop = true;
-            this.radioButton5.Text = "Medium";
-            this.radioButton5.UseVisualStyleBackColor = true;
-            // 
-            // button3
-            // 
-            this.button3.Location = new System.Drawing.Point(961, 455);
-            this.button3.Name = "button3";
-            this.button3.Size = new System.Drawing.Size(155, 49);
-            this.button3.TabIndex = 19;
-            this.button3.Text = "Clear Field";
-            this.button3.UseVisualStyleBackColor = true;
-            this.button3.Click += new System.EventHandler(this.button3_Click);
+            this.Load.Location = new System.Drawing.Point(961, 399);
+            this.Load.Name = "Load";
+            this.Load.Size = new System.Drawing.Size(155, 49);
+            this.Load.TabIndex = 20;
+            this.Load.Text = "Load Field";
+            this.Load.UseVisualStyleBackColor = true;
+            this.Load.Click += new System.EventHandler(this.Load_Click);
             // 
             // Form1
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 16F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(1188, 651);
-            this.Controls.Add(this.button3);
-            this.Controls.Add(this.groupBox1);
+            this.Controls.Add(this.Load);
+            this.Controls.Add(this.Clear);
             this.Controls.Add(this.label4);
             this.Controls.Add(this.Zoom);
-            this.Controls.Add(this.button2);
+            this.Controls.Add(this.SetAttr);
             this.Controls.Add(this.label3);
             this.Controls.Add(this.SH);
             this.Controls.Add(this.label2);
             this.Controls.Add(this.SW);
-            this.Controls.Add(this.button1);
+            this.Controls.Add(this.Save);
             this.Controls.Add(this.label1);
             this.Controls.Add(this.FileName);
             this.Controls.Add(this.EntityType);
@@ -311,8 +271,6 @@
             ((System.ComponentModel.ISupportInitialize)(this.Map)).EndInit();
             this.EntityType.ResumeLayout(false);
             this.EntityType.PerformLayout();
-            this.groupBox1.ResumeLayout(false);
-            this.groupBox1.PerformLayout();
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -327,20 +285,17 @@
         private System.Windows.Forms.RadioButton radioButton1;
         private System.Windows.Forms.TextBox FileName;
         private System.Windows.Forms.Label label1;
-        private System.Windows.Forms.Button button1;
+        private System.Windows.Forms.Button Save;
         private System.Windows.Forms.TextBox SW;
         private System.Windows.Forms.Label label2;
         private System.Windows.Forms.Label label3;
         private System.Windows.Forms.TextBox SH;
-        private System.Windows.Forms.Button button2;
+        private System.Windows.Forms.Button SetAttr;
         private System.Windows.Forms.RadioButton radioButton4;
         private System.Windows.Forms.DomainUpDown Zoom;
         private System.Windows.Forms.Label label4;
-        private System.Windows.Forms.GroupBox groupBox1;
-        private System.Windows.Forms.RadioButton radioButton7;
-        private System.Windows.Forms.RadioButton radioButton6;
-        private System.Windows.Forms.RadioButton radioButton5;
-        private System.Windows.Forms.Button button3;
+        private System.Windows.Forms.Button Clear;
+        private System.Windows.Forms.Button Load;
     }
 }
 

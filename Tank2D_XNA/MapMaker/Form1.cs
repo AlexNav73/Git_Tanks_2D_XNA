@@ -24,14 +24,6 @@ namespace MapMaker
             Zoom.SelectedIndex = 10;
         }
 
-        private void button1_Click(object sender, EventArgs e)
-        {
-            if (!String.IsNullOrEmpty(FileName.Text))
-            {
-                _grid.SaveMap(FileName.Text);
-            }
-        }
-
         private void Map_MouseClick(object sender, MouseEventArgs e)
         {
             foreach (Control control in EntityType.Controls)
@@ -89,17 +81,6 @@ namespace MapMaker
             }
         }
 
-        private void button2_Click(object sender, EventArgs e)
-        {
-            int screenWidth = 1920, screenHeigth = 1080;
-
-            if (!String.IsNullOrEmpty(SW.Text)) Int32.TryParse(SW.Text, out screenWidth);
-            if (!String.IsNullOrEmpty(SH.Text)) Int32.TryParse(SH.Text, out screenHeigth);
-
-            _grid = new FieldGrid(20, screenWidth, screenHeigth);
-            Map.Invalidate();
-        }
-
         private void Zoom_SelectedItemChanged(object sender, EventArgs e)
         {
             int zoom;
@@ -110,10 +91,38 @@ namespace MapMaker
             Map.Invalidate();
         }
 
-        private void button3_Click(object sender, EventArgs e)
+        private void Load_Click(object sender, EventArgs e)
+        {
+            OpenFileDialog open = new OpenFileDialog();
+            open.ShowDialog();
+            MapLoader loader = new MapLoader(open.FileName);
+            loader.LoadMap(_grid);
+            Map.Invalidate();
+        }
+
+        private void SetAttr_Click(object sender, EventArgs e)
+        {
+            int screenWidth = 1920, screenHeigth = 1080;
+
+            if (!String.IsNullOrEmpty(SW.Text)) Int32.TryParse(SW.Text, out screenWidth);
+            if (!String.IsNullOrEmpty(SH.Text)) Int32.TryParse(SH.Text, out screenHeigth);
+
+            _grid = new FieldGrid(20, screenWidth, screenHeigth);
+            Map.Invalidate();
+        }
+
+        private void Clear_Click(object sender, EventArgs e)
         {
             _grid.ClearField();
             Map.Invalidate();
+        }
+
+        private void Save_Click(object sender, EventArgs e)
+        {
+            if (!String.IsNullOrEmpty(FileName.Text))
+            {
+                _grid.SaveMap(FileName.Text);
+            }
         }
     }
 }
