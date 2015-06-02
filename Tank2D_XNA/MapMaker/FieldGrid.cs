@@ -29,8 +29,6 @@ namespace MapMaker
         private readonly int _height;
         private int _cellSize;
 
-
-
         private const int _cellS = 60; // cell size for game
         private const int _tankWidth = 30; // half of tank width
         private const int _tankHeight = 24; // half of tank height
@@ -86,6 +84,15 @@ namespace MapMaker
                     _grid[x/_cellSize, y/_cellSize] = 1;
             }
         }
+        public void LoadBlock(int x, int y)
+        {
+            if (x / _cellS >= 0 && x / _cellS < _width &&
+                y / _cellS >= 0 && y / _cellS < _height)
+            {
+                if (_grid[x / _cellS, y / _cellS] == 0)
+                    _grid[x / _cellS, y / _cellS] = 1;
+            }
+        }
 
         public void SetAI(int x, int y)
         {
@@ -94,6 +101,15 @@ namespace MapMaker
             {
                 if (_grid[x/_cellSize, y/_cellSize] == 0)
                     _grid[x/_cellSize, y/_cellSize] = 2;
+            }
+        }
+        public void LoadAI(int x, int y)
+        {
+            if (x / _cellS >= 0 && x / _cellS < _width &&
+                y / _cellS >= 0 && y / _cellS < _height)
+            {
+                if (_grid[x / _cellS, y / _cellS] == 0)
+                    _grid[x / _cellS, y / _cellS] = 2;
             }
         }
 
@@ -105,6 +121,19 @@ namespace MapMaker
                 if (!_isPlayerSpoted && _grid[x/_cellSize, y/_cellSize] == 0)
                 {
                     _grid[x/_cellSize, y/_cellSize] = 3;
+                    _isPlayerSpoted = true;
+                }
+            }
+        }
+
+        public void LoadPlayer(int x, int y)
+        {
+            if (x / _cellS >= 0 && x / _cellS < _width &&
+                y / _cellS >= 0 && y / _cellS < _height)
+            {
+                if (!_isPlayerSpoted && _grid[x / _cellS, y / _cellS] == 0)
+                {
+                    _grid[x / _cellS, y / _cellS] = 3;
                     _isPlayerSpoted = true;
                 }
             }

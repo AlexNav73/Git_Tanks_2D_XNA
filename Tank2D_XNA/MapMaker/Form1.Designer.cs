@@ -183,7 +183,7 @@
             // 
             // SetAttr
             // 
-            this.SetAttr.Location = new System.Drawing.Point(961, 291);
+            this.SetAttr.Location = new System.Drawing.Point(961, 316);
             this.SetAttr.Name = "SetAttr";
             this.SetAttr.Size = new System.Drawing.Size(155, 47);
             this.SetAttr.TabIndex = 15;
@@ -229,7 +229,7 @@
             // 
             // Clear
             // 
-            this.Clear.Location = new System.Drawing.Point(961, 344);
+            this.Clear.Location = new System.Drawing.Point(961, 369);
             this.Clear.Name = "Clear";
             this.Clear.Size = new System.Drawing.Size(155, 49);
             this.Clear.TabIndex = 19;
@@ -239,7 +239,7 @@
             // 
             // Load
             // 
-            this.Load.Location = new System.Drawing.Point(961, 399);
+            this.Load.Location = new System.Drawing.Point(961, 424);
             this.Load.Name = "Load";
             this.Load.Size = new System.Drawing.Size(155, 49);
             this.Load.TabIndex = 20;

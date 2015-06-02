@@ -55,13 +55,13 @@ namespace MapMaker
                 switch (info.Type)
                 {
                     case "Player":
-                        grid.SetPlayer(info.Position.X, info.Position.Y);
+                        grid.LoadPlayer(info.Position.X, info.Position.Y);
                         break;
                     case "AI":
-                        grid.SetAI(info.Position.X, info.Position.Y);
+                        grid.LoadAI(info.Position.X, info.Position.Y);
                         break;
                     case "Block":
-                        grid.SetBlock(info.Position.X, info.Position.Y);
+                        grid.LoadBlock(info.Position.X, info.Position.Y);
                         break;
                 }
             }

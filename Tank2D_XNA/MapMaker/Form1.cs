@@ -96,6 +96,7 @@ namespace MapMaker
             OpenFileDialog open = new OpenFileDialog();
             open.ShowDialog();
             MapLoader loader = new MapLoader(open.FileName);
+            FileName.Text = open.FileName;
             loader.LoadMap(_grid);
             Map.Invalidate();
         }
