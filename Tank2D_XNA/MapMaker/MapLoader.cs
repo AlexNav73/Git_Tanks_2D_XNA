@@ -17,27 +17,28 @@ namespace MapMaker
         public MapLoader(string fileName)
         {
             _entity = new List<EntityInfo>();
+            if (String.IsNullOrEmpty(fileName)) return;
 
             try
             {
                 using (FileStream fs = File.Open(fileName, FileMode.Open))
-                using (XmlReader reader = XmlReader.Create(fs))
-                {
-                    while (reader.ReadToFollowing("Entity"))
+                    using (XmlReader reader = XmlReader.Create(fs))
                     {
-                        EntityInfo tmp = new EntityInfo();
-                        reader.MoveToFirstAttribute();
-                        tmp.Type = reader.GetAttribute("type");
-                        tmp.TankType = reader.GetAttribute("class");
+                        while (reader.ReadToFollowing("Entity"))
+                        {
+                            EntityInfo tmp = new EntityInfo();
+                            reader.MoveToFirstAttribute();
+                            tmp.Type = reader.GetAttribute("type");
+                            tmp.TankType = reader.GetAttribute("class");
 
-                        int x, y;
-                        Int32.TryParse(reader.GetAttribute("x"), out x);
-                        Int32.TryParse(reader.GetAttribute("y"), out y);
+                            int x, y;
+                            Int32.TryParse(reader.GetAttribute("x"), out x);
+                            Int32.TryParse(reader.GetAttribute("y"), out y);
 
-                        tmp.Position = new Point(x, y);
-                        _entity.Add(tmp);
+                            tmp.Position = new Point(x, y);
+                            _entity.Add(tmp);
+                        }
                     }
-                }
             }
             catch (IOException)
             {
