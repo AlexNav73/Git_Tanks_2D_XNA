@@ -25,6 +25,12 @@ namespace Tank2D_XNA
 
         public Tank2D()
         {
+            
+            Helper.LoadGameSettings();
+            Helper.LoadGUISettings();
+            Helper.LoadHPBarSettings();
+            Helper.LoadAmmo();
+
             _graphics = new GraphicsDeviceManager(this)
             {
                 PreferredBackBufferWidth = Helper.SCREEN_WIDTH,

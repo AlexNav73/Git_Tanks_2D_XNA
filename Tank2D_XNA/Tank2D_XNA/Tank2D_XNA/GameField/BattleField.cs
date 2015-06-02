@@ -68,10 +68,10 @@ namespace Tank2D_XNA.GameField
                         AddBlock(info.Position);
                         break;
                     case "AI":
-                        AddBot(TankFactory.GetInstance().CreateTank(info.TankType, info.Position));
+                        AddBot(TankFactory.GetInstance().CreateTank(info.TankType, "E_50_Ausf_M", info.Position));
                         break;
                     case "Player":
-                        Tank playerTank = TankFactory.GetInstance().CreateTank(info.TankType, info.Position);
+                        Tank playerTank = TankFactory.GetInstance().CreateTank(info.TankType, "E_50_Ausf_M", info.Position);
                         if (playerTank != null)
                         {
                             Cursor.GetCursor().Fire = playerTank.Fire;
@@ -152,7 +152,7 @@ namespace Tank2D_XNA.GameField
         public void LightArea(Tank player)
         {
             foreach (AI ai in _tanks)
-                ai.Tank.IsSpoted = CanSeeEnemy(player.Location, ai.Tank.Location, Helper.MEDIUM_TANK_OVERLOOK);
+                ai.Tank.IsSpoted = CanSeeEnemy(player.Location, ai.Tank.Location, ai.Tank.Overlook);
         }
 
         public void LoadContent(ContentManager content)

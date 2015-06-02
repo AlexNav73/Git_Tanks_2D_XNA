@@ -136,7 +136,7 @@ namespace Tank2D_XNA.Tanks
                 else Tank.DriveForward(gameTime.ElapsedGameTime.TotalSeconds);
             }
 
-            if (BattleField.GetInstance().CanSeeEnemy(Tank.Location, _targetPosition, Helper.PIERCING_AMMO_MAX_DISTANSE))
+            if (BattleField.GetInstance().CanSeeEnemy(Tank.Location, _targetPosition, Helper.AMMO_MAX_DISTANSE))
                 Tank.Fire(_targetPosition);
 
             Tank.Update(gameTime);

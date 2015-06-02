@@ -10,16 +10,16 @@ namespace Tank2D_XNA.AmmoType
     {
         private static readonly Random Rand = new Random();
 
-        public PiercingAmmo(Vector2 pos, Vector2 direction, int angle, int minDamage, int maxDamage)
+        public PiercingAmmo(Vector2 pos, Vector2 direction, AmmoTTX ttx, int angle)
         {
             direction.Normalize();
             Direction = direction;
-            Speed = Helper.PIERCING_AMMO_SPEED;
+            Speed = ttx.Speed;
             Position = pos;
             SpriteName = Helper.Sprites["PiercingAmmo"];
             RotationAngleDegrees = angle;
-            Damage = Rand.Next(minDamage, maxDamage);
-            MaxDistance = Helper.PIERCING_AMMO_MAX_DISTANSE;
+            Damage = Rand.Next(ttx.MinDamage, ttx.MaxDamage);
+            MaxDistance = ttx.MaxDistanse;
             IsAlive = true;
         }
 

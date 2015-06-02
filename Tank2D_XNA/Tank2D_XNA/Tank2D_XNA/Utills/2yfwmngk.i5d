@@ -1,0 +1,39 @@
+﻿using System;
+using System.Collections.Generic;
+using System.IO;
+using System.Linq;
+using System.Runtime.Serialization.Json;
+using System.Text;
+using Microsoft.Xna.Framework;
+using Tank2D_XNA.AmmoType;
+using Tank2D_XNA.Tanks;
+
+namespace Tank2D_XNA.Utills
+{
+    class AmmoFactory
+    {
+        private static TankFactory _instance;
+
+        private AmmoFactory() { }
+
+        public static TankFactory GetInstance()
+        {
+            return _instance ?? (_instance = new TankFactory());
+        }
+
+        public Ammo CreateTank(string type, string name, Vector2 position, Vector2 direction, int angle)
+        {
+            switch (type)
+            {
+                case "Piercing":
+                    DataContractJsonSerializer js = new DataContractJsonSerializer(typeof(AmmoTTX));
+                    FileStream file = new FileStream("Content/Settings/AmmosTTX/" + name + ".json", FileMode.Open);
+                    AmmoTTX ttx = (AmmoTTX)js.ReadObject(file);
+                    file.Close();
+                    return new PiercingAmmo(position, direction, ttx, angle);
+            }
+
+            return null;
+        }
+    }
+}

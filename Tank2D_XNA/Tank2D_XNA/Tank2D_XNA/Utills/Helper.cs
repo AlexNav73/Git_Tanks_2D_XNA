@@ -3,10 +3,53 @@ using System.Collections.Generic;
 using System.Diagnostics.CodeAnalysis;
 using System.IO;
 using System.Reflection;
+using System.Runtime.Serialization;
+using System.Runtime.Serialization.Json;
 using Microsoft.Xna.Framework;
+using Tank2D_XNA.AmmoType;
 
 namespace Tank2D_XNA.Utills
 {
+    [DataContract]
+    [SuppressMessage("ReSharper", "InconsistentNaming")]
+    struct GameSetting
+    {
+        [DataMember] public int ScreenWidth;
+        [DataMember] public int ScreenHeight;
+        [DataMember] public bool IsFullScreen;
+        [DataMember] public int GridCellSize;
+        [DataMember] public float BlockScale;
+        [DataMember] public float ResistanceForce;
+        [DataMember] public bool ShowAICheckPoints;
+        [DataMember] public int AmmoMaxDistanse;
+    }
+
+    [DataContract]
+    [SuppressMessage("ReSharper", "InconsistentNaming")]
+    struct GUISetting
+    {
+        [DataMember] public int GUIOffsX;
+        [DataMember] public int GUIOffsY;
+        [DataMember] public int GUIReloadX;
+        [DataMember] public int GUIReloadY;
+        [DataMember] public int ButtonStartX;
+        [DataMember] public int ButtonStartY;
+        [DataMember] public int ButtonWidth;
+        [DataMember] public int ButtonHeight;
+    }
+
+    [DataContract]
+    [SuppressMessage("ReSharper", "InconsistentNaming")]
+    struct HPBarSetting
+    {
+        [DataMember] public int OffsX;
+        [DataMember] public int OffsY;
+        [DataMember] public int Width;
+        [DataMember] public int Height;
+        [DataMember] public int FontOffsX;
+        [DataMember] public int FontOffsY;
+    }
+
     [SuppressMessage("ReSharper", "InconsistentNaming")]
     class Helper
     {
@@ -24,54 +67,197 @@ namespace Tank2D_XNA.Utills
             {"Cursor", @"Sprites\Cursor"}
         };
 
-        // Screen properties
+        private static readonly Dictionary<string, AmmoTTX> _ammos = new Dictionary<string, AmmoTTX>();
+        public static AmmoTTX GetAmmo(string name)
+        {
+            return _ammos.ContainsKey(name) ? _ammos[name] : _ammos["default"];
+        }
+        public static void LoadAmmo()
+        {
+            string[] Ammos = Directory.GetFiles(Path.GetDirectoryName(Assembly.GetEntryAssembly().Location) + @"\Content\Settings\AmmosTTX");
+            if (Ammos.Length == 0)
+            {
+                AmmoTTX t = new AmmoTTX()
+                {
+                    MaxDamage = 300,
+                    MaxDistanse = 700,
+                    MinDamage = 150,
+                    Speed = 10
+                };
 
-        public const int    SCREEN_WIDTH = 1920; // 1200
-        public const int    SCREEN_HEIGHT = 1080; // 700
-        public const bool   SCREEN_IS_FULL_SCREEN = true;
+                DataContractJsonSerializer js = new DataContractJsonSerializer(typeof(AmmoTTX));
+                FileStream ms = new FileStream("Content/Settings/AmmosTTX/default.json", FileMode.Create);
+                js.WriteObject(ms, t);
+                ms.Close();
 
-        // Game field
-        
-        public const int        GRID_CELL_SIZE = 60;
-        public const float      BLOCK_SCALE = 0.27f;
-        public const float      RESISTANCE_FORCE = 0.07f;
-        public static string[]  Maps = Directory.GetFiles(Path.GetDirectoryName(Assembly.GetEntryAssembly().Location) + @"\Content\Maps\");
-        public const bool       SHOW_AI_CHECK_POINTS = false;
+                FileStream file = new FileStream("Content/Settings/AmmosTTX/default.json", FileMode.Open);
+                _ammos.Add("default", (AmmoTTX)js.ReadObject(file));
+                file.Close();
+                return;
+            }
+
+            foreach (string ammo in Ammos)
+            {
+                DataContractJsonSerializer js = new DataContractJsonSerializer(typeof(AmmoTTX));
+                FileStream file = new FileStream(ammo, FileMode.Open);
+                string ammoName = Path.GetFileName(ammo);
+                if (ammoName == null) continue;
+                _ammos.Add(ammoName.Substring(0, ammoName.Length - 5), (AmmoTTX)js.ReadObject(file));
+                file.Close();
+            }
+        }
+
+        // Game settings
+
+        public static int       SCREEN_WIDTH ;
+        public static int       SCREEN_HEIGHT;
+        public static bool      SCREEN_IS_FULL_SCREEN;
+        public static int       GRID_CELL_SIZE;
+        public static float     BLOCK_SCALE;
+        public static float     RESISTANCE_FORCE;
+        public static string[]  Maps;
+        public static bool      SHOW_AI_CHECK_POINTS;
+        public static int       AMMO_MAX_DISTANSE;
+        public static void LoadGameSettings()
+        {
+            Maps = Directory.GetFiles(Path.GetDirectoryName(Assembly.GetEntryAssembly().Location) + @"\Content\Maps\");
+            DataContractJsonSerializer js = new DataContractJsonSerializer(typeof(GameSetting)); ;
+            FileStream file;
+
+            try
+            {
+                file = new FileStream("Content/Settings/GameSettings.json", FileMode.Open);
+            }
+            catch (Exception)
+            {
+                GameSetting t = new GameSetting()
+                {
+                    AmmoMaxDistanse = 700,
+                    BlockScale = 0.27f,
+                    GridCellSize = 60,
+                    IsFullScreen = false,
+                    ResistanceForce = 0.07f,
+                    ScreenHeight = 1080,
+                    ScreenWidth = 1920,
+                    ShowAICheckPoints = false
+                };
+
+                FileStream ms = new FileStream("Content/Settings/GameSettings.json", FileMode.Create);
+                js.WriteObject(ms, t);
+                ms.Close();
+
+                file = new FileStream("Content/Settings/GameSettings.json", FileMode.Open);
+            }
+            GameSetting settings = (GameSetting)js.ReadObject(file);
+            file.Close();
+
+            SCREEN_WIDTH = settings.ScreenWidth;
+            SCREEN_HEIGHT = settings.ScreenHeight;
+            SCREEN_IS_FULL_SCREEN = settings.IsFullScreen;
+            GRID_CELL_SIZE = settings.GridCellSize;
+            BLOCK_SCALE = settings.BlockScale;
+            RESISTANCE_FORCE = settings.ResistanceForce;
+            SHOW_AI_CHECK_POINTS = settings.ShowAICheckPoints;
+            AMMO_MAX_DISTANSE = settings.AmmoMaxDistanse;
+        }
 
         // GUI
 
-        public const int GUI_OFFS_X = 10;
-        public const int GUI_OFFS_Y = 10;
-        public const int GUI_RELOAD_X = 25;
-        public const int GUI_RELOAD_Y = -10;
-        public const int BUTTON_START_X = 860;
-        public const int BUTTON_START_Y = 390;
-        public const int BUTTON_WIDTH = 200;
-        public const int BUTTON_HEIGHT = 50;
+        public static int GUI_OFFS_X;
+        public static int GUI_OFFS_Y;
+        public static int GUI_RELOAD_X;
+        public static int GUI_RELOAD_Y;
+        public static int BUTTON_START_X;
+        public static int BUTTON_START_Y;
+        public static int BUTTON_WIDTH;
+        public static int BUTTON_HEIGHT;
+        public static void LoadGUISettings()
+        {
+            var js = new DataContractJsonSerializer(typeof(GUISetting)); ;
+            FileStream file;
 
-        // Medium tank TTX
+            try
+            {
+                file = new FileStream("Content/Settings/GUISettings.json", FileMode.Open);
+            }
+            catch (Exception)
+            {
+                GUISetting t = new GUISetting()
+                {
+                    ButtonHeight = 50,
+                    ButtonStartX = 860,
+                    ButtonStartY = 390,
+                    ButtonWidth = 200,
+                    GUIOffsX = 10,
+                    GUIOffsY = 10,
+                    GUIReloadX = 25,
+                    GUIReloadY = -10
+                };
 
-        public const int    MEDIUM_TANK_SPEED = 15;
-        public const int    MEDIUM_TANK_ROTATION_SPEED = 4;
-        public const int    MEDIUM_TANK_HP = 1200;
-        public const double MEDIUM_TANK_RELOAD_TIME = 4.32;
-        public const int    MEDIUM_TANK_OVERLOOK = 700;
+                var ms = new FileStream("Content/Settings/GUISettings.json", FileMode.Create);
+                js.WriteObject(ms, t);
+                ms.Close();
 
-        // Piercing ammo TTX
+                file = new FileStream("Content/Settings/GUISettings.json", FileMode.Open);
+            }
+            var settings = (GUISetting)js.ReadObject(file);
+            file.Close();
 
-        public const int PIERCING_AMMO_MIN_DAMAGE = 100;
-        public const int PIERCING_AMMO_MAX_DAMAGE = 200;
-        public const int PIERCING_AMMO_MAX_DISTANSE = 700;
-        public const int PIERCING_AMMO_SPEED = 10;
+            GUI_OFFS_X = settings.GUIOffsX;
+            GUI_OFFS_Y = settings.GUIOffsY;
+            GUI_RELOAD_X = settings.GUIReloadX;
+            GUI_RELOAD_Y = settings.GUIReloadY;
+            BUTTON_START_X = settings.ButtonStartX;
+            BUTTON_START_Y = settings.ButtonStartY;
+            BUTTON_WIDTH = settings.ButtonWidth;
+            BUTTON_HEIGHT = settings.ButtonHeight;
+        }
 
         // Tank info pannel params
 
-        public const int HP_BAR_OFFS_X = -30;
-        public const int HP_BAR_OFFS_Y = 40;
-        public const int HP_BAR_WIDTH = 60;
-        public const int HP_BAR_HEIGHT = 7;
-        public const int HP_FONT_OFFS_X = 12;
-        public const int HP_FONT_OFFS_Y = 5;
+        public static int HP_BAR_OFFS_X = -30;
+        public static int HP_BAR_OFFS_Y = 40;
+        public static int HP_BAR_WIDTH = 60;
+        public static int HP_BAR_HEIGHT = 7;
+        public static int HP_FONT_OFFS_X = 12;
+        public static int HP_FONT_OFFS_Y = 5;
+        public static void LoadHPBarSettings()
+        {
+            var js = new DataContractJsonSerializer(typeof(HPBarSetting)); ;
+            FileStream file;
+
+            try
+            {
+                file = new FileStream("Content/Settings/HPBarSettings.json", FileMode.Open);
+            }
+            catch (Exception)
+            {
+                HPBarSetting t = new HPBarSetting()
+                {
+                    FontOffsX = 12,
+                    FontOffsY = 5,
+                    Height = 7,
+                    OffsX = -30,
+                    OffsY = 40,
+                    Width = 60
+                };
+
+                var ms = new FileStream("Content/Settings/HPBarSettings.json", FileMode.Create);
+                js.WriteObject(ms, t);
+                ms.Close();
+
+                file = new FileStream("Content/Settings/HPBarSettings.json", FileMode.Open);
+            }
+            var settings = (HPBarSetting)js.ReadObject(file);
+            file.Close();
+
+            HP_BAR_OFFS_X = settings.OffsX;
+            HP_BAR_OFFS_Y = settings.OffsY;
+            HP_BAR_WIDTH = settings.Width;
+            HP_BAR_HEIGHT = settings.Height;
+            HP_FONT_OFFS_X = settings.FontOffsX;
+            HP_FONT_OFFS_Y = settings.FontOffsY;
+        }
 
         // Turret TTX
 

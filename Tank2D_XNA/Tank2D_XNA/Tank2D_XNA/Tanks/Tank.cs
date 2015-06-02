@@ -30,10 +30,16 @@ namespace Tank2D_XNA.Tanks
         protected int Speed;
         private bool _isForward;
         protected int Hp;
+        protected int TurretCentrX;
+
+        // Tank ammo names
+        protected string PiercingAmmoName;
+        // ---------------
 
         private readonly float _resistance;
         public Vector2 Direct { set { Direction = value; } get { return Direction; } }
         public int IsCollision { get; set; }
+        public int Overlook { protected set; get; }
 
         public double ReloadTime { get; protected set; }
         public double CurrentReloadTime { get; private set; }
@@ -121,13 +127,8 @@ namespace Tank2D_XNA.Tanks
                 shellOffs.Normalize();
                 shellOffs *= 45;
 
-                Ammo shell = new PiercingAmmo(
-                    Position + shellOffs, 
-                    direction - Position, 
-                    angle, 
-                    Helper.PIERCING_AMMO_MIN_DAMAGE, 
-                    Helper.PIERCING_AMMO_MAX_DAMAGE
-                );
+                Ammo shell = AmmoFactory.GetInstance()
+                    .CreateShell("Piercing", PiercingAmmoName, Position + shellOffs, direction - Position, angle);
                 shell.LoadContent(_content);
                 _shells.Add(shell);
 
