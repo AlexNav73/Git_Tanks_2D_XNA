@@ -33,9 +33,9 @@ namespace Tank2D_XNA.Screens
         public override void Draw(SpriteBatch spriteBatch)
         {
             spriteBatch.DrawString(_font,
-                String.Format("X = {0}\nY = {1}",
-                    _tank.Location.X,
-                    _tank.Location.Y
+                String.Format("Reload = {0}\nHP = {1}",
+                    Math.Round(_tank.CurrentReloadTime, 2),
+                    _tank.Hp
                 ),
                 Position, Color.Black);
 

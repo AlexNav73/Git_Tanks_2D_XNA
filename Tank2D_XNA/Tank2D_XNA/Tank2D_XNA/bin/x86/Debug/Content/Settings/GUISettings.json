@@ -1,1 +1,10 @@
-{"ButtonHeight":50,"ButtonStartX":860,"ButtonStartY":390,"ButtonWidth":200,"GUIOffsX":10,"GUIOffsY":10,"GUIReloadX":25,"GUIReloadY":-10}
+{
+	"ButtonHeight":50,
+	"ButtonStartX":860,
+	"ButtonStartY":390,
+	"ButtonWidth":200,
+	"GUIOffsX":10,
+	"GUIOffsY":10,
+	"GUIReloadX":25,
+	"GUIReloadY":-10
+}

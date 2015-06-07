@@ -29,7 +29,6 @@ namespace Tank2D_XNA.Tanks
         protected int RotationSpeed;
         protected int Speed;
         private bool _isForward;
-        protected int Hp;
         protected int TurretCentrX;
 
         // Tank ammo names
@@ -46,6 +45,8 @@ namespace Tank2D_XNA.Tanks
         public Turret TankTurret { get { return _tankTurret; } }
         public bool IsAlive { private set; get; }
         public bool IsSpoted { get; set; }
+
+        public int Hp { protected set; get; }
 
         protected Tank(Vector2 spawnPosition)
         {

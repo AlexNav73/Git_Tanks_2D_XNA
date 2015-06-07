@@ -1,1 +1,9 @@
-{"HP":1200,"Overlook":700,"PiercingAmmoName":"Pzgr_40_K","ReloadTime":4.32,"RotationSpeed":4,"Speed":15,"TurretCentrX":19}
+{
+	"HP":1200,
+	"Overlook":700,
+	"PiercingAmmoName":"Pzgr_40_K",
+	"ReloadTime":4.32,
+	"RotationSpeed":4,
+	"Speed":15,
+	"TurretCentrX":19
+}

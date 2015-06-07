@@ -1,1 +1,6 @@
-{"MaxDamage":300,"MaxDistanse":700,"MinDamage":150,"Speed":10}
+{
+	"MaxDamage":300,
+	"MaxDistanse":700,
+	"MinDamage":150,
+	"Speed":10
+}
