@@ -11,13 +11,13 @@ using Tank2D_XNA.Utills;
 namespace Tank2D_XNA.Screens
 {
     [SuppressMessage("ReSharper", "CompareOfFloatsByEqualityOperator")]
-    class DebugPannel : Entity
+    class DebugPanel : Entity
     {
         private readonly Tank _tank;
         private readonly Vector2 _reloadTimeOffs;
         private SpriteFont _font;
 
-        public DebugPannel(Tank tank)
+        public DebugPanel(Tank tank)
         {
             _tank = tank;
             Position.X = Helper.GUI_OFFS_X;
